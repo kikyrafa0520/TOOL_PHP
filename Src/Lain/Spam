@@ -130,10 +130,10 @@ $pesan = readline("Pesan: ");
 print line();
 
 while(true){
-//OtpLumoshop($nomor); //Mati
-//OtpMapclub($nomor); //forbiden
-//OtpOlx($nomor); //Sms
-TelponBiasa($nomor); //Telfon
-OtpPizzahut($nomor);
-PesanWatsap($nomor,$pesan); //Wa
+	//OtpLumoshop($nomor); //Mati
+	//OtpMapclub($nomor); //forbiden
+	//OtpOlx($nomor); //Sms
+	TelponBiasa($nomor); //Telfon
+	OtpPizzahut($nomor);
+	PesanWatsap($nomor,$pesan); //Wa
 }
