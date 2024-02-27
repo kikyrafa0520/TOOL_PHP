@@ -1,0 +1,32 @@
+function translate($msg, $country){
+	$ua = [
+	"x-requested-with: XMLHttpRequest",
+	"user-agent: Mozilla/5.0 (Linux; Android 11; 2201117TY) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.85 Mobile Safari/537.36"
+	];
+	$data = "text_to_translate=".urlencode($msg)."&source_lang=id&translated_lang=".$country."&use_cache_only=false";
+	$opts = ['http' =>['method'  => 'POST','header' => $ua,'content' => $data]];
+	$r = json_decode(file_get_contents("https://www.translate.com/ajax/machine-translation/translate", false, stream_context_create($opts)),1);
+	return $r["translated_text"];
+}
+$api = json_decode(file_get_contents("http://ip-api.com/json"),1);
+$country = strtolower($api["countryCode"]);
+
+$msg = readline(Isi("input text: "));
+print line();
+
+/*
+$country = "ar";
+
+$msg = "Maaf Script di Matikankan oleh admin
+- Web update
+- Web Mati
+- Rawan Banned";
+*/
+
+if($country == "id"){
+	print $msg."\n";
+	//unlink(__FILE__);
+}else{
+	print translate($msg, $country)."\n";
+	//unlink(__FILE__);
+}
