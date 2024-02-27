@@ -53,9 +53,9 @@ function Simpan($nama_data){
 			}else{
 				system("mv ".nama_file." Data");
 			}
-			print("Berhasil membuat Folder untuk ".nama_file.n);
+			print(h."Berhasil membuat Folder untuk ".k.nama_file.n);
 		}
-		$data = readline("Input ".$nama_data.": ");echo "\n";
+		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h);echo "\n";
 		file_put_contents("Data/".nama_file."/".$nama_data,$data);
 	}
 	return $data;
