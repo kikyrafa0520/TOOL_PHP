@@ -40,7 +40,7 @@ function Isi($msg){
 	return k."---[".p."?".k."] ".p.$msg;
 }
 function Sukses($msg){
-	return h."---[".p."✓".h."] ".p.$msg;
+	return h."---[".p."✓".h."] ".p.$msg.n;
 }
 function Simpan($nama_data){
 	if(file_exists("Data/".nama_file."/".$nama_data)){
@@ -150,5 +150,93 @@ function TimeZone(){
 	}else{
 		date_default_timezone_set("UTC");
 		return "UTC";
+	}
+}
+/*************************** APIKEY ***************************/
+function Simpan_Api($nama_data){
+	if(file_exists("Data/Apikey/".$nama_data)){
+		$data = file_get_contents("Data/Apikey/".$nama_data);
+	}else{
+		if(!file_exists("Data/Apikey")){
+			system("mkdir Apikey");
+			if(PHP_OS_FAMILY == "Windows"){
+				system("move Apikey Data");
+			}else{
+				system("mv Apikey Data");
+			}
+			print(h."Berhasil membuat Folder untuk ".k."Apikey".n);
+		}
+		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h);echo "\n";
+		file_put_contents("Data/Apikey/".$nama_data,$data);
+	}
+	return $data;
+}
+function Multibot_Api(){
+	$api = Simpan_Api("Multibot_Apikey");
+	Multibot_Bal();
+	print Sukses(h."---OK\n");
+	sleep(3);
+}
+function Multibot_Bal(){
+	$apikey = Simpan_Api("Multibot_Apikey");
+	$url = "http://api.multibot.in/";
+	$x = json_decode(file_get_contents($url."res.php?action=userinfo&key=".$apikey),1);
+	if(!$x["balance"]){
+		exit(Error("Apikey: ".m."Saldo Apikey habis!".n));
+	}
+	print Cetak("Bal_Api",$x["balance"]." Token");
+}
+function Multibot_Hc($sitekey, $pageurl){
+	$apikey = Simpan_Api("Multibot_Apikey");
+	$url = "http://api.multibot.in/";
+	$r =  json_decode(file_get_contents($url."in.php?key=".$apikey."&method=hcaptcha&sitekey=".$sitekey."&pageurl=".$pageurl."&json=1"),1);
+	$status = $r["status"];
+	if($status == 0){
+		print(b."Apikey: ".m.$r["request"].n);
+		return 0;
+	}
+	$id = $r["request"];
+	while(true){
+		print "prosess...";
+		$r = json_decode(file_get_contents($url."res.php?key=".$apikey."&action=get&id=".$id."&json=1"),1);
+		$status = $r["status"];
+		if($r["request"] == "CAPCHA_NOT_READY"){
+			echo "\r                      \r";
+			print "prosess......";
+			sleep(10);
+			print "\r                    \r";
+			continue;
+		}
+		if($status == 1){
+			print "\r                 \r";
+			return $r["request"];
+		}
+		return 0;
+	}
+}
+function num_rand($int){
+	$rand_str = "abcdefghijklmnopqrstuvwqyz";
+	$rand_num = "1234567890";
+	$rand_str_up= "ABCDEFGHIJKLMNOPQRSTUVWQYZ";
+	$split = str_split($rand_num);
+	$res = "";while(true){
+		$rand = array_rand($split);
+		$res .= $split[$rand];
+		if( strlen($res) == $int ){ 
+			return $res; 
+		}
+	}
+}
+function str_rand($int){
+	$rand_str = "abcdefghijklmnopqrstuvwqyz";
+	$rand_num = "1234567890";
+	$rand_str_up= "ABCDEFGHIJKLMNOPQRSTUVWQYZ";
+	$split = str_split($rand_str.$rand_num.$rand_str_up);
+	$res = "";while(true){
+		$rand = array_rand($split);
+		$res .= $split[$rand];
+		if( strlen($res) == $int ){
+			return $res;
+		}
 	}
 }
