@@ -53,10 +53,20 @@ function Simpan($nama_data){
 			}else{
 				system("mv ".nama_file." Data");
 			}
-			print(h."Berhasil membuat Folder untuk ".k.nama_file.n);
+			print Sukses(h."Berhasil membuat Folder untuk ".k.nama_file.n);
 		}
-		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h);echo "\n";
+		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h.n);echo "\n";
 		file_put_contents("Data/".nama_file."/".$nama_data,$data);
+	}
+	return $data;
+}
+function ua(){
+	$nama_data = "User_Agent";
+	if(file_exists($nama_data)){
+		$data = file_get_contents($nama_data);
+	}else{
+		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h.n);echo "\n";
+		file_put_contents($nama_data,$data);
 	}
 	return $data;
 }
@@ -164,9 +174,9 @@ function Simpan_Api($nama_data){
 			}else{
 				system("mv Apikey Data");
 			}
-			print(h."Berhasil membuat Folder untuk ".k."Apikey".n);
+			print Sukses(h."Berhasil membuat Folder untuk ".k."Apikey".n);
 		}
-		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h);echo "\n";
+		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h.n);echo "\n";
 		file_put_contents("Data/Apikey/".$nama_data,$data);
 	}
 	return $data;

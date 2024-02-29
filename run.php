@@ -1,5 +1,5 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
 system("git pull");
 if(!file_exists("Data")){system("mkdir Data");}
 //eval(file_get_contents("Modul/modul"));
