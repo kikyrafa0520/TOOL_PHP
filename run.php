@@ -1,6 +1,21 @@
 <?php
-//error_reporting(0);
-system("git pull");
+error_reporting(0);
+function rrmdir($dir) {
+    foreach(glob($dir . '/*') as $file) {
+        if(is_dir($file))
+            rrmdir($file);
+        else
+            unlink($file);
+    }
+    if(is_dir($dir))rmdir($dir);
+	else unlink($dir);
+}
+$dir = scandir(realpath(__DIR__));
+$file = pathinfo(__FILE__, PATHINFO_FILENAME).".php";
+foreach($dir as $a => $activ_dir){
+	if($activ_dir == "." || $activ_dir == ".." || $activ_dir == "Data" || $activ_dir == $file)continue;
+	rrmdir($activ_dir);
+}
 if(!file_exists("Data")){system("mkdir Data");}
 eval(file_get_contents('https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/Modul/modul'));
 
