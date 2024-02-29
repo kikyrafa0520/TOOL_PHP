@@ -1,27 +1,31 @@
 <?php
 //error_reporting(0);
-
+system("git pull");
 if(!file_exists("Data")){system("mkdir Data");}
 //eval(file_get_contents("Modul/modul"));
 require "Modul/modul.php";
 Ban();
-$r = scandir("Src");
-foreach($r as $a => $act){
+$r = scandir("Src");$a = 0;
+foreach($r as $act){
+	if($act == '.' || $act == '..') continue;
 	$menu[$a] =  $act;
 	Menu($a, $act);
+	$a++;
 }
 $pil = readline(Isi("Pilih Nomor: "));
 print line();
-if($pil == '' || $pil == Count($r))exit(Error("Tolol"));
+if($pil == '' || $pil >= Count($menu))exit(Error("Tolol"));
 
-$r = scandir("Src/".$menu[$pil]);
-foreach($r as $a => $act){
+$r = scandir("Src/".$menu[$pil]);$a = 0;
+foreach($r as $act){
+	if($act == '.' || $act == '..') continue;
 	$menu2[$a] =  $act;
 	Menu($a, $act);
+	$a++;
 }
 $pil2 = readline(Isi("Pilih Nomor: "));
 print line();
-if($pil2 == '' || $pil2 == Count($r))exit(Error("Tolol"));
+if($pil2 == '' || $pil2 >= Count($menu2))exit(Error("Tolol"));
 
 $is_file = is_file("Src/".$menu[$pil]."/".$menu2[$pil2]);
 if($is_file){
@@ -31,14 +35,16 @@ if($is_file){
 	exit;
 }
 
-$r = scandir("Src/".$menu[$pil]."/".$menu2[$pil2]);
-foreach($r as $a => $act){
+$r = scandir("Src/".$menu[$pil]."/".$menu2[$pil2]);$a=0;
+foreach($r as $act){
+	if($act == '.' || $act == '..') continue;
 	$menu3[$a] =  $act;
 	Menu($a, $act);
+	$a++;
 }
 $pil3 = readline(Isi("Pilih Nomor: "));
 print line();
-if($pil3 == '' || $pil3 == Count($r))exit(Error("Tolol"));
+if($pil3 == '' || $pil3 >= Count($menu3))exit(Error("Tolol"));
 define("nama_file",$menu3[$pil3]);
 Ban(1);
 eval(file_get_contents("Src/".$menu[$pil]."/".$menu2[$pil2]."/".$menu3[$pil3]));
