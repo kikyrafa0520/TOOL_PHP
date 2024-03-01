@@ -1,6 +1,9 @@
 <?php
 const
-n = "\n";
+n = "\n",
+name = "iewil",
+author = "iewilmaestro",
+author_email = "<purna.iera@gmail.com>";
 
 if( PHP_OS_FAMILY == "Linux" ){
 	define("b","\033[1;34m");

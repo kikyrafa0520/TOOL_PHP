@@ -166,6 +166,8 @@ while(true){
 	break;
 }
 tmr(3000);
+$api = json_decode(file_get_contents("http://ip-api.com/json"),1);
+$zone = $api["timezone"];
 date_default_timezone_set($zone);
 print h."Date".m.": ".p.date("d-M-Y H:i:s").n;
 print line();
