@@ -8,7 +8,7 @@ function h(){
 	$h[] = "Upgrade-Insecure-Requests: 1";
 	$h[] = "Connection: keep-alive";
 	$h[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
-	$h[] = "user-agent: ".simpan("User_Agent");
+	$h[] = "user-agent: ".ua();
 	$h[] = "Referer: https://adbch.top/";
 	$h[] = "Accept-Language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7";
 	$h[] = "cookie: ".simpan("Cookie");
@@ -20,7 +20,7 @@ Cetak("Register",register_link);
 print line();
 cookie:
 simpan("Cookie");
-simpan("User_Agent");
+ua();
 /*
 $email = simpan("Email_Fp");
 $password = simpan("Password_Login");

