@@ -54,7 +54,7 @@ print line();
 while(true){
 	sleep(5);
 	$r = run(host."/?op=home",h());
-	$timer = explode(');',explode("title_countdown(",$r)[1])[0];
+	$timer = explode(',',explode("free_play_time_remaining').countdown({until: +",$r)[1])[0];
 	if($timer){tmr($timer);}
 	$finger = finger(getCsrf(),["user-agent: ".ua()]);
 	$sitekey = explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
