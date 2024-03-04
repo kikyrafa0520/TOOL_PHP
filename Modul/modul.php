@@ -73,7 +73,7 @@ function ua(){
 	}
 	return $data;
 }
-function Hapus($nama_file, $nama_data){
+function Hapus($nama_data){
 	unlink("Data/".nama_file."/".$nama_data);
 }
 function Ban($sc = 0){

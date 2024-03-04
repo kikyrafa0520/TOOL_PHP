@@ -1,5 +1,5 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
 if(!file_exists("Data")){system("mkdir Data");}
 //eval(file_get_contents("Modul/modul"));
 require "Modul/modul.php";
@@ -9,7 +9,7 @@ $r = json_decode(file_get_contents("https://raw.githubusercontent.com/iewilmaest
 $version = $r['version'];
 $versi = $check['version'];
 if($versi < $version){
-	system("git reset --hard");
+	//system("git reset --hard");
 	system("git pull");
 }
 $r = scandir("Src");$a = 0;
