@@ -8,8 +8,8 @@ require "Exception.php";
 $r = json_decode(file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/setup.php"),1);
 $version = $r['version'];
 $versi = $check['version'];
-if($versi < $version){
-	//system("git reset --hard");
+if($versi != $version){
+	system("git reset --hard");
 	system("git pull");
 }
 $r = scandir("Src");$a = 0;
