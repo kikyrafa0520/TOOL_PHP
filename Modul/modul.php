@@ -78,9 +78,9 @@ function Hapus($nama_data){
 }
 function Ban($sc = 0){
 	TimeZone();
-	print m."\t___ ____ ____ _       ___  _  _ ___ ".n;
-	print m."\t |  |  | |  | |       |__] |__| |__] ".n;
-	print p."\t |  |__| |__| |___    |    |  | |  ".n;
+	print m."~~~~~\t┌┬┐ ┌─┐ ┌─┐ ┬    ┬─┐ ┬ ┬ ┬─┐\t ~~~~~".n;
+	print m."~~~~~\t │  │ │ │ │ │    ├─┘ ├─┤ ├─┘\t ~~~~~".n;
+	print p."~~~~~\t ┴  └─┘ └─┘ ┴─┘  ┴   ┴ ┴ ┴ \t ~~~~~".n;
 	if($sc){
 		print Line();
 		print h."Sc Aktif: ".k.strtoupper(nama_file).n;
@@ -199,11 +199,14 @@ function TimeZone(){
 		date_default_timezone_set($tz);
 		print k.date("d/M/Y").m."-".k.date("H:i:s").n;
 		print k.$api['city'].m.",".k.$api['regionName'].m.",".k.$api['country'].n;
-		print line();
 	}else{
 		date_default_timezone_set("UTC");
 		return "UTC";
 	}
+	print b."Channel".m.": ".p."t.me/Tool_php".m." >".n;
+	print b."Insta  ".m.": ".p."instagram.com/iewil_13".m." >".n;
+	print b."Youtube".m.": ".p."youtube.com/@iewil".m." >".n;
+	print line();
 }
 function num_rand($int){
 	$rand_num = "1234567890";
