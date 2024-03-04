@@ -122,8 +122,8 @@ function Curl($u, $h = 0, $p = 0,$cookie = 0, $lewat = 0) {
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
 		curl_setopt($ch, CURLOPT_COOKIE,TRUE);
 		if($cookie) {
-			curl_setopt($ch, CURLOPT_COOKIEFILE,"cookie.txt");
-			curl_setopt($ch, CURLOPT_COOKIEJAR,"cookie.txt");
+			curl_setopt($ch, CURLOPT_COOKIEFILE,"Data/".nama_file."/cookie.txt");
+			curl_setopt($ch, CURLOPT_COOKIEJAR,"Data/".nama_file."/cookie.txt");
 		}
 		if($p) {
 			curl_setopt($ch, CURLOPT_POST, true);
@@ -205,6 +205,30 @@ function TimeZone(){
 		return "UTC";
 	}
 }
+function num_rand($int){
+	$rand_num = "1234567890";
+	$split = str_split($rand_num);
+	$res = "";while(true){
+		$rand = array_rand($split);
+		$res .= $split[$rand];
+		if( strlen($res) == $int ){ 
+			return $res; 
+		}
+	}
+}
+function str_rand($int){
+	$rand_str = "abcdefghijklmnopqrstuvwqyz";
+	$rand_num = "1234567890";
+	$rand_str_up= "ABCDEFGHIJKLMNOPQRSTUVWQYZ";
+	$split = str_split($rand_str.$rand_num.$rand_str_up);
+	$res = "";while(true){
+		$rand = array_rand($split);
+		$res .= $split[$rand];
+		if( strlen($res) == $int ){
+			return $res;
+		}
+	}
+}
 /*************************** APIKEY ***************************/
 function Simpan_Api($nama_data){
 	if(file_exists("Data/Apikey/".$nama_data)){
@@ -267,27 +291,110 @@ function Multibot_Hc($sitekey, $pageurl){
 		return 0;
 	}
 }
-function num_rand($int){
-	$rand_num = "1234567890";
-	$split = str_split($rand_num);
-	$res = "";while(true){
-		$rand = array_rand($split);
-		$res .= $split[$rand];
-		if( strlen($res) == $int ){ 
-			return $res; 
+function Multibot_Ocr($img){
+	$apikey = Simpan_Api("Multibot_Apikey");
+	$url = "http://api.multibot.in/";
+	$data = ["key"=>$apikey,"method"=>"universal","body" => $img,"json" => true];
+	$opts = ['http' =>['method'  => 'POST','content' => http_build_query($data)]];
+	$r = json_decode(file_get_contents($url.'in.php', false, stream_context_create($opts)),1);
+	
+	$status = $r["status"];
+	if($status == 0){
+		print("Apikey: ".m.$r["request"].n);
+		return 0;
+	}
+	$id = $r["request"];
+	while(true){
+		print "prosess...";
+		$r = json_decode(file_get_contents($url."res.php?key=".$apikey."&action=get&id=".$id."&json=1"),1);
+		$status = $r["status"];
+		if($r["request"] == "CAPCHA_NOT_READY"){
+			echo "\r                      \r";
+			print "prosess......";
+			sleep(10);
+			print "\r                    \r";
+			continue;
 		}
+		if($status == 1){
+			print "\r                 \r";
+			return $r["request"];
+		}
+		return 0;
 	}
 }
-function str_rand($int){
-	$rand_str = "abcdefghijklmnopqrstuvwqyz";
-	$rand_num = "1234567890";
-	$rand_str_up= "ABCDEFGHIJKLMNOPQRSTUVWQYZ";
-	$split = str_split($rand_str.$rand_num.$rand_str_up);
-	$res = "";while(true){
-		$rand = array_rand($split);
-		$res .= $split[$rand];
-		if( strlen($res) == $int ){
-			return $res;
+
+function Xevil_Api(){
+	$api = Simpan_Api("Xevil_Apikey");
+	Xevil_Bal();
+	print Sukses(h."---OK\n");
+	sleep(3);
+}
+function Xevil_Bal(){
+	$apikey = Simpan_Api("Xevil_Apikey");
+	$url = "http://goodxevilpay.pp.ua/";
+	$x = json_decode(file_get_contents($url."res.php?action=userinfo&key=".$apikey),1);
+	if(!$x["balance"]){
+		exit(Error("Apikey: ".m."Saldo Apikey habis!".n));
+	}
+	print Cetak("Bal_Api",$x["balance"]." Rub");
+}
+function Xevil_Rv2($sitekey, $pageurl){
+	$apikey = Simpan_Api("Xevil_Apikey");
+	$url = "http://goodxevilpay.pp.ua/";
+	
+	$r =  json_decode(file_get_contents($url."in.php?key=".$apikey."&method=userrecaptcha&googlekey=".$sitekey."&pageurl=".$pageurl."&json=1"),1);
+	$status = $r["status"];
+	if($status == 0){
+		print("Apikey: ".m.$r["request"].n);
+		return 0;
+	}
+	$id = $r["request"];
+	while(true){
+		print "prosess...";
+		$r = json_decode(file_get_contents($url."res.php?key=".$apikey."&action=get&id=".$id."&json=1"),1);
+		$status = $r["status"];
+		if($r["request"] == "CAPCHA_NOT_READY"){
+			echo "\r                      \r";
+			print "prosess......";
+			sleep(10);
+			print "\r                    \r";
+			continue;
 		}
+		if($status == 1){
+			print "\r                 \r";
+			return $r["request"];
+		}
+		return 0;
+	}
+}
+function Xevil_Ocr($img){
+	$apikey = Simpan_Api("Xevil_Apikey");
+	$url = "http://goodxevilpay.pp.ua/";
+	$ua = "Content-type: application/x-www-form-urlencoded";
+	$data = "key=".$apikey."&method=base64&body=".$img."&json=1";
+	$opts = ['http' =>['method'  => 'POST','header' => $ua,'content' => $data]];
+	$r = json_decode(file_get_contents($url.'in.php', false, stream_context_create($opts)),1);
+	$status = $r["status"];
+	if($status == 0){
+		print("Apikey: ".m.$r["request"].n);
+		return 0;
+	}
+	$id = $r["request"];
+	while(true){
+		print "prosess...";
+		$r = json_decode(file_get_contents($url."res.php?key=".$apikey."&action=get&id=".$id."&json=1"),1);
+		$status = $r["status"];
+		if($r["request"] == "CAPCHA_NOT_READY"){
+			echo "\r                      \r";
+			print "prosess......";
+			sleep(10);
+			print "\r                    \r";
+			continue;
+		}
+		if($status == 1){
+			print "\r                 \r";
+			return $r["request"];
+		}
+		return 0;
 	}
 }
