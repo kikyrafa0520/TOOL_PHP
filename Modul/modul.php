@@ -40,7 +40,7 @@ function Error($except){
 	return m."---[".p."!".m."] ".p.$except;
 }
 function Isi($msg){
-	return k."---[".p."?".k."] ".p.$msg;
+	return m."╭[".p."Input ".$msg.m."]".n.m."╰> ".h;
 }
 function Sukses($msg){
 	return h."---[".p."✓".h."] ".p.$msg.n;
@@ -58,7 +58,7 @@ function Simpan($nama_data){
 			}
 			print Sukses(h."Berhasil membuat Folder untuk ".k.nama_file.n);
 		}
-		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h.n);echo "\n";
+		$data = readline(Isi($nama_data));echo "\n";
 		file_put_contents("Data/".nama_file."/".$nama_data,$data);
 	}
 	return $data;
@@ -68,7 +68,7 @@ function ua(){
 	if(file_exists($nama_data)){
 		$data = file_get_contents($nama_data);
 	}else{
-		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h.n);echo "\n";
+		$data = readline(Isi($nama_data));echo "\n";
 		file_put_contents($nama_data,$data);
 	}
 	return $data;
@@ -111,12 +111,52 @@ function run($url, $ua, $data = null,$cookie=null) {
 		return $run;
 	}
 }
+function Curl($u, $h = 0, $p = 0,$cookie = 0, $lewat = 0) {
+	while(true){
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $u);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_COOKIE,TRUE);
+		if($cookie) {
+			curl_setopt($ch, CURLOPT_COOKIEFILE,"cookie.txt");
+			curl_setopt($ch, CURLOPT_COOKIEJAR,"cookie.txt");
+		}
+		if($p) {
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $p);
+		}
+		if($h) {
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $h);
+		}
+		curl_setopt($ch, CURLOPT_HEADER, true);
+		$r = curl_exec($ch);
+		if($lewat){
+			return 0;
+		}
+		$c = curl_getinfo($ch);
+		if(!$c) return "Curl Error : ".curl_error($ch); else{
+			$hd = substr($r, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+			$bd = substr($r, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+			curl_close($ch);
+			if(!$bd){
+				print Error("Check your Connection!");
+				sleep(2);
+				print "\r                         \r";
+				continue;
+			}
+			return array($hd,$bd);
+		}
+	}
+}
 function Cetak($label, $msg){
 	$len = 9;
 	$lenstr = $len-strlen($label);
 	print h."[".p.$label.h.str_repeat(" ",$lenstr)."]─> ".p.$msg.n;
 }
-
 function Auth($w){
 	$lo[] = $w."L".p."oading....";
 	$lo[] = p."L".$w."o".p."ading....";
@@ -179,7 +219,7 @@ function Simpan_Api($nama_data){
 			}
 			print Sukses(h."Berhasil membuat Folder untuk ".k."Apikey".n);
 		}
-		$data = readline(c."---[".p."+".c."] ".p."Input ".$nama_data.": ".h.n);echo "\n";
+		$data = readline(Isi($nama_data));echo "\n";
 		file_put_contents("Data/Apikey/".$nama_data,$data);
 	}
 	return $data;
@@ -228,9 +268,7 @@ function Multibot_Hc($sitekey, $pageurl){
 	}
 }
 function num_rand($int){
-	$rand_str = "abcdefghijklmnopqrstuvwqyz";
 	$rand_num = "1234567890";
-	$rand_str_up= "ABCDEFGHIJKLMNOPQRSTUVWQYZ";
 	$split = str_split($rand_num);
 	$res = "";while(true){
 		$rand = array_rand($split);

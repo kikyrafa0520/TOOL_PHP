@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 if(!file_exists("Data")){system("mkdir Data");}
 //eval(file_get_contents("Modul/modul"));
 require "Modul/modul.php";
@@ -19,7 +19,7 @@ foreach($r as $act){
 	Menu($a, $act);
 	$a++;
 }
-$pil = readline(Isi("Pilih Nomor: "));
+$pil = readline(Isi("Nomor"));
 print line();
 if($pil == '' || $pil >= Count($menu))exit(Error("Tolol"));
 
@@ -30,7 +30,7 @@ foreach($r as $act){
 	Menu($a, $act);
 	$a++;
 }
-$pil2 = readline(Isi("Pilih Nomor: "));
+$pil2 = readline(Isi("Nomor"));
 print line();
 if($pil2 == '' || $pil2 >= Count($menu2))exit(Error("Tolol"));
 if(explode('-',$menu2[$pil2])[1])exit(Error("Tolol"));
@@ -49,7 +49,7 @@ foreach($r as $act){
 	Menu($a, $act);
 	$a++;
 }
-$pil3 = readline(Isi("Pilih Nomor: "));
+$pil3 = readline(Isi("Nomor"));
 print line();
 if($pil3 == '' || $pil3 >= Count($menu3))exit(Error("Tolol"));
 if(explode('-',$menu3[$pil3])[1])exit(Error("Tolol"));
