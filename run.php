@@ -8,10 +8,44 @@ require "Exception.php";
 $r = json_decode(file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/setup.php"),1);
 $version = $r['version'];
 $versi = $check['version'];
-if($versi != $version){
-	system("git reset --hard");
-	system("git pull");
+print b."Versi: ".k.$versi.h." New Versi: ".k.$version."\n";
+$a = 0;
+sleep(3);
+if($versi !== $version){
+	Menu($a+=1,"Update Versi");
+	$tam[$a] = "update";
 }
+if(file_exists("Data/Apikey/Multibot_Apikey")){
+	Menu($a+=1,"Hapus APi Multibot");
+	$tam[$a] = "multi";
+}
+if(file_exists("Data/Apikey/Xevil_Apikey")){
+	Menu($a+=1,"Hapus APi Xevil");
+	$tam[$a] = "xevil";
+}
+if($a > 0){
+	Menu($a+=1,"Skip");
+	$tam[$a] = "skip";
+}
+if($tam){
+	$pil = readline(Isi("Nomor"));
+	if($pil == '' || $pil >= Count($tam)+1)exit(Error("Tolol"));
+	if($tam[$pil] == "update"){
+		system("git reset --hard");
+		system("git pull");
+	}elseif($tam[$pil] == "multi"){
+		unlink("Data/Apikey/Multibot_Apikey");
+		print "Berhasil Menghapus Apikey Multibot";
+		sleep(3);
+	}elseif($tam[$pil] == "xevil"){
+		unlink("Data/Apikey/Xevil_Apikey");
+		print "Berhasil Menghapus Apikey Xevil";
+		sleep(3);
+	}else{
+	}
+	Ban();
+}
+
 $r = scandir("Src");$a = 0;
 foreach($r as $act){
 	if($act == '.' || $act == '..') continue;
