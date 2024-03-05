@@ -7,29 +7,16 @@
 # TOOL_PHP
 ```bash
 ├───CRYPTO
-│   ├───Api_Multibot
-│   │       FreebitcoIn
-│   │
-│   ├───Api_Xevil
-│   │       Tes
-│   │
-│   └───Free
-│           Adbch
-│           BnbfreeIn
-│           FreeethIn
-│
-├───IDR
-│   └───Free
-│           tes
-│
-├───LAIN
-│       Spam
-│       Translate
-│
-└───RUBLE
-     └───Free
-           Serfclick
+    │   ├───Api_Multibot
+    │   ├───Api_Xevil
+    │   └───Free
+    ├───IDR
+    │   └───Free
+    ├───LAIN
+    └───RUBLE
+        └───Free
 ```
+
 ### Instalasi
 ```php
 $ pkg update && pkg upgrade
@@ -40,6 +27,15 @@ $ git clone https://github.com/iewilmaestro/TOOL_PHP
 $ cd TOOL_PHP
 $ php run.php
 ```
+
+### Manual Update
+```php
+$ git pull
+or
+$ git git reset --hard
+$git pull
+```
+
 ![Donation: iewil](https://img.shields.io/badge/💰-Donation-blue?style=flat-square)<br>
 ![BTC: iewil](https://img.shields.io/badge/BTC-18jswG2t9EZrnHju5dyiYw1yGbkcrTSgJg-blue?style=flat-square&logo=bitcoin)
 ![Paypal: iewil](https://img.shields.io/badge/Paypal-Purna.iera@gmail.com-blue?style=flat-square&logo=paypal)

@@ -1,14 +1,18 @@
 <?php
 error_reporting(0);
 if(!file_exists("Data")){system("mkdir Data");}
-//eval(file_get_contents("Modul/modul"));
 require "Modul/modul.php";
+require "Modul/Multibot.php";
+require "Modul/Xevil.php";
+
 Ban();
 require "Exception.php";
 $r = json_decode(file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/setup.php"),1);
 $version = $r['version'];
 $versi = $check['version'];
 print b."Versi: ".k.$versi.h." New Versi: ".k.$version."\n";
+print line();
+
 $a = 0;
 sleep(3);
 if($versi !== $version){
@@ -33,6 +37,7 @@ if($tam){
 	if($tam[$pil] == "update"){
 		system("git reset --hard");
 		system("git pull");
+		sleep(3);
 	}elseif($tam[$pil] == "multi"){
 		unlink("Data/Apikey/Multibot_Apikey");
 		print "Berhasil Menghapus Apikey Multibot";

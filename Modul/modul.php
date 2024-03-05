@@ -32,7 +32,7 @@ if( PHP_OS_FAMILY == "Linux" ){
 	define("ph","");
 	define("bp","");
 }
-
+/*************PRINT**************/
 function menu($no, $title){
 	print h."---[".p."$no".h."] ".k."$title\n";
 }
@@ -44,6 +44,14 @@ function Isi($msg){
 }
 function Sukses($msg){
 	return h."---[".p."✓".h."] ".p.$msg.n;
+}
+function Cetak($label, $msg){
+	$len = 9;
+	$lenstr = $len-strlen($label);
+	print h."[".p.$label.h.str_repeat(" ",$lenstr)."]─> ".p.$msg.n;
+}
+function Line(){
+	return b.str_repeat('─',50).n;
 }
 function Simpan($nama_data){
 	if(file_exists("Data/".nama_file."/".$nama_data)){
@@ -76,6 +84,26 @@ function ua(){
 function Hapus($nama_data){
 	unlink("Data/".nama_file."/".$nama_data);
 }
+
+/************Banner****************/
+function TimeZone(){
+	system("clear");
+	print b."───────────".m."[".p."scrypt by ".h."iewil".m."]─>".n;
+	$api = json_decode(file_get_contents("http://ip-api.com/json"),1);
+	if($api){
+		$tz = $api["timezone"];
+		date_default_timezone_set($tz);
+		print k.date("d/M/Y").m."-".k.date("H:i:s").n;
+		print k.$api['city'].m.",".k.$api['regionName'].m.",".k.$api['country'].n;
+	}else{
+		date_default_timezone_set("UTC");
+		return "UTC";
+	}
+	print b."Channel".m.": ".p."t.me/Tool_php".m." >".n;
+	print b."Insta  ".m.": ".p."instagram.com/iewil_13".m." >".n;
+	print b."Youtube".m.": ".p."youtube.com/@iewil".m." >".n;
+	print line();
+}
 function Ban($sc = 0){
 	TimeZone();
 	print m."~~~~~\t┌┬┐ ┌─┐ ┌─┐ ┬    ┬─┐ ┬ ┬ ┬─┐\t ~~~~~".n;
@@ -88,9 +116,6 @@ function Ban($sc = 0){
 	}else{
 		print Line();
 	}
-}
-function Line(){
-	return b.str_repeat('─',50).n;
 }
 function run($url, $ua, $data = null,$cookie=null) {
 	while(true){
@@ -152,11 +177,6 @@ function Curl($u, $h = 0, $p = 0,$cookie = 0, $lewat = 0) {
 		}
 	}
 }
-function Cetak($label, $msg){
-	$len = 9;
-	$lenstr = $len-strlen($label);
-	print h."[".p.$label.h.str_repeat(" ",$lenstr)."]─> ".p.$msg.n;
-}
 function Auth($w){
 	$lo[] = $w."L".p."oading....";
 	$lo[] = p."L".$w."o".p."ading....";
@@ -190,24 +210,7 @@ function Tmr($tmr){
 	}
 	print "\r                                   \r";
 }
-function TimeZone(){
-	system("clear");
-	print b."───────────".m."[".p."scrypt by ".h."iewil".m."]─>".n;
-	$api = json_decode(file_get_contents("http://ip-api.com/json"),1);
-	if($api){
-		$tz = $api["timezone"];
-		date_default_timezone_set($tz);
-		print k.date("d/M/Y").m."-".k.date("H:i:s").n;
-		print k.$api['city'].m.",".k.$api['regionName'].m.",".k.$api['country'].n;
-	}else{
-		date_default_timezone_set("UTC");
-		return "UTC";
-	}
-	print b."Channel".m.": ".p."t.me/Tool_php".m." >".n;
-	print b."Insta  ".m.": ".p."instagram.com/iewil_13".m." >".n;
-	print b."Youtube".m.": ".p."youtube.com/@iewil".m." >".n;
-	print line();
-}
+
 function num_rand($int){
 	$rand_num = "1234567890";
 	$split = str_split($rand_num);
@@ -250,154 +253,4 @@ function Simpan_Api($nama_data){
 		file_put_contents("Data/Apikey/".$nama_data,$data);
 	}
 	return $data;
-}
-function Multibot_Api(){
-	$api = Simpan_Api("Multibot_Apikey");
-	Multibot_Bal();
-	print Sukses(h."---OK\n");
-	sleep(3);
-}
-function Multibot_Bal(){
-	$apikey = Simpan_Api("Multibot_Apikey");
-	$url = "http://api.multibot.in/";
-	$x = json_decode(file_get_contents($url."res.php?action=userinfo&key=".$apikey),1);
-	if(!$x["balance"]){
-		exit(Error("Apikey: ".m."Saldo Apikey habis!".n));
-	}
-	print Cetak("Bal_Api",$x["balance"]." Token");
-}
-function Multibot_Hc($sitekey, $pageurl){
-	$apikey = Simpan_Api("Multibot_Apikey");
-	$url = "http://api.multibot.in/";
-	$r =  json_decode(file_get_contents($url."in.php?key=".$apikey."&method=hcaptcha&sitekey=".$sitekey."&pageurl=".$pageurl."&json=1"),1);
-	$status = $r["status"];
-	if($status == 0){
-		print(b."Apikey: ".m.$r["request"].n);
-		return 0;
-	}
-	$id = $r["request"];
-	while(true){
-		print "prosess...";
-		$r = json_decode(file_get_contents($url."res.php?key=".$apikey."&action=get&id=".$id."&json=1"),1);
-		$status = $r["status"];
-		if($r["request"] == "CAPCHA_NOT_READY"){
-			echo "\r                      \r";
-			print "prosess......";
-			sleep(10);
-			print "\r                    \r";
-			continue;
-		}
-		if($status == 1){
-			print "\r                 \r";
-			return $r["request"];
-		}
-		return 0;
-	}
-}
-function Multibot_Ocr($img){
-	$apikey = Simpan_Api("Multibot_Apikey");
-	$url = "http://api.multibot.in/";
-	$data = ["key"=>$apikey,"method"=>"universal","body" => $img,"json" => true];
-	$opts = ['http' =>['method'  => 'POST','content' => http_build_query($data)]];
-	$r = json_decode(file_get_contents($url.'in.php', false, stream_context_create($opts)),1);
-	
-	$status = $r["status"];
-	if($status == 0){
-		print("Apikey: ".m.$r["request"].n);
-		return 0;
-	}
-	$id = $r["request"];
-	while(true){
-		print "prosess...";
-		$r = json_decode(file_get_contents($url."res.php?key=".$apikey."&action=get&id=".$id."&json=1"),1);
-		$status = $r["status"];
-		if($r["request"] == "CAPCHA_NOT_READY"){
-			echo "\r                      \r";
-			print "prosess......";
-			sleep(10);
-			print "\r                    \r";
-			continue;
-		}
-		if($status == 1){
-			print "\r                 \r";
-			return $r["request"];
-		}
-		return 0;
-	}
-}
-
-function Xevil_Api(){
-	$api = Simpan_Api("Xevil_Apikey");
-	Xevil_Bal();
-	print Sukses(h."---OK\n");
-	sleep(3);
-}
-function Xevil_Bal(){
-	$apikey = Simpan_Api("Xevil_Apikey");
-	$url = "http://goodxevilpay.pp.ua/";
-	$x = json_decode(file_get_contents($url."res.php?action=userinfo&key=".$apikey),1);
-	if(!$x["balance"]){
-		exit(Error("Apikey: ".m."Saldo Apikey habis!".n));
-	}
-	print Cetak("Bal_Api",$x["balance"]." Rub");
-}
-function Xevil_Rv2($sitekey, $pageurl){
-	$apikey = Simpan_Api("Xevil_Apikey");
-	$url = "http://goodxevilpay.pp.ua/";
-	
-	$r =  json_decode(file_get_contents($url."in.php?key=".$apikey."&method=userrecaptcha&googlekey=".$sitekey."&pageurl=".$pageurl."&json=1"),1);
-	$status = $r["status"];
-	if($status == 0){
-		print("Apikey: ".m.$r["request"].n);
-		return 0;
-	}
-	$id = $r["request"];
-	while(true){
-		print "prosess...";
-		$r = json_decode(file_get_contents($url."res.php?key=".$apikey."&action=get&id=".$id."&json=1"),1);
-		$status = $r["status"];
-		if($r["request"] == "CAPCHA_NOT_READY"){
-			echo "\r                      \r";
-			print "prosess......";
-			sleep(10);
-			print "\r                    \r";
-			continue;
-		}
-		if($status == 1){
-			print "\r                 \r";
-			return $r["request"];
-		}
-		return 0;
-	}
-}
-function Xevil_Ocr($img){
-	$apikey = Simpan_Api("Xevil_Apikey");
-	$url = "http://goodxevilpay.pp.ua/";
-	$ua = "Content-type: application/x-www-form-urlencoded";
-	$data = "key=".$apikey."&method=base64&body=".$img."&json=1";
-	$opts = ['http' =>['method'  => 'POST','header' => $ua,'content' => $data]];
-	$r = json_decode(file_get_contents($url.'in.php', false, stream_context_create($opts)),1);
-	$status = $r["status"];
-	if($status == 0){
-		print("Apikey: ".m.$r["request"].n);
-		return 0;
-	}
-	$id = $r["request"];
-	while(true){
-		print "prosess...";
-		$r = json_decode(file_get_contents($url."res.php?key=".$apikey."&action=get&id=".$id."&json=1"),1);
-		$status = $r["status"];
-		if($r["request"] == "CAPCHA_NOT_READY"){
-			echo "\r                      \r";
-			print "prosess......";
-			sleep(10);
-			print "\r                    \r";
-			continue;
-		}
-		if($status == 1){
-			print "\r                 \r";
-			return $r["request"];
-		}
-		return 0;
-	}
 }
