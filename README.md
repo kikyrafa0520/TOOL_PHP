@@ -7,14 +7,14 @@
 # TOOL_PHP
 ```bash
 ├───CRYPTO
-    │   ├───Api_Multibot
-    │   ├───Api_Xevil
-    │   └───Free
-    ├───IDR
-    │   └───Free
-    ├───LAIN
-    └───RUBLE
-        └───Free
+│   ├───Api_Multibot
+│   ├───Api_Xevil
+│   └───Free
+├───IDR
+│   └───Free
+├───LAIN
+└───RUBLE
+    └───Free
 ```
 
 ### Instalasi
@@ -32,7 +32,7 @@ $ php run.php
 ```php
 $ git pull
 or
-$ git git reset --hard
+$ git reset --hard
 $git pull
 ```
 
