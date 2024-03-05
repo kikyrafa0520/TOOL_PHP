@@ -235,6 +235,12 @@ function str_rand($int){
 		}
 	}
 }
+function His($newdata,$data=0){
+	if(!$data){
+		$data = [];
+	}
+	return array_merge($data,$newdata);
+}
 /*************************** APIKEY ***************************/
 function Simpan_Api($nama_data){
 	if(file_exists("Data/Apikey/".$nama_data)){

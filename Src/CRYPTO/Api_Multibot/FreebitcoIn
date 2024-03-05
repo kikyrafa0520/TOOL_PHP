@@ -72,7 +72,7 @@ while(true){
 		$r = run(host."/?op=home",h());
 		$rp = trim(explode('</div>',explode('<div class="reward_table_box br_0_0_5_5 user_reward_points font_bold" style="border-top:none;">',$r)[1])[0]);
 		Cetak("Reward",$rp);
-		//Multibot_Bal();
+		Multibot_Bal();
 		print line();
 	}else
 	if(explode("incorrect",$r)[1]){
