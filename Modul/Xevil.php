@@ -1,6 +1,6 @@
 <?php
-
 function Xevil_Api(){
+	Cetak("Register","https://t.me/Xevil_check_bot?start=6192660395");
 	$api = Simpan_Api("Xevil_Apikey");
 	Xevil_Bal();
 	print Sukses(h."---OK\n");
@@ -11,6 +11,7 @@ function Xevil_Bal(){
 	$url = "http://goodxevilpay.pp.ua/";
 	$x = json_decode(file_get_contents($url."res.php?action=userinfo&key=".$apikey),1);
 	if(!$x["balance"]){
+		unlink("Data/Apikey/Xevil_Apikey");
 		exit(Error("Apikey: ".m."Saldo Apikey habis!".n));
 	}
 	print Cetak("Bal_Api",$x["balance"]." Rub");
