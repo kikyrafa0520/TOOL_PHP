@@ -1,6 +1,6 @@
 const
 host = "https://api.bnbfreee.com/",
-register_link = "https://bnbfreee.com",
+register_link = "https://bnbfreee.com?r=0x00f3D58C2657c4c4b0F838C97d3879F9139fe5C2",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0,$au=0){

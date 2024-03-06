@@ -4,6 +4,7 @@ if(!file_exists("Data")){system("mkdir Data");}
 require "Modul/modul.php";
 require "Modul/Multibot.php";
 require "Modul/Xevil.php";
+require "Modul/Lisensi.php";
 
 Ban();
 require "Exception.php";
