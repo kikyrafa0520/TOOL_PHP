@@ -11,15 +11,8 @@ function Licensi($text){
 	$r = json_decode(file_get_contents($url, false, stream_context_create($opts)),1);
 	return $r;
 }
-function Replace_Lisensi($text) {
-    $sym = ['+', '-', '(', ')', '[', ']', '{', '}', '.', '|', '!', ];
-    foreach ($sym as $car) {
-        $text = str_replace($car, "\\" . $car, $text);
-    }
-    return $text;
-}
-function TemplateLicense($usermu,$license){
-	$text = "*Welcome $usermu*\n";
+function TemplateLicense($usermu, $license){
+	$text = "*Welcome @$usermu*\n";
 	$text .= "*Lisensi mu sudah siap *\n";
 	$api = json_decode(file_get_contents("http://ip-api.com/json"),1);
 	if($api){
@@ -41,8 +34,9 @@ if(!file_exists("Data/License")){
 	print line();
 	$usermu = readline(Isi("User Telegram (@user)"));
 	print line();
-	$text = TemplateLicense($usermu,$key);
-	Licensi(Replace_Lisensi($text));
+	$greeting = preg_replace("/[^A-Za-z0-9 ]/",'',$usermu);
+	$text = TemplateLicense($greeting,$key);
+	Licensi($text);
 	$x = readline(Isi("License"));
 	print line();
 	if($x == $key){
