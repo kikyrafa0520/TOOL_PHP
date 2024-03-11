@@ -72,6 +72,10 @@ while(true){
 	}else{
 		Print Error(explode(',',$r['message'])[0].n);
 		print line();
+		if($r['message'] == 'Unauthorized'){
+		hapus("Autorization");
+		goto login;
+		}
 	}
 	tmr(3600);
 }
