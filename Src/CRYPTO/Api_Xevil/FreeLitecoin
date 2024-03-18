@@ -40,6 +40,8 @@ function gabut($str){
 	print h."Number: ".p.$str;
 }
 Ban(1);
+Cetak("Register",register_link);
+print line();
 cookie:
 $email = Simpan("Email");
 $pass = Simpan("Password");

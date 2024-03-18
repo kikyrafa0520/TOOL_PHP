@@ -18,6 +18,8 @@ function login($email, $password){
 	return json_decode(curl("https://api.bnbfreee.com/users/login",h($data),$data,1)[1],1);
 }
 Ban(1);
+Cetak("Register",register_link);
+print line();
 cookie:
 $email = Simpan("Email");
 $password = Simpan("Password");

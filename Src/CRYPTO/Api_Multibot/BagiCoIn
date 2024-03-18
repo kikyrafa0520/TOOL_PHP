@@ -34,6 +34,8 @@ function dash(){
 	return ["user"=>$user];
 }
 Ban(1);
+Cetak("Register",register_link);
+print line();
 cookie:
 $email = Simpan("Email");
 ua();
