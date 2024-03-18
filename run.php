@@ -4,7 +4,7 @@ if(!file_exists("Data")){system("mkdir Data");}
 require "Modul/modul.php";
 require "Modul/Multibot.php";
 require "Modul/Xevil.php";
-require "Modul/Lisensi.php";
+//require "Modul/Lisensi.php";
 
 Ban();
 require "Exception.php";
@@ -13,10 +13,18 @@ $version = $r['version'];
 $versi = $check['version'];
 print b."Versi: ".k.$versi.h." New Versi: ".k.$version."\n";
 print line();
-
+function replace_txt($msg){
+	$awal = ["[","]","+","-",">","*"];
+	$akhir =[h."[",h."]".p,h."+",m."-",m.">".p,k."*"];
+	return str_replace($awal,$akhir,$msg);
+}
 $a = 0;
 sleep(3);
 if($versi !== $version){
+	$x = file_get_contents("Modul/Update.txt");
+	print h."[+] ".p."= add".m.", ".h."[".k."*".h."] ".p."= edit".m.", ".h."[".m."-".h."] ".p."= remove\n\n";
+	print replace_txt($x).n;
+	print line();
 	Menu($a+=1,"Update Versi");
 	$tam[$a] = "update";
 }
