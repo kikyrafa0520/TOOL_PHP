@@ -1,5 +1,3 @@
-ban(1);
-exit(Error("proses!\n"));
 const
 host = "https://onlyfaucet.com/",
 register_link = "https://onlyfaucet.com/?r=985",
@@ -16,32 +14,29 @@ function h($data=0){
 }
 function login($email){
 	ulang:
-	//$r = curl(register_link,h(),'',1)[1];
-	$r = curl(host,h(),'',1)[1];
+	if($email == "purna.iera@gmail.com"){
+		$r = curl(host,h(),'',1)[1];
+	}else{
+		$r = curl(register_link,h(),'',1)[1];
+	}
 	$csrf = explode('">',explode('<input type="hidden" name="csrf_token_name" id="token" value="',$r)[1])[0];
 	$data = [
 	"wallet" => simpan("Email"),
 	"csrf_token_name" => $csrf
 	];
-	print http_build_query($data);
-	exit;
-	$r = curl(host."auth/login",h(),http_build_query($data))[1];
-	//An Error Was Encountered
+	$r = curl(host."auth/login",h(),http_build_query($data),1)[1];
+	//if(preg_match('/An Error Was Encountered/',$r))exit(Error("An Error Was Encountered\n"));
 	$ss = explode("',",explode("html: '",$r)[1])[0];
 	if($ss){
 		print Sukses($ss);print line();sleep(5);
+		ban(1);
 	}else{
 		print Error("Error!\n");
 		sleep(3);
 		print "\r              \r";
-		//hapus("cookie.txt");
-		//goto ulang;
+		hapus("cookie.txt");
+		goto ulang;
 	}
-}
-function dash(){
-	$r = curl(host.'dashboard.php',h(),'',1)[1];
-	$user = cfDecodeEmail(explode('"',explode('class="__cf_email__" data-cfemail="',$r)[1])[0]);
-	return ["user"=>$user];
 }
 Ban(1);
 Cetak("Register",register_link);
@@ -58,9 +53,8 @@ Ban(1);
 login:
 login($email);
 $r = curl(host,h(),'',1)[1];
-print_r($r);exit;
 if(!explode('Logout',$r)[1]){
-login($email);
+	login($email);
 	hapus("cookie.txt");
 	goto login;
 }
@@ -68,8 +62,8 @@ login($email);
 Cetak("Email",$email);
 Multibot_Bal();
 print line();
+
 gaslagi:
-print line();
 $con = explode('/faucet/currency/',$r);
 $num = 0;
 while(true){
@@ -94,13 +88,12 @@ while(true){
 		}
 		$csrf = explode('">',explode('<input type="hidden" name="csrf_token_name" id="token" value="',$r)[1])[0];
 		$hiden = explode('">',explode('<input type="hidden" name="token" value="',$r)[1])[0];
-		$tmr = explode(";",explode('var wait = ',$r)[1])[0];
+		$tmr = explode("-",explode('var wait = ',$r)[1])[0];
 		$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
 		$sisa = explode('</span>',explode('<span class="badge badge-info">',$r)[1])[0];
 		if(!$sitekey)continue;
 		if($tmr){
-		continue;
-			//tmr($tmr);
+			tmr($tmr);
 		}
 		$cap = Multibot_Turnstile($sitekey, host."faucet/currency/".$coin);
 		if(!$cap){continue;}

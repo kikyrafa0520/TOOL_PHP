@@ -33,7 +33,7 @@ $ php run.php
 $ git pull
 or
 $ git reset --hard
-$git pull
+$ git pull
 ```
 
 ![Donation: iewil](https://img.shields.io/badge/💰-Donation-blue?style=flat-square)<br>

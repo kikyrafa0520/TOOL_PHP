@@ -1,2 +1,2 @@
-[+] Crypto -> Api_Multibot -> BagiCoIn
-[+] Crypto -> Api_Multibot -> KeranCo
+[+] Crypto -> Api_Multibot -> OnlyFaucet
+[+] Ruble -> Free -> Aviso
