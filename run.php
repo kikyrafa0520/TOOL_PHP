@@ -1,5 +1,5 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
 if(!file_exists("Data")){system("mkdir Data");}
 require "Modul/modul.php";
 require "Modul/Multibot.php";
