@@ -102,10 +102,13 @@ foreach($list_coin as $a => $coins){
 		Cetak($match['claim_crypto'],$ss);
 		Multibot_Bal();
 		print line();
-	}else{
+	}elseif($wr){
 		Cetak($match['claim_crypto'],"Ups");
 		print Error($wr.n);
 		print line();
+	}else{
+	print_r($r);
+	exit;
 	}
 }
 Tmr(300);

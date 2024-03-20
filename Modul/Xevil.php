@@ -41,6 +41,7 @@ function Xevil_Hc($sitekey, $pageurl){
 			print "\r                 \r";
 			return $r["request"];
 		}
+		print "\r                 \r";
 		return 0;
 	}
 }
@@ -69,6 +70,7 @@ function Xevil_Rv2($sitekey, $pageurl){
 			print "\r                 \r";
 			return $r["request"];
 		}
+		print "\r                 \r";
 		return 0;
 	}
 }
@@ -100,6 +102,7 @@ function Xevil_Ocr($img){
 			print "\r                 \r";
 			return $r["request"];
 		}
+		print "\r                 \r";
 		return 0;
 	}
 }
