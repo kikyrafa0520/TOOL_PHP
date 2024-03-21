@@ -1,6 +1,6 @@
 {
 	"name":"iewil",
-	"version":"1.5",
+	"version":"1.6",
 	"author":"iewilmaestro",
 	"author_email":"<purna.iera@gmail.com>",
 	"description":"Tool Php Sederhana",
