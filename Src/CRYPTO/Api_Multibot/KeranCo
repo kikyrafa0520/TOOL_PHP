@@ -15,17 +15,16 @@ function h($data=0){
 function login($email){
 	ulang:
 	$r = curl(host.'index.php',h(),'',1)[1];
+	$token = explode('"',explode('<input type="hidden" name="token" value="',$r)[1])[0];
 	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 	if(!$sitekey){
-		print "\r               \r";
-		print "turnstile";
-		sleep(2);
-		print "\r               \r";
-		goto ulang;
-	}
-	$token = explode('"',explode('<input type="hidden" name="token" value="',$r)[1])[0];
+		$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
+		$cap = Multibot_Turnstile($sitekey, host.'index.php');
+		$data = 'address='.urlencode($email).'&cf-turnstile-response='.$cap.'&token='.$token;
+	}else{
 	$cap = Multibot_Rv2($sitekey, host.'index.php');
 	$data = 'address='.urlencode($email).'&g-recaptcha-response='.$cap.'&token='.$token;
+	}
 	return curl(host.'index.php',h($data),$data,1)[1];
 }
 function dash(){

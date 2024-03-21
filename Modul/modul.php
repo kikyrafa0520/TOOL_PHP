@@ -32,6 +32,11 @@ if( PHP_OS_FAMILY == "Linux" ){
 	define("ph","");
 	define("bp","");
 }
+function replace_txt($msg){
+	$awal = ["[","]","+","-",">","*"];
+	$akhir =[h."[",h."]".p,h."+",m."-",m.">".p,k."*"];
+	return str_replace($awal,$akhir,$msg);
+}
 /*************PRINT**************/
 function menu($no, $title){
 	print h."---[".p."$no".h."] ".k."$title\n";
@@ -73,11 +78,11 @@ function Simpan($nama_data){
 }
 function ua(){
 	$nama_data = "User_Agent";
-	if(file_exists($nama_data)){
-		$data = file_get_contents($nama_data);
+	if(file_exists('Data/'.$nama_data)){
+		$data = file_get_contents('Data/'.$nama_data);
 	}else{
 		$data = readline(Isi($nama_data));echo "\n";
-		file_put_contents($nama_data,$data);
+		file_put_contents('Data/'.$nama_data,$data);
 	}
 	return $data;
 }
@@ -267,3 +272,15 @@ function Simpan_Api($nama_data){
 	}
 	return $data;
 }
+/********SL********/
+function _Fly($url){
+	$scheme = parse_url($url)['scheme'].'://';
+	$host = parse_url($url)['host'];
+    $path = parse_url($url)['path'];
+    $context = stream_context_create(['http' => ['header' => ['origin: https://advertisingexcel.com', 'referer: https://advertisingexcel.com/outgoing/']]]);
+    $res_head = get_headers($scheme.$host.'/flyinc.'.$path, true, $context);
+    $final = $res_head["location"];
+    return $final;
+}
+
+

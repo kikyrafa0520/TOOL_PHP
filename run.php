@@ -1,6 +1,8 @@
 <?php
 error_reporting(0);
 if(!file_exists("Data")){system("mkdir Data");}
+if(file_exists("User_Agent")){$nama_file = "User_Agent";if(PHP_OS_FAMILY == "Windows"){system("move ".$nama_file." Data");}else{system("mv ".$nama_file." Data");}}
+
 require "Modul/modul.php";
 require "Modul/Multibot.php";
 require "Modul/Xevil.php";
@@ -13,15 +15,10 @@ $version = $r['version'];
 $versi = $check['version'];
 print b."Versi: ".k.$versi.h." New Versi: ".k.$version."\n";
 print line();
-function replace_txt($msg){
-	$awal = ["[","]","+","-",">","*"];
-	$akhir =[h."[",h."]".p,h."+",m."-",m.">".p,k."*"];
-	return str_replace($awal,$akhir,$msg);
-}
 $a = 0;
 sleep(3);
 if($versi !== $version){
-	$x = file_get_contents("Modul/Update.txt");
+	$x = file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/Modul/Update.txt");
 	print h."[+] ".p."= add".m.", ".h."[".k."*".h."] ".p."= edit".m.", ".h."[".m."-".h."] ".p."= remove\n\n";
 	print replace_txt($x).n;
 	print line();

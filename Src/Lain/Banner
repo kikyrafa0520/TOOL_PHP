@@ -1,0 +1,30 @@
+$modul = '
+$ pkg install toilet
+$ pkg install figlet
+$ pkg install ruby
+$ gem install lolcat
+';
+print Error("Please Install before continue!\n");
+print $modul;
+$isi = readline(Isi("r u ready installed?(y/n)"));
+if(strtolower($isi)=="n" || strtolower($isi)=="no" ){
+	exit("please intall first\n");
+}
+$ban = readline(Isi("Banner (text)"));
+
+$new_code = "shopt -s histappend\n";
+$new_code .= "shopt -s histverify\n";
+$new_code .= "export HISTCONTROL=ignoreboth\n";
+$new_code .= "PROMPT_DIRTRIM=2\n";
+$new_code .= "PS1='\033[1;34m\]╭─\[\033[1;31m\][CODE by Iewil]\[\033[1;30m\]\w\[\033[1;34m\]\n";
+$new_code .= "\033[1;34m\]╰──\[\033[1;31m\]≽\[\033[1;32m\] '"."\n";
+$new_code .= "clear\n";
+$new_code .= 'toilet -f slant "'.$ban.'" -F gay'."\n";
+$new_code .= "date | lolcat\n";
+$new_code .= 'if [ -x /data/data/com.termux/files/usr/libexec/termux/command-not-found ]; then'."\n";
+$new_code .= "\t"."command_not_found_handle() {\n";
+$new_code .= "\t\t".'/data/data/com.termux/files/usr/libexec/termux/command-not-found "$1"'."\n";
+$new_code .= "\t"."}\n";
+$new_code .= "fi";
+file_put_contents("/data/data/com.termux/files/usr/etc/bash.bashrc",$new_code);
+system("login");

@@ -15,17 +15,16 @@ function h($data=0){
 function login($email){
 	ulang:
 	$r = curl(host.'index.php',h(),'',1)[1];
+	$token = explode('"',explode('<input type="hidden" name="token" value="',$r)[1])[0];
 	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 	if(!$sitekey){
-		print "\r               \r";
-		print "turnstile";
-		sleep(2);
-		print "\r               \r";
-		goto ulang;
-	}
-	$token = explode('"',explode('<input type="hidden" name="token" value="',$r)[1])[0];
+		$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
+		$cap = Multibot_Turnstile($sitekey, host.'index.php');
+		$data = 'address='.urlencode($email).'&cf-turnstile-response='.$cap.'&token='.$token;
+	}else{
 	$cap = Multibot_Rv2($sitekey, host.'index.php');
 	$data = 'address='.urlencode($email).'&g-recaptcha-response='.$cap.'&token='.$token;
+	}
 	return curl(host.'index.php',h($data),$data,1)[1];
 }
 function dash(){
@@ -97,13 +96,18 @@ foreach($list_coin as $a => $coins){
 	$data = http_build_query($match);
 	$r = curl(host.$direc,h(),$data,1)[1];
 	$ss = trim(explode('at ',explode('</div>',explode('<div class="message-body">',$r)[1])[0])[0]);
-	$wr = trim(explode('<a',explode('<div class="message-header">',explode('<article class="message is-danger">',$r)[1])[1])[0]);
+	$dg = trim(explode('<a',explode('<div class="message-header">',explode('<article class="message is-danger">',$r)[1])[1])[0]);
+	$wr = trim(explode('</div>',explode('<div class="message-header">',explode('<article class="message is-warning">',$r)[1])[1])[0]);
 	if($ss){
 		Cetak($match['claim_crypto'],$ss);
 		Multibot_Bal();
 		print line();
-	}elseif($wr){
+	}elseif($dg){
 		Cetak($match['claim_crypto'],"Ups");
+		print Error($dg.n);
+		print line();
+	}elseif($wr){
+	Cetak($match['claim_crypto'],"Ups");
 		print Error($wr.n);
 		print line();
 	}else{
