@@ -1,2 +1,2 @@
-[+] Crypto -> Api_Multibot -> OnlyFaucet
-[+] Ruble -> Free -> Aviso
+[+] Lain -> Banner
+[+] Crypto -> Api_Xevil -> FreebitcoIn
