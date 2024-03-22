@@ -64,12 +64,12 @@ while(true){
 		"user-agent: ".ua()
 		];
 		
-		curl("https://twiron.com/view_surfing?sid=$sid&id=$id", array_merge(["Referer: https://aviso.bz/"],$h));
-		curl("https://twiron.com/fraim_start?sid=$sid" , array_merge(["https://twiron.com/view_surfing?sid=$sid&id=$id"],$h));
+		curl("https://twiron.com/view_surfing?sid=$sid&id=$id", array_merge(["Referer: https://aviso.bz/"],$h),'','',1);
+		curl("https://twiron.com/fraim_start?sid=$sid" , array_merge(["https://twiron.com/view_surfing?sid=$sid&id=$id"],$h),'','',1);
 		Tmr($timer);
 		
-		curl("https://twiron.com/vlss?view=ok&sid=$sid", array_merge(["https://twiron.com/fraim_start?sid=$sid"],$h));
-		curl("https://twiron.com/vlss?view=ok&ds=clicked&sid=$sid", array_merge(["https://twiron.com/vlss?view=ok&sid=$sid"],$h));
+		curl("https://twiron.com/vlss?view=ok&sid=$sid", array_merge(["https://twiron.com/fraim_start?sid=$sid"],$h),'','',1);
+		curl("https://twiron.com/vlss?view=ok&ds=clicked&sid=$sid", array_merge(["https://twiron.com/vlss?view=ok&sid=$sid"],$h),'','',1);
 		
 		Cetak('Reward',$reward);
 		Cetak('Balance',dash()["bal"]);
