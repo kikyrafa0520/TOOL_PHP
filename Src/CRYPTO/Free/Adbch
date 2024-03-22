@@ -48,8 +48,8 @@ print line();
 while(true){
 	$data = [];
 	$r = run(host."surf/browse/",h());
-	$price = explode('</b>',explode('<p>Price: <b>',$r)[1])[0];
-	if(!$price){
+	if(!preg_match("/Skip/",$r)){
+	//if(!$price){
 		print Error("Ads habis".n);
 		print line();
 		break;
@@ -60,17 +60,19 @@ while(true){
 	}
 	$data = http_build_query($data);
 	
-	$tmr = explode("';",explode("var viewtime = '",$r)[1])[0];
+	$tmr = explode("'",explode("let duration = '",$r)[1])[0];
 	if($tmr){tmr($tmr);}
 	
 	$r = run(host."surf/browse/",h(),$data);
-	$ss = explode("<",explode('hide" id="update">',$r)[1])[0];
+	$ss = explode('BCH',explode('You earned ',$r)[1])[0];
 	$bal = explode('</b>',explode('class="white-text bal">Баланс: <b>',$r)[1])[0];
-	if($ss){
+	//if($ss){
 		Cetak("Success",$price);
+		$r = run(host."dashboard",h());
+		$bal=explode('</b>',explode('Balance<br><b>',$r)[1])[0];
 		Cetak("Balance",$bal);
 		print line();
-	}
+	//}
 }
 /*
 if(explode(" BCH",$bal)[0] >= "0.0002"){
