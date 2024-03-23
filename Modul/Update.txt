@@ -1,7 +1,2 @@
-[*] Crypto -> Api_Multibot -> BagiCoIn
-[*] Crypto -> Api_Multibot -> KeranCo
-[*] Crypto -> Api_Multibot -> OnlyFaucet
-[*] Crypto -> Api_Multibot -> BnbFreee
-[*] Crypto -> Api_Multibot -> SollCrypto
-[*] Ruble -> Free -> Adbch
-[*] Ruble -> Free -> Aviso
+[+] Crypto -> Api_Multibot -> BitupdateInfo
+[+] Crypto -> Api_Multibot -> HatecoinMe

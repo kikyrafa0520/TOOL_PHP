@@ -70,7 +70,14 @@ foreach($list_coin as $a => $coins){
 	$r = curl(host.'faucet.php',h(),'',1)[1];
 	$list_coin = explode('<form method="post" action="captha.php">',$r)[$a];
 	$cek = explode('class="button is-info" disabled>',$list_coin)[1];
-	if($cek)continue;
+	$coint = explode('"',explode('name="claim_crypto" value="',$list_coin)[1])[0];
+	if($res){
+		if($res[$coint] > 2)continue;
+	}
+	if($cek){
+	    $res = his([$coint=>1],$res);
+	    continue;
+	}
 	$match=[];
 	preg_match_all('/(input:?.*?)name=\"(.*?)\" value=\"([^"]+)"/is',$list_coin,$datax);
 	for($i = 0;$i<count($datax[2]);$i++){
@@ -96,24 +103,32 @@ foreach($list_coin as $a => $coins){
 	if(!$cap){print Error("Multibot Error\n");continue;}
 	$data = http_build_query($match);
 	$r = curl(host.$direc,h(),$data,1)[1];
+	if(preg_match('/does not have sufficient/',$r)){
+		print c.strtoupper($coint).": ".Error(" The faucet does not have sufficient funds\n");
+		$res = his([$coint=>3],$res);
+		print line();
+	}
 	$ss = trim(explode('at ',explode('</div>',explode('<div class="message-body">',$r)[1])[0])[0]);
 	$dg = trim(explode('<a',explode('<div class="message-header">',explode('<article class="message is-danger">',$r)[1])[1])[0]);
 	$wr = trim(explode('</div>',explode('<div class="message-header">',explode('<article class="message is-warning">',$r)[1])[1])[0]);
 	if($ss){
 		Cetak($match['claim_crypto'],$ss);
 		Multibot_Bal();
+		$res = his([$coint=>1],$res);
 		print line();
 	}elseif($dg){
 		Cetak($match['claim_crypto'],"Ups");
 		print Error($dg.n);
+		$res = his([$coint=>1],$res);
 		print line();
 	}elseif($wr){
-	Cetak($match['claim_crypto'],"Ups");
+	    Cetak($match['claim_crypto'],"Ups");
 		print Error($wr.n);
+		$res = his([$coint=>1],$res);
 		print line();
 	}else{
-	print_r($r);
-	exit;
+	//print_r($r);
+	//exit;
 	}
 }
 Tmr(300);
