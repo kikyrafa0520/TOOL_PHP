@@ -59,6 +59,7 @@ while(true){
 	if($timer){tmr($timer);}
 	$finger = finger(getCsrf(),["user-agent: ".ua()]);
 	$sitekey = explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
+	if(!$sitekey)continue;
 	$cap = Multibot_Hc($sitekey, host."/?op=home");
 	if(!$cap)continue;
 	$data = ["csrf_token"=>getCsrf(),"op"=>"free_play","fingerprint"=>$finger["finger"],"client_seed"=>$finger["sheed"],"fingerprint2"=>$finger["fingernum"],"pwc"=>0,"h_recaptcha_response" =>$cap];

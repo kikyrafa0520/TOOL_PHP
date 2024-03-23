@@ -25,6 +25,7 @@ function login($email){
 	$cap = Multibot_Rv2($sitekey, host.'index.php');
 	$data = 'address='.urlencode($email).'&g-recaptcha-response='.$cap.'&token='.$token;
 	}
+	if(!$cap){Exit(Error("Multibot Error\n"));}
 	return curl(host.'index.php',h($data),$data,1)[1];
 }
 function dash(){
@@ -92,7 +93,7 @@ foreach($list_coin as $a => $coins){
 		$cap = Multibot_Turnstile($sitekey, host.'captha.php');
 		$match['cf-turnstile-response']=$cap;
 	}
-	
+	if(!$cap){Exit(Error("Multibot Error\n"));}
 	$data = http_build_query($match);
 	$r = curl(host.$direc,h(),$data,1)[1];
 	$ss = trim(explode('at ',explode('</div>',explode('<div class="message-body">',$r)[1])[0])[0]);

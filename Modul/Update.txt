@@ -1,3 +1,7 @@
-[+] Crypto -> Api_Xevil -> FreebitcoIn
-[+] Lain -> Banner
-[+] Ruble -> Free -> Socpublic
+[*] Crypto -> Api_Multibot -> BagiCoIn
+[*] Crypto -> Api_Multibot -> KeranCo
+[*] Crypto -> Api_Multibot -> OnlyFaucet
+[*] Crypto -> Api_Multibot -> BnbFreee
+[*] Crypto -> Api_Multibot -> SollCrypto
+[*] Ruble -> Free -> Adbch
+[*] Ruble -> Free -> Aviso

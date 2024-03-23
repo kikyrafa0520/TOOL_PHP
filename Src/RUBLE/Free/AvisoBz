@@ -47,13 +47,19 @@ print line();
 ulang:
 menu('*', "Surfing");
 print line();
+$a = 1;
+$bal2 = "";
 while(true){
+    $bal1 = dash()["bal"];
+    if($bal1 == $bal2){
+        $a += 1;
+    }
 	$r = curl(host."work-serf", h())[1];
-	$id = explode("'",explode("funcjs['go-serf']('",$r)[1])[0];
+	$id = explode("'",explode("funcjs['go-serf']('",$r)[$a])[0];
 	if($id){
-		$timer = explode(' ',explode('<span class="serf-text" style="font-size: 11px;">',$r)[1])[0];
-		$reward = explode('<',explode('style="cursor:help;color:#9d0000;">',$r)[1])[0];
-		$hash = explode("'",explode("','",explode("funcjs['go-serf']('",$r)[1])[1])[0];
+		$timer = explode(' ',explode('<span class="serf-text" style="font-size: 11px;">',$r)[$a])[0];
+		$reward = explode('<',explode('style="cursor:help;color:#9d0000;">',$r)[$a])[0];
+		$hash = explode("'",explode("','",explode("funcjs['go-serf']('",$r)[$a])[1])[0];
 		$r = curl(host."ajax/earnings/ajax-serf.php", array_merge(["referer: https://aviso.bz/work-serf"],h(1)),"id=$id&hash=$hash&func=go-serf")[1];
 		$link = explode("'",explode("!window.open('",$r)[1])[0];
 		$sid = explode('&',explode('sid=',$link)[1])[0];
@@ -70,9 +76,9 @@ while(true){
 		
 		curl("https://twiron.com/vlss?view=ok&sid=$sid", array_merge(["https://twiron.com/fraim_start?sid=$sid"],$h),'','',1);
 		curl("https://twiron.com/vlss?view=ok&ds=clicked&sid=$sid", array_merge(["https://twiron.com/vlss?view=ok&sid=$sid"],$h),'','',1);
-		
+		$bal2 = dash()["bal"];
 		Cetak('Reward',$reward);
-		Cetak('Balance',dash()["bal"]);
+		Cetak('Balance',$bal2);
 		print line();
 		continue;
 	}
