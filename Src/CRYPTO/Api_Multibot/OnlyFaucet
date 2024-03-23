@@ -96,7 +96,7 @@ while(true){
 			tmr($tmr);
 		}
 		$cap = Multibot_Turnstile($sitekey, host."faucet/currency/".$coin);
-		if(!$cap){Exit(Error("Multibot Error\n"));}
+		if(!$cap){print Error("Multibot Error\n"); continue;}
 		
 		$data = "csrf_token_name=".$csrf."&token=".$hiden."&captcha=turnstile&cf-turnstile-response=".$cap;
 		$r = curl(host."faucet/verify/".$coin,h(),$data,1)[1];

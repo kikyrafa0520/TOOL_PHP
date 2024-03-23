@@ -42,7 +42,7 @@ function claim($coin, $email){
 			continue;
 		}
 		$cap = Multibot_Rv2($sitekey, $coin);
-		if(!$cap){Exit(Error("Multibot Error\n"));}
+		if(!$cap){print Error("Multibot Error\n");continue;}
 		$data = "session-token=".$sesion."&address=".urlencode($email)."&antibotlinks=".$atb."&captcha=recaptcha&g-recaptcha-response=".$cap."&login=Verify+Captcha";
 		$r = curl($coin.r,h($coin.r),$data,1)[1];
 		$ss = explode('<',explode('<i class="fas fa-money-bill-wave"></i> ',$r)[1])[0];
@@ -133,7 +133,7 @@ while(true){
 			continue;
 		}
 		$cap = Multibot_Rv2($sitekey, $coin);
-		if(!$cap){Exit(Error("Multibot Error\n"));}
+		if(!$cap){print Error("Multibot Error\n");continue;}
 		$data = "session-token=".$sesion."&address=".urlencode($email)."&antibotlinks=".$atb."&captcha=recaptcha&g-recaptcha-response=".$cap."&login=Verify+Captcha";
 		
 		$r = curl($coin.r,h($coin.r),$data,1)[1];
