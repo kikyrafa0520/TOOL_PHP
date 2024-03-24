@@ -65,7 +65,6 @@ print line();
 gaslagi:
 $r = curl(host.'faucet.php',h(),'',1)[1];
 $list_coin = explode('<form method="post" action="captha.php">',$r);
-print_r($list_coin);exit;
 foreach($list_coin as $a => $coins){
 	if($a==0)continue;
 	$r = curl(host.'faucet.php',h(),'',1)[1];

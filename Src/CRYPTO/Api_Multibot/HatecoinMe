@@ -27,12 +27,16 @@ function Post_Faucet($patch, $csrf,$token ,$atb,$cap){
 function Claim($patch){
 	while(true):
 	$r = Get_Faucet($patch);
+	$sl = explode('</button>',explode('<button class="btn btn-primary btn-lg " disabled><i class="far fa-check-circle"></i>',$r)[1])[0];//You need to do 1 shortlinks to unlock
+	if($sl){
+	exit(Error($sl.n));
+	}
 	if(preg_match('/Cloudflare/',$r) || preg_match('/Just a moment.../',$r)){
 		print Error("Cloudflare\n");
 		return "cf";
 	}
 	if(preg_match('/Firewall/',$r)){
-		exit("Firewall\n");
+		exit(Error("Firewall\n"));
 	}
 	$sisa = explode('/',explode('<p class="lh-1 mb-1 font-weight-bold">',$r)[3])[0];
 	if(!$sisa)break;
