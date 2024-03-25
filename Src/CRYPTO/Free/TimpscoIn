@@ -1,0 +1,152 @@
+exit(Error("Proses!"));
+const
+register_link = "https://timpsco.in/r/651fa67e70a63e4e08d398f5",
+host = "https://timpsco.in/",
+youtube = "https://youtube.com/@iewil";
+
+function getUser(){
+	global $header;
+	$data = '{"operationName":"getUser","variables":{},"query":"query getUser {\n  getUser {\n    id\n    balance\n    credits\n    username\n    email\n    admin\n    status\n    createAt\n    log\n    xp\n    level\n    next_level\n    bonus_level\n    address_fp\n    bonus_loyalty\n    total_earn\n    statistics_earn {\n      id\n      clicks\n      total\n      __typename\n    }\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function getRecaptcha(){
+	global $header;
+	$data = '{"operationName":"getRecaptcha","variables":{},"query":"query getRecaptcha {\n  getRecaptcha {\n    key\n    array_img\n    __typename\n  }\n}\n"}';
+	$r = json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+	return $r['data']['getRecaptcha']['key'];
+}
+function validRecaptcha($cap){
+	global $header;
+	$data = '{"operationName":"validRecaptcha","variables":{"input":{"array_img":["'.$cap.'","'.$cap.'"]}},"query":"mutation validRecaptcha($input: RecaptchaInput) {\n  validRecaptcha(input: $input) {\n    key\n    array_img\n    status\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function Refresh_Token($data){
+	global $header;
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function earnRollGame(){
+	global $header;
+	$data = '{"operationName":"earnRollGame","variables":{"token":"token_recaptcha"},"query":"mutation earnRollGame($token: String) {\n  earnRollGame(token: $token) {\n    user {\n      id\n      balance\n      credits\n      username\n      email\n      admin\n      status\n      createAt\n      log\n      xp\n      level\n      next_level\n      bonus_level\n      address_fp\n      bonus_loyalty\n      total_earn\n      statistics_earn {\n        id\n        clicks\n        total\n        __typename\n      }\n      __typename\n    }\n    result\n    luckyNumber\n    notification\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function getAdsPtcWall(){
+	global $header;
+	$data = '{"operationName":"getAdsPtcWall","variables":{"offset":0,"limit":50},"query":"query getAdsPtcWall($offset: Int, $limit: Int) {\n  getAdsPtcWall(offset: $offset, limit: $limit) {\n    Ads {\n      id\n      title\n      description\n      url\n      duration\n      reward\n      __typename\n    }\n    total\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function getAdsPtcWallID($id){
+	global $header;
+	$data = '{"operationName":"getAdsPtcWallID","variables":{"id":"'.$id.'"},"query":"query getAdsPtcWallID($id: ID!) {\n  getAdsPtcWallID(id: $id) {\n    id\n    title\n    description\n    url\n    duration\n    reward\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function earnAdsPtcWall($id){
+	global $header;
+	$data = '{"operationName":"earnAdsPtcWall","variables":{"id":"'.$id.'","token":"token_recaptcha"},"query":"mutation earnAdsPtcWall($id: ID!, $token: String) {\n  earnAdsPtcWall(id: $id, token: $token) {\n    user {\n      id\n      balance\n      credits\n      username\n      email\n      admin\n      status\n      createAt\n      log\n      xp\n      level\n      next_level\n      bonus_level\n      address_fp\n      bonus_loyalty\n      total_earn\n      statistics_earn {\n        id\n        clicks\n        total\n        __typename\n      }\n      __typename\n    }\n    result\n    validate {\n      id_ad\n      __typename\n    }\n    notification\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function getAdsIframe(){
+	global $header;
+	$data = '{"operationName":"getAdsIframe","variables":{},"query":"query getAdsIframe {\n  getAdsIframe {\n    Ads {\n      id\n      title\n      description\n      url\n      duration\n      reward\n      __typename\n    }\n    total\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function earnAds($id){
+	global $header;
+	$data = '{"operationName":"earnAds","variables":{"id":"'.$id.'","token":"token_recaptcha"},"query":"mutation earnAds($id: ID!, $token: String) {\n  earnAds(id: $id, token: $token) {\n    user {\n      id\n      balance\n      credits\n      username\n      email\n      admin\n      status\n      createAt\n      log\n      xp\n      level\n      next_level\n      bonus_level\n      address_fp\n      bonus_loyalty\n      total_earn\n      statistics_earn {\n        id\n        clicks\n        total\n        __typename\n      }\n      __typename\n    }\n    result\n    notification\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+
+
+Ban(1);
+Cetak("Register",register_link);
+print line();
+cookie:
+$input = simpan("DataRefreshToken");
+$JsDec = json_decode($input,1);
+$autorization = $JsDec['variables']['input']['token'];
+if(!$autorization){
+	hapus("DataRefreshToken");
+	print Error("DataRefreshToken Salah\n");
+	print line();
+	goto cookie;
+}
+ua();
+
+Ban(1);
+print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
+system("termux-open-url ".youtube);
+Ban(1);
+
+$header = [
+	'content-type: application/json',
+	'Authorization: Bearer '.$autorization,
+	'User-Agent: '.ua()
+];
+
+/*
+$hidup = 50200000000;
+$x = explode('000',$hidup)[0];
+print $x;exit;
+*/
+
+$r = getUser();
+$user = $r['data']['getUser']['username'];
+$bal = $r['data']['getUser']['balance'];
+if(!$user){
+	print Error("DataRefreshToken Expired!\n");
+	hapus("DataRefreshToken");
+	goto cookie;
+}
+Cetak("Username",$user);
+Cetak("Balance",$bal);
+print line();
+
+//ptc
+$r = getAdsPtcWall();
+$listAds = $r['data']['getAdsPtcWall']['Ads'];
+foreach($listAds as $ads){
+	$id = $ads['id'];
+	$tmr = $ads['duration'];
+	$ss = $ads['reward'];
+	getAdsPtcWallID($id);
+	Cetak('Ads Id', $id);
+	Tmr($tmr);
+	$cap = getRecaptcha();
+	validRecaptcha($cap);
+	$r = earnAdsPtcWall($id);
+	Cetak('Reward',$r['data']['earnAdsPtcWall']['result']);
+	print line();
+}
+//surf
+while(1){
+	$r = getAdsIframe();
+	$id = $r['data']['getAdsIframe']['Ads']['id'];
+	$tmr = $r['data']['getAdsIframe']['Ads']['duration'];
+	
+	if(!$id)break;
+	Tmr($tmr);
+	$cap = getRecaptcha();
+	validRecaptcha($cap);
+	$r = earnAds($id);
+	Cetak('Reward',$r['data']['earnAds']['result']);
+	print line();
+}
+while(1){
+	$r = Get_Dashboard();
+	$user = $r['data']['getUser']['username'];
+	if(!$user){
+	}
+	$r = Get_Captcha();
+	$img = $r['data']['getRecaptcha']['array_img'];
+	$cap = Bypass_Captcha($img);
+	Valid_Captcha($cap);
+	//Refresh_Token($input);
+	$r = Earn_Roll();
+	$lucky_number = $r['data']['earnRollGame']['luckyNumber'];
+	$balance = $r['data']['earnRollGame']['user']['balance'];
+	print "lucky: $lucky_number\n";
+	print "balance: $balance\n";
+	exit;
+	if(!$lucky_number){
+		sleep(300);
+	}
+}
