@@ -1,2 +1,1 @@
-[+] Crypto -> Api_Multibot -> BitupdateInfo
-[+] Crypto -> Api_Multibot -> HatecoinMe
+[+] Crypto -> Free -> TimpscoIn

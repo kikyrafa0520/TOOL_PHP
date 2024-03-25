@@ -1,4 +1,3 @@
-exit(Error("Proses!"));
 const
 register_link = "https://timpsco.in/r/651fa67e70a63e4e08d398f5",
 host = "https://timpsco.in/",
@@ -20,7 +19,7 @@ function validRecaptcha($cap){
 	$data = '{"operationName":"validRecaptcha","variables":{"input":{"array_img":["'.$cap.'","'.$cap.'"]}},"query":"mutation validRecaptcha($input: RecaptchaInput) {\n  validRecaptcha(input: $input) {\n    key\n    array_img\n    status\n    __typename\n  }\n}\n"}';
 	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
 }
-function Refresh_Token($data){
+function refreshToken($data){
 	global $header;
 	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
 }
@@ -54,8 +53,24 @@ function earnAds($id){
 	$data = '{"operationName":"earnAds","variables":{"id":"'.$id.'","token":"token_recaptcha"},"query":"mutation earnAds($id: ID!, $token: String) {\n  earnAds(id: $id, token: $token) {\n    user {\n      id\n      balance\n      credits\n      username\n      email\n      admin\n      status\n      createAt\n      log\n      xp\n      level\n      next_level\n      bonus_level\n      address_fp\n      bonus_loyalty\n      total_earn\n      statistics_earn {\n        id\n        clicks\n        total\n        __typename\n      }\n      __typename\n    }\n    result\n    notification\n    __typename\n  }\n}\n"}';
 	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
 }
-
-
+function getTypeCoinLuckyGame(){
+	global $header;
+	$data = '{"operationName":"getLuckyGameClick","variables":{},"query":"query getLuckyGameClick {\n  getLuckyGameClick {\n    create_date_valid\n    __typename\n  }\n}\n"}';
+	curl('https://timpsco.in/graphql',$header,$data);
+	
+	$data = '{"operationName":"getTypeCoinLuckyGame","variables":{},"query":"query getTypeCoinLuckyGame {\n  getTypeCoinLuckyGame {\n    id\n    name\n    sigla\n    value\n    image\n    earn\n    id_coin\n    price\n    clicks\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function earnLuckyGame($id, $sigla, $earn, $id_coin, $price){
+	global $header;
+	$data = '{"operationName":"earnLuckyGame","variables":{"input":{"id":'.$id.',"sigla":"'.$sigla.'","earn":'.$earn.',"id_coin":"'.$id_coin.'","price":'.$price.',"token_recaptcha":"token_recaptcha"}},"query":"mutation earnLuckyGame($input: TypeCoinLuckyGameInput) {\n  earnLuckyGame(input: $input) {\n    user {\n      id\n      balance\n      credits\n      username\n      email\n      admin\n      status\n      createAt\n      log\n      xp\n      level\n      next_level\n      bonus_level\n      address_fp\n      bonus_loyalty\n      total_earn\n      statistics_earn {\n        id\n        clicks\n        total\n        __typename\n      }\n      __typename\n    }\n    result\n    luckyNumber\n    notification\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
+function getUserCoins(){
+	global $header;
+	$data = '{"operationName":"getUserCoins","variables":{},"query":"query getUserCoins {\n  getUserCoins {\n    id\n    sigla\n    balance\n    id_coin\n    id_user\n    user_address {\n      address\n      network\n      __typename\n    }\n    __typename\n  }\n}\n"}';
+	return json_decode(curl('https://timpsco.in/graphql',$header,$data)[1],1);
+}
 Ban(1);
 Cetak("Register",register_link);
 print line();
@@ -81,12 +96,6 @@ $header = [
 	'Authorization: Bearer '.$autorization,
 	'User-Agent: '.ua()
 ];
-
-/*
-$hidup = 50200000000;
-$x = explode('000',$hidup)[0];
-print $x;exit;
-*/
 
 $r = getUser();
 $user = $r['data']['getUser']['username'];
@@ -114,39 +123,88 @@ foreach($listAds as $ads){
 	validRecaptcha($cap);
 	$r = earnAdsPtcWall($id);
 	Cetak('Reward',$r['data']['earnAdsPtcWall']['result']);
+	Cetak('Balance',$r['data']['earnAdsPtcWall']['user']['balance']);
 	print line();
 }
 //surf
 while(1){
 	$r = getAdsIframe();
-	$id = $r['data']['getAdsIframe']['Ads']['id'];
-	$tmr = $r['data']['getAdsIframe']['Ads']['duration'];
+	$id = $r['data']['getAdsIframe']['Ads'][0]['id'];
+	$tmr = $r['data']['getAdsIframe']['Ads'][0]['duration'];
 	
 	if(!$id)break;
+	Cetak('Surf Id', $id);
 	Tmr($tmr);
 	$cap = getRecaptcha();
 	validRecaptcha($cap);
 	$r = earnAds($id);
 	Cetak('Reward',$r['data']['earnAds']['result']);
+	Cetak('Balance',$r['data']['earnAds']['user']['balance']);
 	print line();
 }
+print line();
+
+//faucet, lucky game, get user coin
 while(1){
-	$r = Get_Dashboard();
+	$r = getUser();
 	$user = $r['data']['getUser']['username'];
 	if(!$user){
+		print Error("DataRefreshToken Expired!\n");
+		hapus("DataRefreshToken");
+		goto cookie;
 	}
-	$r = Get_Captcha();
-	$img = $r['data']['getRecaptcha']['array_img'];
-	$cap = Bypass_Captcha($img);
-	Valid_Captcha($cap);
-	//Refresh_Token($input);
-	$r = Earn_Roll();
+
+	//faucet
+	$cap = getRecaptcha();
+	validRecaptcha($cap);
+	$r = earnRollGame();
 	$lucky_number = $r['data']['earnRollGame']['luckyNumber'];
 	$balance = $r['data']['earnRollGame']['user']['balance'];
-	print "lucky: $lucky_number\n";
-	print "balance: $balance\n";
-	exit;
-	if(!$lucky_number){
-		sleep(300);
+	if($lucky_number){
+	    Cetak("Number",$lucky_number);
+	    Cetak("Balance", $balance);
+	    print line();
 	}
+	/*
+	//lucky game
+	lucky:
+	$r = getTypeCoinLuckyGame();
+	$coins = $r['data']['getTypeCoinLuckyGame'];
+	$countCoins = count($coins);
+	$lucky = $coins[rand(0,$countCoins-1)];
+	
+	$id = $lucky['id'];
+	$sigla = $lucky['sigla'];
+	if(!$sigla)goto lucky;
+	$earn = $lucky['value'];
+	$id_coin = $lucky['id_coin'];
+	$price = $lucky['price'];
+	$cap = getRecaptcha();
+	validRecaptcha($cap);
+	refreshToken($input);
+	$r = earnLuckyGame($id, $sigla, $earn, $id_coin, $price);
+	print_r($r);
+	exit;
+	$ss = $r['data']['earnLuckyGame']['luckyNumber'];
+	$bal = $r['data']['earnLuckyGame']['user']['balance'];
+	if(is_numeric($ss)){
+		Cetak("Success",$earn." ".$sigla);
+		Cetak("Balance", $bal);
+		print line();
+	}
+	*/
+	//get user coin
+	$r = getUserCoins();
+	$coins = $r['data']['getUserCoins'];
+	foreach($coins as $coin){
+		Cetak(strtoupper($coin['sigla']),"0.".sprintf('%08d',explode('.',$coin['balance'])[0]));
+	}
+	print line();
+	$refresh = 0;
+	while($refresh<6){
+	    refreshToken($input);
+	    tmr(300);
+	    $refresh++;
+	}
+	$refresh = 0;
 }

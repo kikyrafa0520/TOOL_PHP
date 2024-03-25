@@ -6,7 +6,7 @@ if(file_exists("User_Agent")){$nama_file = "User_Agent";if(PHP_OS_FAMILY == "Win
 require "Modul/modul.php";
 require "Modul/Multibot.php";
 require "Modul/Xevil.php";
-//require "Modul/Lisensi.php";
+require "Modul/Lisensi.php";
 
 Ban();
 require "Exception.php";
