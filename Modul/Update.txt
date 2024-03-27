@@ -1,1 +1,3 @@
-[+] Crypto -> Free -> TimpscoIn
+[-] Crypto -> Free -> TimpscoIn
+
+[+] Crypto -> Free -> CoinmediaHub
