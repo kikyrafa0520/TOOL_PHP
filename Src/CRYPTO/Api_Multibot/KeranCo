@@ -39,7 +39,7 @@ print line();
 cookie:
 $email = Simpan("Email");
 ua();
-Simpan_Api("Multibot_Apikey");
+Multibot_Api();
 
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
 //system("termux-open-url ".youtube);

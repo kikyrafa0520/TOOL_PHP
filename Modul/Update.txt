@@ -1,3 +1,9 @@
-[+] Crypto -> Free -> CoinmediaHub
+[+] Crypto -> Api_Multibot -> Harscoin
+[+] Crypto -> Api_Multibot -> Claimsatoshi
 
-[-] Crypto -> Free -> TimpscoIn
+[+] Crypto -> Api_Xevil -> Harscoin
+[+] Crypto -> Api_Xevil -> Claimsatoshi
+
+[+] Crypto -> Free -> OurinfoTop
+
+[-]Crypto -> Free -> Freebtcu
