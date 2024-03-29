@@ -66,7 +66,6 @@ function GetClaim($patch, $captcha, $sitekey){
 			}
 		}
 		if($patch == 'roll.php'){
-			preg_match('#<center><p>Lucky Number is:</p><br><span class="font-color" style="font-size: 4.2rem;">1491</span></center><div class="card white-text center-align green darken-3 pulse"><p>You Won 0.00041329 XNO + 20 XP </p></div>
 			preg_match('#<center><p>Lucky Number is:</p><br><span class="font-color" style="font-size: 4.2rem;">(.*?)</span></center><div class="card blue darken-3 white-text center-align pulse">(.*?)<img style="margin-bottom: 2.5px;" height="21px" width="21px" src="https://autofaucet.dutchycorp.space/assets/images/crypto-icons/DUTCHY-2.png"> (.*?) </div>#is',$r,$hasil);
 			if($hasil[3]){
 				Cetak("Number",$hasil[1]);
@@ -168,6 +167,8 @@ Tmr(min($tmr));
 goto earn;
 
 ptc:
+print Error("No Content");
+exit;
 
 auto:
 $cokie = Simpan("Cookie_Autofaucet");
