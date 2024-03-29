@@ -41,16 +41,16 @@ function replace_txt($msg){
 function menu($no, $title){
 	print h."---[".p."$no".h."] ".k."$title\n";
 }
-function Error($except){
+function Error($except = "[No Content]"){
 	return m."---[".p."!".m."] ".p.$except;
 }
 function Isi($msg){
 	return m."╭[".p."Input ".$msg.m."]".n.m."╰> ".h;
 }
-function Sukses($msg){
+function Sukses($msg = "[No Content]"){
 	return h."---[".p."✓".h."] ".p.$msg.n;
 }
-function Cetak($label, $msg){
+function Cetak($label, $msg = "[No Content]"){
 	$len = 9;
 	$lenstr = $len-strlen($label);
 	print h."[".p.$label.h.str_repeat(" ",$lenstr)."]─> ".p.$msg.n;

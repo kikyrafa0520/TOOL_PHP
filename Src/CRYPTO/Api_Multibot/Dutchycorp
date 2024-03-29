@@ -1,0 +1,204 @@
+const
+host = "https://autofaucet.dutchycorp.space/",
+register_link = "https://autofaucet.dutchycorp.space/?r=anjim127",
+youtube = "https://youtube.com/@iewil";
+
+function h($data=0,$au=0){
+	preg_match('@^(?:https://)?([^/]+)@i',host,$host);
+	$h[] = "Host: ".$host[1];
+	$h[] = "User-Agent: ".ua();
+	$h[] = "Cookie: ".simpan("Cookie");
+	return $h;
+}
+function GetDashboard(){
+	$r= curl(host,h())[1];
+	$data["user"] = explode("';",explode("username = '",$r)[1])[0];
+	$data["bal"] = explode('&nbsp;',explode('<p>Your DUTCHY: <br><b>',$r)[1])[0];
+	return $data;
+}
+function GetClaim($patch, $captcha, $sitekey){
+	while(true){
+		$r = curl(host.$patch,h())[1];
+		if(preg_match('/Cloudflare/',$r)){
+			print "\r               \r";
+			print Error("Clodflare");
+			sleep(5);
+			print "\r               \r";
+			break;
+		}
+		$tmr = explode(';',explode('var timeleft = ',$r)[1])[0];
+		if($tmr){
+			sleep(3);
+			break;
+		}
+		$id_boost = explode('"',explode('id="claim_boosted" name="',$r)[1])[0];
+		$val_boost = explode('"',explode('btn.value = "',$r)[1])[0];
+		if($captcha == "Hcaptcha"){
+			$cap = Multibot_Hc($sitekey, host.$patch);
+			if(!$cap){
+				print Error("Hcaptcha @Multibot Error\n");
+				print line();
+				continue;
+			}
+			$data = "g-recaptcha-response=".$cap."&h-captcha-response=".$cap."&".$id_boost."=".$val_boost;
+		}else{
+			$cap = Multibot_Rv2($sitekey, host.$patch);
+			if(!$cap){
+				print Error("Recaptcha v2 @Multibot Error\n");
+				print line();
+				continue;
+			}
+			$data = "g-recaptcha-response=".$cap."&".$id_boost."=".$val_boost;
+		}
+		
+		$r = curl(host.$patch,h(),$data)[1];
+		print $r;exit;
+		
+		if($patch == 'coin_roll.php' || $patch == 'bonus_roll.php' ){
+			preg_match('#<center><p>Lucky Number is:</p><br><span class="font-color" style="font-size: 4.2rem;">(.*?)</span></center><div class="card white-text center-align green darken-3 pulse"><p>(.*?)</p></div>#is',$r,$hasil);
+			if($hasil[2]){
+				Cetak("Number",$hasil[1]);
+				Sukses($hasil[2]);
+				print line();
+				break;
+			}else{
+				continue;
+			}
+		}
+		if($patch == 'roll.php'){
+			preg_match('#<center><p>Lucky Number is:</p><br><span class="font-color" style="font-size: 4.2rem;">1491</span></center><div class="card white-text center-align green darken-3 pulse"><p>You Won 0.00041329 XNO + 20 XP </p></div>
+			preg_match('#<center><p>Lucky Number is:</p><br><span class="font-color" style="font-size: 4.2rem;">(.*?)</span></center><div class="card blue darken-3 white-text center-align pulse">(.*?)<img style="margin-bottom: 2.5px;" height="21px" width="21px" src="https://autofaucet.dutchycorp.space/assets/images/crypto-icons/DUTCHY-2.png"> (.*?) </div>#is',$r,$hasil);
+			if($hasil[3]){
+				Cetak("Number",$hasil[1]);
+				Sukses($hasil[2].$hasil[3]);
+				$r = GetDashboard();
+				Cetak("Balance",$r["bal"]);
+				print line();
+				break;
+			}
+		}
+	}
+}
+function GetTimer($patch){
+	sleep(3);
+	$r = curl(host.$patch,h())[1];
+	$tmr = explode(';',explode('var timeleft = ',$r)[1])[0];
+	if(!$tmr){$tmr = 5;}
+	return $tmr;
+}
+Ban(1);
+Cetak("Register",register_link);
+print line();
+cookie:
+Simpan("Cookie");
+ua();
+Multibot_Api();
+
+print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
+//system("termux-open-url ".youtube);
+Ban(1);
+
+$r = GetDashboard();
+if(!$r["user"]){
+	print Error("Cookie expired".n);
+	hapus("Cookie");
+	print line();
+	sleep(3);
+	goto cookie;
+}
+
+Cetak("Username",$r["user"]);
+Cetak("Balance",$r["bal"]);
+$r = curl(host.'bonus_roll.php',h());
+$check = trim(explode('date',explode('HTTP/2',$r[0])[1])[0]);
+if($check >= 201){
+	$bonus_roll = "FREE";
+}else{
+	$bonus_roll = "PREMIUM";
+}
+print line();
+
+menu:
+Menu(1, "Earn Dutchy");
+Menu(2, "Ptc Wall [no content]");
+Menu(3, "Autofaucet");
+$pil = readline(Isi("Number"));
+print line();
+if($pil==1){goto earn;
+}elseif($pil==3){goto ptc;
+}elseif($pil==2){goto auto;
+}else{print Error("Bad Number\n");print line();goto menu;}
+
+earn:
+$r = curl(host."account.php",h())[1];
+$hcaptcha = explode('>',explode('<div class="h-captcha" data-sitekey=',$r)[1])[0];
+$recaptcha = explode('>',explode('<div class="g-recaptcha" data-sitekey=',$r)[1])[0];
+if($recaptcha){
+	$sitekey = str_replace(['"',"'"],'',$recaptcha);
+	$captcha = "RecaptchaV2";
+}else
+if($hcaptcha){
+	$sitekey = str_replace(['"',"'"],'',$hcaptcha);
+	$captcha = "Hcaptcha";
+}else{
+	$captcha = "IconCaptcha";
+	print Error("i cant bypas IconCaptcha\n");
+	print Error("change you captcha on setting and update cookie");
+	hapus("Cookie");
+	print line();
+	sleep(3);
+	goto cookie;
+}
+Cetak("Captcha",$captcha);
+print line();
+
+GetClaim("roll.php", $captcha, $sitekey);
+GetClaim("coin_roll.php", $captcha, $sitekey);
+if($bonus_roll == "PREMIUM"){
+	GetClaim("bonus_roll.php", $captcha, $sitekey);
+}
+sleep(5);
+$tmr = [];
+$tmr[0] = GetTimer("roll.php");
+$tmr[1] = GetTimer("coin_roll.php");
+if($bonus_roll == "PREMIUM"){
+	$tmr[2] = GetTimer("bonus_roll.php");
+}
+Tmr(min($tmr));
+goto earn;
+
+ptc:
+
+auto:
+$cokie = Simpan("Cookie_Autofaucet");
+ban(1);
+$uas = array();
+$uas[] = "user-agent: ".ua();
+$uas[] = "cookie: ".$cokie;
+
+$r = curl(host.'faucet.php',$uas)[1];
+$timer=trim(explode(';',explode('var timer = ',$r)[1])[0]);
+if(!$timer){
+	print Error("Wrong Cookie".n);
+	hapus("Cookie_Autofaucet");
+	print line();
+	sleep(3);
+	goto auto;
+}
+$tmr = explode('</span>',explode('<span id="sec">',$r)[1])[0];
+if($tmr){tmr($tmr);}
+while(true){
+	$r = curl(host.'faucet.php',$uas)[1];
+	$token = trim(explode('</h4>',explode('AutoClaim Tokens:',$r)[1])[0]);
+	Cetak("Balance", $token);
+	$has = explode('z-depth-5 faa-horizontal">',$r);
+	for($i=1;$i<count($has);$i++){
+		$hasil = explode('<a',$has[$i])[0];
+		$payment = explode('">',explode('<a class="font-color" target="_blank" href="',$has[$i])[1])[0];
+		preg_match("@^(?:/)?([^.]+)@i", $payment,$string);
+		$pay = str_replace('https://',"",$string[1]);
+		Sukses($hasil.$pay);
+	}
+	print line();
+	tmr($timer);
+}
