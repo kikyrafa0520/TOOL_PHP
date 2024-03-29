@@ -52,13 +52,11 @@ function GetClaim($patch, $captcha, $sitekey){
 		}
 		
 		$r = curl(host.$patch,h(),$data)[1];
-		print $r;exit;
-		
 		if($patch == 'coin_roll.php' || $patch == 'bonus_roll.php' ){
 			preg_match('#<center><p>Lucky Number is:</p><br><span class="font-color" style="font-size: 4.2rem;">(.*?)</span></center><div class="card white-text center-align green darken-3 pulse"><p>(.*?)</p></div>#is',$r,$hasil);
 			if($hasil[2]){
 				Cetak("Number",$hasil[1]);
-				Sukses($hasil[2]);
+				print Sukses($hasil[2]);
 				print line();
 				break;
 			}else{
@@ -69,7 +67,7 @@ function GetClaim($patch, $captcha, $sitekey){
 			preg_match('#<center><p>Lucky Number is:</p><br><span class="font-color" style="font-size: 4.2rem;">(.*?)</span></center><div class="card blue darken-3 white-text center-align pulse">(.*?)<img style="margin-bottom: 2.5px;" height="21px" width="21px" src="https://autofaucet.dutchycorp.space/assets/images/crypto-icons/DUTCHY-2.png"> (.*?) </div>#is',$r,$hasil);
 			if($hasil[3]){
 				Cetak("Number",$hasil[1]);
-				Sukses($hasil[2].$hasil[3]);
+				print Sukses($hasil[2].$hasil[3]);
 				$r = GetDashboard();
 				Cetak("Balance",$r["bal"]);
 				print line();
@@ -198,7 +196,7 @@ while(true){
 		$payment = explode('">',explode('<a class="font-color" target="_blank" href="',$has[$i])[1])[0];
 		preg_match("@^(?:/)?([^.]+)@i", $payment,$string);
 		$pay = str_replace('https://',"",$string[1]);
-		Sukses($hasil.$pay);
+		print Sukses($hasil.$pay);
 	}
 	print line();
 	tmr($timer);
