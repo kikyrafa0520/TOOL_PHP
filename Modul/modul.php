@@ -93,7 +93,8 @@ function Hapus($nama_data){
 /************Banner****************/
 function TimeZone(){
 	system("clear");
-	print b."───────────".m."[".p."scrypt by ".h."iewil".m."]─>".n;
+	$check = json_decode(file_get_contents("setup.php"),1);
+	print b."───────────".m."[".p."scrypt by ".h."iewil".m."]─>".k." v ".$check['version'].n;
 	$api = json_decode(file_get_contents("http://ip-api.com/json"),1);
 	if($api){
 		$tz = $api["timezone"];

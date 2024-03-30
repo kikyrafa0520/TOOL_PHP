@@ -9,17 +9,21 @@ Ban();
 $r = json_decode(file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/setup.php"),1);
 $version = $r['version'];
 $versi = $check['version'];
-print b."Versi: ".k.$versi.h." New Versi: ".k.$version."\n";
-print line();
+
 $a = 0;
 sleep(3);
 if($versi !== $version){
+	print Error("Latest Version: ".k.$version);
+	print line();
 	$x = file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/Modul/Update.txt");
 	print h."[+] ".p."= add".m.", ".h."[".k."*".h."] ".p."= edit".m.", ".h."[".m."-".h."] ".p."= remove\n\n";
 	print replace_txt($x).n;
 	print line();
 	Menu($a+=1,"Update Versi");
 	$tam[$a] = "update";
+}else{
+	print Sukses("Latest Version: ".k.$version);
+	print line();
 }
 if(file_exists("Data/Apikey/Multibot_Apikey")){
 	Menu($a+=1,"Hapus APi Multibot");
