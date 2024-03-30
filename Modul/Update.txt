@@ -1,3 +1,6 @@
-[+] Crypto -> Api_Multibot -> Dutchycorp
+[+] Crypto -> Free -> LeaderCrypto
+[+] Crypto -> Free -> Tokenmix
 
-[+] Crypto -> Api_Xevil -> Dutchycorp
+[*] Crypto -> Api_Multibot -> Dutchycorp
+[*] Crypto -> Api_Xevil -> Dutchycorp
+[*] Crypto -> Api_Xevil -> FreebitcoIn

@@ -57,6 +57,7 @@ function GetClaim($patch, $captcha, $sitekey){
 			if($hasil[2]){
 				Cetak("Number",$hasil[1]);
 				print Sukses($hasil[2]);
+				Multibot_Bal();
 				print line();
 				break;
 			}else{
@@ -70,9 +71,65 @@ function GetClaim($patch, $captcha, $sitekey){
 				print Sukses($hasil[2].$hasil[3]);
 				$r = GetDashboard();
 				Cetak("Balance",$r["bal"]);
+				Multibot_Bal();
 				print line();
 				break;
 			}
+		}
+	}
+}
+function GetPtc($captcha, $sitekey){
+	while(true){
+		$r = curl("https://autofaucet.dutchycorp.space/ptc/wall.php", h())[1];
+		$id = explode("')",explode("'/ptc/view.php?vid=",$r)[1])[0];
+		if(!$id){
+			print Error("Ptc Habis\n");
+			print line();
+			return 1;
+		}
+		$ptc = explode('</b></p>',explode('<p style="font-size: 1.3em;margin-block-start: 12px;"><b>',$r)[1])[0];
+		Cetak("Visit",$ptc);
+		
+		$r = curl("https://autofaucet.dutchycorp.space/ptc/view.php?vid=".$id, h())[1];
+		$hash = explode('"',explode('name="hash" value="',$r)[1])[0];
+		
+		$tmr = explode(";",explode("var timer = ",$r)[1])[0];
+		if($tmr){
+			tmr($tmr);
+		}
+		if($captcha == "Hcaptcha"){
+			$cap = Multibot_Hc($sitekey, "https://autofaucet.dutchycorp.space/ptc/view.php?vid=".$id);
+			if(!$cap){
+				print Error("Hcaptcha @Multibot Error\n");
+				print line();
+				continue;
+			}
+			$data = "hash=".$hash."&g-recaptcha-response=".$cap."&h-captcha-response=".$cap;
+		}else{
+			$cap = Multibot_Rv2($sitekey, "https://autofaucet.dutchycorp.space/ptc/view.php?vid=".$id);
+			if(!$cap){
+				print Error("Recaptcha v2 @Multibot Error\n");
+				print line();
+				continue;
+			}
+			$data = "hash=".$hash."&g-recaptcha-response=".$cap;
+		}
+		
+		$ua = [
+		"Host: autofaucet.dutchycorp.space",
+		"user-agent: ".ua(),
+		"referer: https://autofaucet.dutchycorp.space/ptc/view.php?vid=".$id,
+		"cookie: ".simpan("Cookie")
+		];
+		
+		$r = curl("https://autofaucet.dutchycorp.space/ptc/set-ptc-settings.php?viewadurl=".$id, $ua, $data)[1];
+		$ss = explode('added',explode('<i class="fas fa-check"></i>&nbsp;&nbsp; ',$r)[1])[0];
+		if($ss){
+				print Sukses($ss);
+				$r = GetDashboard();
+				Cetak("Balance",$r["bal"]);
+				Multibot_Bal();
+				print line();
 		}
 	}
 }
@@ -111,25 +168,13 @@ $check = trim(explode('date',explode('HTTP/2',$r[0])[1])[0]);
 if($check >= 201){
 	$bonus_roll = "FREE";
 }else{
-	$bonus_roll = "PREMIUM";
+	$bonus_roll = "PLATINUM";
 }
-print line();
-
-menu:
-Menu(1, "Earn Dutchy");
-Menu(2, "Ptc Wall [no content]");
-Menu(3, "Autofaucet");
-$pil = readline(Isi("Number"));
-print line();
-if($pil==1){goto earn;
-}elseif($pil==3){goto ptc;
-}elseif($pil==2){goto auto;
-}else{print Error("Bad Number\n");print line();goto menu;}
-
-earn:
+Cetak("User",$bonus_roll);
 $r = curl(host."account.php",h())[1];
 $hcaptcha = explode('>',explode('<div class="h-captcha" data-sitekey=',$r)[1])[0];
 $recaptcha = explode('>',explode('<div class="g-recaptcha" data-sitekey=',$r)[1])[0];
+
 if($recaptcha){
 	$sitekey = str_replace(['"',"'"],'',$recaptcha);
 	$captcha = "RecaptchaV2";
@@ -149,24 +194,36 @@ if($hcaptcha){
 Cetak("Captcha",$captcha);
 print line();
 
+menu:
+Menu(1, "Earn Dutchy");
+Menu(2, "Ptc Wall");
+Menu(3, "Autofaucet");
+$pil = readline(Isi("Number"));
+print line();
+if($pil==1){goto earn;
+}elseif($pil==2){goto ptc;
+}elseif($pil==3){goto auto;
+}else{print Error("Bad Number\n");print line();goto menu;}
+
+earn:
 GetClaim("roll.php", $captcha, $sitekey);
 GetClaim("coin_roll.php", $captcha, $sitekey);
-if($bonus_roll == "PREMIUM"){
+if($bonus_roll == "PLATINUM"){
 	GetClaim("bonus_roll.php", $captcha, $sitekey);
 }
 sleep(5);
 $tmr = [];
 $tmr[0] = GetTimer("roll.php");
 $tmr[1] = GetTimer("coin_roll.php");
-if($bonus_roll == "PREMIUM"){
+if($bonus_roll == "PLATINUM"){
 	$tmr[2] = GetTimer("bonus_roll.php");
 }
 Tmr(min($tmr));
 goto earn;
 
 ptc:
-print Error("No Content");
-exit;
+GetPtc($captcha, $sitekey);
+goto menu;
 
 auto:
 $cokie = Simpan("Cookie_Autofaucet");
@@ -188,7 +245,7 @@ $tmr = explode('</span>',explode('<span id="sec">',$r)[1])[0];
 if($tmr){tmr($tmr);}
 while(true){
 	$r = curl(host.'faucet.php',$uas)[1];
-	$token = trim(explode('</h4>',explode('AutoClaim Tokens:',$r)[1])[0]);
+	$token = trim(explode('</span>',explode('<span class="dutchy_balance" style="white-space: nowrap;">',$r)[1])[0]);
 	Cetak("Balance", $token);
 	$has = explode('z-depth-5 faa-horizontal">',$r);
 	for($i=1;$i<count($has);$i++){

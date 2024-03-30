@@ -134,7 +134,7 @@ function run($url, $ua, $data = null,$cookie=null) {
 		$run = curl_exec($ch);curl_close($ch);
 		if(!$run){
 			print "\r                                       \r";
-			print m."Check your Connection!";
+			print Error("Check your Connection!");
 			sleep(2);
 			print "\r                                       \r";
 			continue;
