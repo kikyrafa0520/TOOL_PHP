@@ -4,6 +4,7 @@ Class Api_Xevil {
 	
 	function __construct($apikey){
 		$this->host = "https://sctg.xyz";
+		$this->ref = "https://t.me/Xevil_check_bot?start=6192660395";
 		$this->apikey = $apikey;
 	}
 	function in_api($data, $method = "POST"){
@@ -49,6 +50,17 @@ Class Api_Xevil {
 			return 0;
 		}
 	}
+	#Data
+	function Simpan(){
+		$nama_data = "Xevil_Apikey";
+		$lokasi_folder = "Data/Apikey/";
+		if(file_exists($lokasi_folder.$nama_data)){
+			$data = file_get_contents($lokasi_folder.$nama_data);
+		}else{
+			
+		}
+	}
+	#Excecute
 	function RecaptchaV2($sitekey, $pageurl){
 		$data = "method=userrecaptcha&sitekey=$sitekey&pageurl=$pageurl";
 		return $this->getResult($data);
@@ -59,7 +71,7 @@ Class Api_Xevil {
 	}
 	function Turnstile($sitekey, $pageurl){
 		$data = "method=turnstile&sitekey=".$sitekey."&pageurl=".$pageurl;
-		return $this->getResult($data "GET");
+		return $this->getResult($data, "GET");
 	}
 	function Ocr($img){
 		$data = "method=base64&body=".trim(str_replace('data:image/png;base64,','',$img));

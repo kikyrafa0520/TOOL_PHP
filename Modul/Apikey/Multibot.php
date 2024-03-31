@@ -1,5 +1,11 @@
 <?php
-Class RequestApi{
+Class Api_Multibot {
+	public $apikey;
+	
+	function __construct(){
+		$this->host = "http://api.multibot.in";
+		$this->apikey = $apikey;
+	}
 	function in_api($data, $method = "POST"){
 		$data =  "key=".$this->apikey."&json=1&".$data;
 		if($method == "GET")return json_decode(file_get_contents($this->host.'/in.php?'.$data),1);
@@ -9,10 +15,6 @@ Class RequestApi{
 	function res_api($api_id){
 		$params = "?key=".$this->apikey."&action=get&id=".$api_id."&json=1";
 		return json_decode(file_get_contents($this->host."/res.php".$params),1);
-	}
-	function getBalance(){
-		$res =  json_decode(file_get_contents($this->host."/res.php?action=userinfo&key=".$this->apikey),1);
-		return $res["balance"];
 	}
 	function wait($tmr){
 		$sym = [' ─ ',' / ',' │ ',' \ ',];
@@ -43,13 +45,9 @@ Class RequestApi{
 			return 0;
 		}
 	}
-}
-Class ApiMultibot extends RequestApi {
-	public $apikey;
-	
-	function __construct($apikey){
-		$this->host = "http://api.multibot.in";
-		$this->apikey = $apikey;
+	function getBalance(){
+		$res =  json_decode(file_get_contents($this->host."/res.php?action=userinfo&key=".$this->apikey),1);
+		return $res["balance"];
 	}
 	function RecaptchaV2($sitekey, $pageurl){
 		$data = "method=userrecaptcha&sitekey=$sitekey&pageurl=$pageurl";
@@ -61,7 +59,7 @@ Class ApiMultibot extends RequestApi {
 	}
 	function Turnstile($sitekey, $pageurl){
 		$data = "method=turnstile&sitekey=".$sitekey."&pageurl=".$pageurl;
-		return $this->getResult($data "GET");
+		return $this->getResult($data, "GET");
 	}
 	function Ocr($img){
 		$data = "method=universal&body=".trim(str_replace('data:image/png;base64,','',$img));
