@@ -1,6 +1,7 @@
 <?php
 if(!file_exists("Data")){system("mkdir Data");}
 if(file_exists("User_Agent")){$nama_file = "User_Agent";if(PHP_OS_FAMILY == "Windows"){system("move ".$nama_file." Data");}else{system("mv ".$nama_file." Data");}}
+
 require "Modul/Multibot.php";
 require "Modul/Xevil.php";
 require "Modul/Lisensi.php";

@@ -8,7 +8,7 @@ function Xevil_Api(){
 }
 function Xevil_Bal(){
 	$apikey = Simpan_Api("Xevil_Apikey");
-	$url = "http://goodxevilpay.pp.ua/";
+	$url = "https://sctg.xyz/";
 	$x = json_decode(file_get_contents($url."res.php?action=userinfo&key=".$apikey),1);
 	if(!$x["balance"]){
 		unlink("Data/Apikey/Xevil_Apikey");
@@ -18,7 +18,7 @@ function Xevil_Bal(){
 }
 function Xevil_Hc($sitekey, $pageurl){
 	$apikey = Simpan_Api("Xevil_Apikey");
-	$url = "http://goodxevilpay.pp.ua/";
+	$url = "https://sctg.xyz/";
 	$r =  json_decode(file_get_contents($url."in.php?key=".$apikey."&method=hcaptcha&sitekey=".$sitekey."&pageurl=".$pageurl."&json=1"),1);
 	$status = $r["status"];
 	if($status == 0){
@@ -47,7 +47,7 @@ function Xevil_Hc($sitekey, $pageurl){
 }
 function Xevil_Rv2($sitekey, $pageurl){
 	$apikey = Simpan_Api("Xevil_Apikey");
-	$url = "http://goodxevilpay.pp.ua/";
+	$url = "https://sctg.xyz/";
 	$r =  json_decode(file_get_contents($url."in.php?key=".$apikey."&method=userrecaptcha&googlekey=".$sitekey."&pageurl=".$pageurl."&json=1"),1);
 	$status = $r["status"];
 	if($status == 0){
@@ -76,7 +76,7 @@ function Xevil_Rv2($sitekey, $pageurl){
 }
 function Xevil_Ocr($img){
 	$apikey = Simpan_Api("Xevil_Apikey");
-	$url = "http://goodxevilpay.pp.ua/";
+	$url = "https://sctg.xyz/";
 	$ua = "Content-type: application/x-www-form-urlencoded";
 	$data = "key=".$apikey."&method=base64&body=".$img."&json=1";
 	$opts = ['http' =>['method'  => 'POST','header' => $ua,'content' => $data]];
@@ -84,6 +84,35 @@ function Xevil_Ocr($img){
 	$status = $r["status"];
 	if($status == 0){
 		print("Apikey: ".m.$r["request"].n);
+		return 0;
+	}
+	$id = $r["request"];
+	while(true){
+		print "prosess...";
+		$r = json_decode(file_get_contents($url."res.php?key=".$apikey."&action=get&id=".$id."&json=1"),1);
+		$status = $r["status"];
+		if($r["request"] == "CAPCHA_NOT_READY"){
+			echo "\r                      \r";
+			print "prosess......";
+			sleep(10);
+			print "\r                    \r";
+			continue;
+		}
+		if($status == 1){
+			print "\r                 \r";
+			return $r["request"];
+		}
+		print "\r                 \r";
+		return 0;
+	}
+}
+function Xevil_Turnstile($sitekey, $pageurl){
+	$apikey = Simpan_Api("Xevil_Apikey");
+	$url = "https://sctg.xyz/";
+	$r =  json_decode(file_get_contents($url."in.php?key=".$apikey."&method=turnstile&sitekey=".$sitekey."&pageurl=".$pageurl."&json=1"),1);
+	$status = $r["status"];
+	if($status == 0){
+		print(b."Apikey: ".m.$r["request"].n);
 		return 0;
 	}
 	$id = $r["request"];
