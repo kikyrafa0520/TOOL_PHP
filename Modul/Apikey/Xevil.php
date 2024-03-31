@@ -1,5 +1,11 @@
 <?php
-Class RequestApi {
+Class Api_Xevil {
+	public $apikey;
+	
+	function __construct($apikey){
+		$this->host = "https://sctg.xyz";
+		$this->apikey = $apikey;
+	}
 	function in_api($data, $method = "POST"){
 		$data =  "key=".$this->apikey."&json=1&".$data;
 		if($method == "GET")return json_decode(file_get_contents($this->host.'/in.php?'.$data),1);
@@ -43,14 +49,6 @@ Class RequestApi {
 			return 0;
 		}
 	}
-}
-Class ApiXevil extends RequestApi {
-	public $apikey;
-	
-	function __construct($apikey){
-		$this->host = "https://sctg.xyz";
-		$this->apikey = $apikey;
-	}
 	function RecaptchaV2($sitekey, $pageurl){
 		$data = "method=userrecaptcha&sitekey=$sitekey&pageurl=$pageurl";
 		return $this->getResult($data);
@@ -83,57 +81,3 @@ Class ApiXevil extends RequestApi {
 		return 0;
 	}
 }
-
-# 31 Mar 2024
-# https://t.me/Xevil_check_bot?start=1204538927
-# free 5 ruble
-
-error_reporting(0);
-# because no headers file get contents
-
-$apikey = "APIKEY_XEVIL";
-$api = new ApiXevil($apikey);
-
-# Balance
-$balance = $api->getBalance();
-print " Balance: ".$balance."\n";;
-# 4.8925
-
-# reCaptcha
-$sitekey = "6LfD3PIbAAAAAJs_eEHvoOl75_83eXSqpPSRFJ_u";
-$pageurl = "https://2captcha.com/demo/recaptcha-v2";
-print $api->RecaptchaV2($sitekey, $pageurl );
-print " reCaptcha: ".$reCaptcha."\n";
-# 03AFcWeA5dAXT8iT12IArrMsKLGrL2qgcGhPp2ES7BWgtPIa5GxGXorB
-
-# hCaptcha 0.0055
-$sitekey = "9409f20b-6b75-4057-95c4-138e85f69789";
-$pageurl = "https://2captcha.com/demo/hcaptcha?difficulty=always-on";
-$hCaptcha =  $api->Hcaptcha($sitekey, $pageurl );
-print " hCaptcha: ".$hCaptcha."\n";
-// P1_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.hadwYXNza2V5xQWA4
-
-
-# turnstile
-$pageurl = "https://onlyfaucet.com/faucet/currency/ltc";
-$sitekey = "0x4AAAAAAAPSP6CaBc510-qc";
-$Turnstile = Turnstile($sitekey, $pageurl);
-print " turstile: ".$Turnstile."\n";
-# 0.5YsJy3i-JlJ7QYJnEVXlf6SH83xu7W125CFG060y
-
-
-# image Ocr
-# image as base64
-# Example
-$img = base64_encode(file_get_contents("https://nopecha.com/image/demo/textcaptcha/00Ge55.png"));
-# print $img_source;exit;
-$Ocr = Ocr($img);
-print " ocr: ".$Ocr."\n";
-# o0ge55
-
-
-# anti-botlinks 
-$source = file_get_contents("https://bitonefaucet.com.tr/rsshort/index.php");
-$Antibot = AntiBot($source);
-print " antibotlink: ".$Antibot."\n";
-# +1905+1004+8392+1024
