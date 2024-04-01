@@ -83,7 +83,7 @@ $is_file = is_file("Src/".$menu[$pil]."/".$menu2[$pil2]);
 if($is_file){
 	define("nama_file",$menu2[$pil2]);
 	Ban(1);
-	eval(clean(file_get_contents("Src/".$menu[$pil]."/".$menu2[$pil2])));
+	eval(file_get_contents("Src/".$menu[$pil]."/".$menu2[$pil2]));
 	exit;
 }
 
@@ -101,4 +101,4 @@ if(explode('-',$menu3[$pil3])[1])exit(Error("Tolol"));
 
 define("nama_file",$menu3[$pil3]);
 Ban(1);
-eval(clean(file_get_contents("Src/".$menu[$pil]."/".$menu2[$pil2]."/".$menu3[$pil3])));
+eval(file_get_contents("Src/".$menu[$pil]."/".$menu2[$pil2]."/".$menu3[$pil3]));

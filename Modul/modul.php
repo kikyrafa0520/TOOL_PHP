@@ -105,7 +105,7 @@ function TimeZone(){
 		date_default_timezone_set("UTC");
 		return "UTC";
 	}
-	print b."Channel".m.": ".p."t.me/Tool_php".m." >".n;
+	print b."Channel".m.": ".p."t.me/MaksaJoin/1".m." >".n;
 	print b."Insta  ".m.": ".p."instagram.com/iewil_13".m." >".n;
 	print b."Youtube".m.": ".p."youtube.com/@iewil".m." >".n;
 	print line();
@@ -254,13 +254,10 @@ function cfDecodeEmail($encodedString){
   }
   return $email;
 }
-function clean($str){
-	return str_replace(['<?','<?php','?>'], ' ',$str);
+function Satoshi($int){
+	return sprintf('%.8f',floatval($int));
 }
 
-function repatch($str){
-	str_replace('.php','',$str);
-}
 /*************************** APIKEY ***************************/
 function Simpan_Api($nama_data){
 	if(file_exists("Data/Apikey/".$nama_data)){
