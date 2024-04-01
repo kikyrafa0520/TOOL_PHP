@@ -1,4 +1,6 @@
 const
+provider_api = "Multibot",
+provider_ref = "http://api.multibot.in/",
 host = "https://hatecoin.me/",
 register_link = "https://hatecoin.me/?r=20999",
 youtube = "https://youtube.com/@iewil";
@@ -24,7 +26,7 @@ function Post_Faucet($patch, $csrf,$token ,$atb,$cap){
 	$data = "antibotlinks=".$atb."&csrf_token_name=".$csrf."&token=".$token."&captcha=recaptchav2&recaptchav3=&g-recaptcha-response=".$cap;
 	return Curl($url,h(),$data)[1];
 }
-function Claim($patch){
+function Claim($api, $patch){
 	while(true):
 	$r = Get_Faucet($patch);
 	$sl = explode('</button>',explode('<button class="btn btn-primary btn-lg " disabled><i class="far fa-check-circle"></i>',$r)[1])[0];//You need to do 1 shortlinks to unlock
@@ -47,30 +49,22 @@ function Claim($patch){
 	$token = explode('"',explode('name="token" value="',$r)[1])[0];
 	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 	
-	$atb = Multibot_Atb($r);
-	if(!$atb){
-		print Error("Antibot @multibot Error\n");
-		print line();
-		continue;
-	}
-	$cap = Multibot_Rv2($sitekey, host.$patch);
-	if(!$cap){
-		print Error("Recaptcha v2 @multibot Error\n");
-		print line();
-		continue;
-	}
+	$atb = $api->Antibot($r);
+	if(!$atb){print Error("@".provider_api." Error\n"); continue;}
+	$cap = $api->RecaptchaV2($sitekey, host.$patch);
+	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
 	$r = Post_Faucet($patch, $csrf, $token, $atb, $cap);
 	$ss = explode("has",explode("Swal.fire('Good job!', '",$r)[1])[0];
 	if($ss){
 		Cetak("Sukses",$ss);
 		Cetak("Balance",Get_Dashboard()["balance"]);
 		Cetak("Sisa",$sisa-1);
-		Multibot_Bal();
+		Cetak("Bal_Api",$api->getBalance());
 		print line();
 	}else{
 		echo Error("Error\n");
 		Cetak("Balance",Get_Dashboard()["balance"]);
-		Multibot_Bal();
+		Cetak("Bal_Api",$api->getBalance());
 		sleep(2);
 		print line();
 	}
@@ -83,7 +77,8 @@ print line();
 cookie:
 Simpan("Cookie");
 ua();
-Multibot_Api();
+$apikey = CheckApi();
+$api = New ApiMultibot($apikey);
 
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
 //system("termux-open-url ".youtube);
@@ -101,11 +96,11 @@ if(!$r["user"]){
 Cetak("Username",$r["user"]);
 Cetak("Balance",$r["balance"]);
 Cetak("Energy",$r["energy"]);
-Multibot_Bal();
+Cetak("Bal_Api",$api->getBalance());
 print line();
 
 $patch = "faucet";
-$gas = Claim($patch);
+$gas = Claim($api, $patch);
 if($gas=="cf"){
 	hapus("Cookie");
 	goto cookie;

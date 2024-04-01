@@ -1,14 +1,14 @@
 const
-provider_api = "Multibot",
-provider_ref = "http://api.multibot.in/",
-host = "https://keran.co/",
-register_link = "https://keran.co/?ref=4097",
+provider_api = "Xevil",
+provider_ref = "t.me/Xevil_check_bot?start=6192660395",
+host = "https://bagi.co.in/",
+register_link = "https://bagi.co.in/?ref=2684",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
 	preg_match('@^(?:https://)?([^/]+)@i',host,$host);
 	$h[] = "Host: ".$host[1];
-	if($data)$h[] = "Content-Length: ".strlen($data);
+	if($data)$h[] = "Content-Length: ".strlen($data);;
 	$h[] = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0";
 	return $h;
 }
@@ -41,7 +41,7 @@ $email = Simpan("Email");
 ua();
 print line();
 $apikey = CheckApi();
-$api = New ApiMultibot($apikey);
+$api = New ApiXevil($apikey);
 
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
 //system("termux-open-url ".youtube);

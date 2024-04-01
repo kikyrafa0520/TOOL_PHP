@@ -1,4 +1,6 @@
 const
+provider_api = "Multibot",
+provider_ref = "http://api.multibot.in/",
 register_link = "https://sollcrypto.com/home/page?r=purna.iera@gmail.com",
 host = "https://sollcrypto.com/",
 youtube = "https://youtube.com/c/iewil",
@@ -18,7 +20,7 @@ function h($ref=0){
 	}
 	return $h;
 }
-function claim($coin, $email){
+function claim($api, $coin, $email){
 	while(true){
 		$r = curl($coin.r,h(),'',1)[1];
 		if(preg_match('/You have to wait/',$r)){
@@ -33,16 +35,16 @@ function claim($coin, $email){
 			continue;
 		}
 		if(explode('\"',explode('rel=\"',$r)[1])[0]){
-			$atb = Multibot_Atb($r);
-			if(!$atb)continue;
+			$atb = $api->AntiBot($r);
+			if(!$atb){print Error("Atb @".provider_api." Error\n"); continue;}
 		}else{
 			print Error("atb error!");
 			sleep(6);
 			print "\r                         \r";
 			continue;
 		}
-		$cap = Multibot_Rv2($sitekey, $coin);
-		if(!$cap){print Error("Multibot Error\n");continue;}
+		$cap = $api->RecaptchaV2($sitekey, $coin);
+		if(!$cap){print Error("Rv2 @".provider_api." Error\n"); continue;}
 		$data = "session-token=".$sesion."&address=".urlencode($email)."&antibotlinks=".$atb."&captcha=recaptcha&g-recaptcha-response=".$cap."&login=Verify+Captcha";
 		$r = curl($coin.r,h($coin.r),$data,1)[1];
 		$ss = explode('<',explode('<i class="fas fa-money-bill-wave"></i> ',$r)[1])[0];
@@ -52,12 +54,13 @@ function claim($coin, $email){
 		}
 		if($ss){
 			print Sukses(trim($ss)." Faucetpay!");
-			Multibot_Bal();
+			Cetak("Bal_Api",$api->getBalance());
 			print line();
 		}elseif($wr){
 			print Error($wr.n);
 			print line();
 		}else{
+		continue;
 			print $r;exit;
 		}
 		tmr(300);
@@ -69,7 +72,9 @@ print line();
 cookie:
 $email = simpan("Email_Faucetpay");
 ua();
-Multibot_Api();
+print line();
+$apikey = CheckApi();
+$api = New ApiMultibot($apikey);
 
 Ban(1);
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
@@ -92,7 +97,7 @@ Cetak("Wallet",$email);
 if($pil < $a){
 	print Cetak("Coin",strtoupper(explode('/',explode('https://sollcrypto.com/home/page/',$coinx[$pil])[1])[0]));
 	print line();
-	claim($coinx[$pil], $email);
+	claim($api, $coinx[$pil], $email);
 }elseif($pil == $a){
 	print Cetak("Coin","All Coin");
 	print line();
@@ -124,16 +129,16 @@ while(true){
 			continue;
 		}
 		if(explode('\"',explode('rel=\"',$r)[1])[0]){
-			$atb = Multibot_Atb($r);
-			if(!$atb)continue;
+			$atb = $api->AntiBot($r);
+			if(!$atb){print Error("Atb @".provider_api." Error\n"); continue;}
 		}else{
 			print Error("atb error!");
 			sleep(6);
 			print "\r                         \r";
 			continue;
 		}
-		$cap = Multibot_Rv2($sitekey, $coin);
-		if(!$cap){print Error("Multibot Error\n");continue;}
+		$cap = $api->RecaptchaV2($sitekey, $coin);
+		if(!$cap){print Error("Rv2 @".provider_api." Error\n"); continue;}
 		$data = "session-token=".$sesion."&address=".urlencode($email)."&antibotlinks=".$atb."&captcha=recaptcha&g-recaptcha-response=".$cap."&login=Verify+Captcha";
 		
 		$r = curl($coin.r,h($coin.r),$data,1)[1];
@@ -146,7 +151,7 @@ while(true){
 		}
 		if($ss){
 			print Sukses($coint.": ".trim($ss)." Faucetpay!");
-			Multibot_Bal();
+			Cetak("Bal_Api",$api->getBalance());
 			print line();
 			$res = his([$coint=>1],$res);
 		}elseif($wr){

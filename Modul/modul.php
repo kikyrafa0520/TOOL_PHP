@@ -254,6 +254,13 @@ function cfDecodeEmail($encodedString){
   }
   return $email;
 }
+function clean($str){
+	return str_replace(['<?','<?php','?>'], ' ',$str);
+}
+
+function repatch($str){
+	str_replace('.php','',$str);
+}
 /*************************** APIKEY ***************************/
 function Simpan_Api($nama_data){
 	if(file_exists("Data/Apikey/".$nama_data)){
@@ -272,6 +279,24 @@ function Simpan_Api($nama_data){
 		file_put_contents("Data/Apikey/".$nama_data,$data);
 	}
 	return $data;
+}
+function CheckApi(){
+	Cetak("Register",provider_ref);
+	$apikey = Simpan_Api(provider_api."_Apikey");
+	if(provider_api == "Xevil"){
+		$api = New ApiXevil($apikey);
+	}
+	if(provider_api == "Multibot"){
+		$api = New ApiMultibot($apikey);
+	}
+	if($api->getBalance()){
+		print Sukses(h."OK\n");
+		sleep(3);
+		return $apikey;
+	}else{
+		unlink("Data/Apikey/".provider_api."_Apikey");
+		exit(Error("Apikey: ".m."Something wrong!".n));
+	}
 }
 /********SL********/
 function _Fly($url){

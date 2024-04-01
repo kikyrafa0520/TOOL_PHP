@@ -1,4 +1,6 @@
 const
+provider_api = "Multibot",
+provider_ref = "http://api.multibot.in/",
 host = "https://onlyfaucet.com/",
 register_link = "https://onlyfaucet.com/?r=985",
 youtube = "https://youtube.com/@iewil";
@@ -6,8 +8,6 @@ youtube = "https://youtube.com/@iewil";
 function h($data=0){
 	preg_match('@^(?:https://)?([^/]+)@i',host,$host);
 	$h[] = "Host: ".$host[1];
-	//$h[] = "Content-Type: text/html; charset=UTF-8";
-	//$h[] = "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
 	if($data)$h[] = "Content-Length: ".strlen($data);;
 	$h[] = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0";
 	return $h;
@@ -25,7 +25,6 @@ function login($email){
 	"csrf_token_name" => $csrf
 	];
 	$r = curl(host."auth/login",h(),http_build_query($data),1)[1];
-	//if(preg_match('/An Error Was Encountered/',$r))exit(Error("An Error Was Encountered\n"));
 	$ss = explode("',",explode("html: '",$r)[1])[0];
 	if($ss){
 		print Sukses($ss);print line();sleep(5);
@@ -44,7 +43,9 @@ print line();
 cookie:
 $email = Simpan("Email");
 ua();
-Multibot_Api();
+print line();
+$apikey = CheckApi();
+$api = New ApiMultibot($apikey);
 
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
 //system("termux-open-url ".youtube);
@@ -60,7 +61,7 @@ if(!explode('Logout',$r)[1]){
 }
 
 Cetak("Email",$email);
-Multibot_Bal();
+Cetak("Bal_Api",$api->getBalance());
 print line();
 
 gaslagi:
@@ -95,8 +96,8 @@ while(true){
 		if($tmr){
 			tmr($tmr);
 		}
-		$cap = Multibot_Turnstile($sitekey, host."faucet/currency/".$coin);
-		if(!$cap){print Error("Multibot Error\n"); continue;}
+		$cap = $api->Turnstile($sitekey, host."faucet/currency/".$coin);
+		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
 		
 		$data = "csrf_token_name=".$csrf."&token=".$hiden."&captcha=turnstile&cf-turnstile-response=".$cap;
 		$r = curl(host."faucet/verify/".$coin,h(),$data,1)[1];
@@ -112,7 +113,7 @@ while(true){
 		if($ss){
 			print Cetak($coin,$sisa);
 			print Sukses("0.".str_replace("has been sent ","",strip_tags($ss)));
-			Multibot_Bal();
+			Cetak("Bal_Api",$api->getBalance());
 			print line();
 			$res = his([$coin=>1],$res);
 		}elseif($wr){

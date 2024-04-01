@@ -1,4 +1,6 @@
 const
+provider_api = "Multibot",
+provider_ref = "http://api.multibot.in/",
 host = "https://bagi.co.in/",
 register_link = "https://bagi.co.in/?ref=2684",
 youtube = "https://youtube.com/@iewil";
@@ -6,26 +8,24 @@ youtube = "https://youtube.com/@iewil";
 function h($data=0){
 	preg_match('@^(?:https://)?([^/]+)@i',host,$host);
 	$h[] = "Host: ".$host[1];
-	//$h[] = "Content-Type: text/html; charset=UTF-8";
-	//$h[] = "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
-	if($data)$h[] = "Content-Length: ".strlen($data);;
+	if($data)$h[] = "Content-Length: ".strlen($data);
 	$h[] = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0";
 	return $h;
 }
-function login($email){
+function login($api, $email){
 	ulang:
 	$r = curl(host.'index.php',h(),'',1)[1];
 	$token = explode('"',explode('<input type="hidden" name="token" value="',$r)[1])[0];
 	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 	if(!$sitekey){
 		$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
-		$cap = Multibot_Turnstile($sitekey, host.'index.php');
+		$cap = $api->Turnstile($sitekey, host.'index.php');
 		$data = 'address='.urlencode($email).'&cf-turnstile-response='.$cap.'&token='.$token;
 	}else{
-	$cap = Multibot_Rv2($sitekey, host.'index.php');
+	$cap = $api->RecaptchaV2($sitekey, host.'index.php');
 	$data = 'address='.urlencode($email).'&g-recaptcha-response='.$cap.'&token='.$token;
 	}
-	if(!$cap){print Error("Multibot Error\n"); goto ulang;}
+	if(!$cap){print Error("@".provider_api." Error\n"); goto ulang;}
 	return curl(host.'index.php',h($data),$data,1)[1];
 }
 function dash(){
@@ -39,15 +39,17 @@ print line();
 cookie:
 $email = Simpan("Email");
 ua();
-Multibot_Api();
+print line();
+$apikey = CheckApi();
+$api = New ApiMultibot($apikey);
 
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
 //system("termux-open-url ".youtube);
 Ban(1);
 
 login:
-if(!file_exists("Data/BagiCoIn/cookie.txt")){
-	if(!login($email))goto login;
+if(!file_exists("Data/".nama_file."/cookie.txt")){
+	if(!login($api, $email))goto login;
 }
 
 $r = dash();
@@ -60,7 +62,7 @@ if(!$r["user"]){
 }
 
 Cetak("Email",$r["user"]);
-Multibot_Bal();
+Cetak("Bal_Api",$api->getBalance());
 print line();
 gaslagi:
 $r = curl(host.'faucet.php',h(),'',1)[1];
@@ -93,14 +95,14 @@ foreach($list_coin as $a => $coins){
 		$match[$datax[2][$i]] = $datax[3][$i];
 	}
 	if($sitekey){
-		$cap = Multibot_Rv2($sitekey, host.'captha.php');
+		$cap = $api->RecaptchaV2($sitekey, host.'captha.php');
 		$match['g-recaptcha-response']=$cap;
 	}else{
 		$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
-		$cap = Multibot_Turnstile($sitekey, host.'captha.php');
+		$cap = $api->Turnstile($sitekey, host.'captha.php');
 		$match['cf-turnstile-response']=$cap;
 	}
-	if(!$cap){print Error("Multibot Error\n");continue;}
+	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
 	$data = http_build_query($match);
 	$r = curl(host.$direc,h(),$data,1)[1];
 	if(preg_match('/does not have sufficient/',$r)){
@@ -113,7 +115,7 @@ foreach($list_coin as $a => $coins){
 	$wr = trim(explode('</div>',explode('<div class="message-header">',explode('<article class="message is-warning">',$r)[1])[1])[0]);
 	if($ss){
 		Cetak($match['claim_crypto'],$ss);
-		Multibot_Bal();
+		Cetak("Bal_Api",$api->getBalance());
 		$res = his([$coint=>1],$res);
 		print line();
 	}elseif($dg){

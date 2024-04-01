@@ -1,4 +1,6 @@
 const
+provider_api = "Multibot",
+provider_ref = "http://api.multibot.in/",
 register_link = "https://freebitco.in/?r=48171588",
 host = "https://freebitco.in/",
 youtube = "https://youtube.com/c/iewil";
@@ -32,7 +34,8 @@ print line();
 cookie:
 simpan("Cookie");
 ua();
-Multibot_Api();
+$apikey = CheckApi();
+$api = New ApiMultibot($apikey);
 
 Ban(1);
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
@@ -47,9 +50,9 @@ if(!$bal){
 	hapus("Cookie");
 	goto cookie;
 }
-print Cetak("Balance",$bal." BTC");
-print Cetak("Reward",$rp);
-Multibot_Bal();
+Cetak("Balance",$bal." BTC");
+Cetak("Reward",$rp);
+Cetak("Bal_Api",$api->getBalance());
 print line();
 
 while(true){
@@ -60,7 +63,7 @@ while(true){
 	$finger = finger(getCsrf(),["user-agent: ".ua()]);
 	$sitekey = explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
 	if(!$sitekey)continue;
-	$cap = Multibot_Hc($sitekey, host."/?op=home");
+	$cap = $api->Hcaptcha($sitekey, host."/?op=home");
 	if(!$cap)continue;
 	$data = ["csrf_token"=>getCsrf(),"op"=>"free_play","fingerprint"=>$finger["finger"],"client_seed"=>$finger["sheed"],"fingerprint2"=>$finger["fingernum"],"pwc"=>0,"h_recaptcha_response" =>$cap];
 	//$data = ["csrf_token"=>getCsrf(),"op"=>"free_play","fingerprint"=>$finger["finger"],"client_seed"=>$finger["sheed"],"fingerprint2"=>$finger["fingernum"],"pwc"=>1,"h_recaptcha_response" =>""];
@@ -74,7 +77,7 @@ while(true){
 		$r = run(host."/?op=home",h());
 		$rp = trim(explode('</div>',explode('<div class="reward_table_box br_0_0_5_5 user_reward_points font_bold" style="border-top:none;">',$r)[1])[0]);
 		Cetak("Reward",$rp);
-		Multibot_Bal();
+		Cetak("Bal_Api",$api->getBalance());
 		print line();
 	}else
 	if(explode("incorrect",$r)[1]){
