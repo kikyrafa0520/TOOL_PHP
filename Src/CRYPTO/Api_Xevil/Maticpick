@@ -68,7 +68,6 @@ function ClaimBonus(){
 			Cetak("Number",$r["num"]);
 			print Sukses($r["mes"]);
 			Cetak("Balance",GetDashboard()["bal"]);
-			Cetak("Bal_Api",$api->getBalance());
 			print line();
 		}
 	}
