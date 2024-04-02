@@ -302,7 +302,9 @@ function _Fly($url){
     $path = parse_url($url)['path'];
     $context = stream_context_create(['http' => ['header' => ['origin: https://advertisingexcel.com', 'referer: https://advertisingexcel.com/outgoing/']]]);
     $res_head = get_headers($scheme.$host.'/flyinc.'.$path, true, $context);
+    print_r($res_head);exit;
     $final = $res_head["location"];
+    if($final)tmr(20);
     return $final;
 }
 

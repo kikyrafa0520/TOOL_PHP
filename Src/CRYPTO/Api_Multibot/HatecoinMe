@@ -31,7 +31,8 @@ function Claim($api, $patch){
 	$r = Get_Faucet($patch);
 	$sl = explode('</button>',explode('<button class="btn btn-primary btn-lg " disabled><i class="far fa-check-circle"></i>',$r)[1])[0];//You need to do 1 shortlinks to unlock
 	if($sl){
-	exit(Error($sl.n));
+	print Error($sl.n);
+	return 0;
 	}
 	if(preg_match('/Cloudflare/',$r) || preg_match('/Just a moment.../',$r)){
 		print Error("Cloudflare\n");
@@ -69,7 +70,96 @@ function Claim($api, $patch){
 		print line();
 	}
 	endwhile;
-	exit(Error("Daily claim limit\n"));
+	print Error("Daily claim limit\n");
+}
+function auto(){
+while(true){
+	$r=curl(host."auto",h())[1];
+	if(preg_match("/Firewall/",$r)){
+		exit(Error("Firewall\n"));
+	}
+	if(preg_match("/You don't have enough energy/",$r)){
+		echo Error("You don't have enough energy".n);
+		print line();break;
+	}
+	$tmr=explode(',',explode('let timer = ',$r)[1])[0];
+	$token=explode('"',explode('name="token" value="',$r)[1])[0];
+	
+	if($tmr){tmr($tmr);}
+	
+	$data = "token=".$token;
+	$r = curl(host."auto/verify",h(),$data)[1];
+	$ss = explode('has',explode("Swal.fire('Good job!', '",$r)[1])[0];
+	if($ss){
+		Cetak("Sukses",$ss);
+		Cetak("Balance",Get_Dashboard()["balance"]);
+		Cetak("Energy",Get_Dashboard()["energy"]);
+		print line();
+	}
+}
+}
+function ptc($api){
+while(true){
+	$r = curl(host.'ptc',h())[1];
+	$id = explode("'",explode("/ptc/view/",$r)[1])[0];
+	if(!$id){
+		break;
+	}
+	$r = curl(host.'ptc/view/'.$id,h())[1];
+	$ptc = explode("'",explode("var url = '",$r)[1])[0];
+	$ptc = explode("/",$ptc)[2];
+	
+	if($idptc == 0){
+		print Cetak("Visit",$ptc);
+	}
+	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+	$token = explode('"',explode('name="token" value="',$r)[1])[0];
+	$csrf = explode('"',explode('<input type="hidden" name="csrf_token_name" value="',$r)[1])[0];
+	$tmr = explode(';',explode('var timer = ',$r)[1])[0];
+	if($tmr){tmr($tmr);}
+	$cap = $api->RecaptchaV2($sitekey, host.$patch);
+	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+	$data = 'captcha=recaptchav2&g-recaptcha-response='.$cap.'&csrf_token_name='.$csrf.'&token='.$token;
+	$r = curl(host.'ptc/verify/'.$id,h(),$data)[1];
+	$ss = explode('has',explode("Swal.fire('Good job!', '",$r)[1])[0];
+	print "\r             \r";
+	if($ss) {
+		Cetak("Sukses",$ss);
+		Cetak("Balance",Get_Dashboard()["balance"]);
+		Cetak("Bal_Api",$api->getBalance());
+		print line();
+		$idptc = 0;
+	}else{
+		$idptc = 1;
+		print Error("Invalid Captcha\n");
+	}
+}
+print Error("Ptc Habis\n");
+print line();
+}
+function aciv(){
+$r = curl(host."achievements",h())[1];
+$list = explode('</table>',explode('<table class="table table-centered table-nowrap mb-0">',$r)[1])[0];
+$list = explode('<tr>',$list);
+foreach($list as $a => $aciv){
+	if($a <= 1)continue;
+	$url = explode('"',explode('<form action="',$aciv)[1])[0];
+	$csrf = explode('">',explode('<input type="hidden" name="csrf_token_name" value="',$aciv)[1])[0];
+	$uncomplet = explode('"',explode('aria-valuenow="',$aciv)[1])[0];
+	$task = explode('</td>',explode('<td>',$aciv)[1])[0];
+	if($uncomplet < 100)continue;
+	$data = "csrf_token_name=".$csrf;
+	$r = curl($url,h(),$data)[1];
+	$ss = explode("'",explode("Swal.fire('Good job!', '",$r)[1])[0];
+	if($ss){
+		print Cetak("Task",$task);
+		Cetak("Sukses",$ss);
+		$r = Get_Dashboard();
+		Cetak("Balance",$r["balance"]);
+		Cetak("Energy",$r["energy"]);
+		print line();
+	}
+}
 }
 Ban(1);
 Cetak("Register",register_link);
@@ -83,7 +173,6 @@ $api = New ApiMultibot($apikey);
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
 //system("termux-open-url ".youtube);
 Ban(1);
-
 $r = Get_Dashboard();
 if(!$r["user"]){
 	print Error("Session expired".n);
@@ -99,9 +188,11 @@ Cetak("Energy",$r["energy"]);
 Cetak("Bal_Api",$api->getBalance());
 print line();
 
-$patch = "faucet";
-$gas = Claim($api, $patch);
+ptc($api);
+auto();
+$gas = Claim($api, "faucet");
 if($gas=="cf"){
 	hapus("Cookie");
 	goto cookie;
 }
+aciv();

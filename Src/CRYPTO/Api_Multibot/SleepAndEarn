@@ -77,6 +77,10 @@ print line();
 if($x == '' || $x >= $a+1)exit(Error("Tolol\n"));
 while(true){
 	$bal1 = getBalance();
+	if(!$bal1){
+	hapus("cookie.txt");
+	goto login;
+	}
 	$r = curl(host."account/money/claims", h(), 0, 1)[1];
 	$tmr = explode('"',explode('id="roll_next" value="',$r)[1])[0];
 	if($tmr){
