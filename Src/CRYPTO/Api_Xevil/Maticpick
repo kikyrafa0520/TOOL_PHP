@@ -67,7 +67,7 @@ function ClaimBonus(){
 			Cetak("Type","Bonus Faucet");
 			Cetak("Number",$r["num"]);
 			print Sukses($r["mes"]);
-			Cetak("Balance",satoshi($r["balance"]));
+			Cetak("Balance",GetDashboard()["bal"]);
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
 		}
