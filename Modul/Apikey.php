@@ -16,13 +16,14 @@ Class RequestApi{
 		$res =  json_decode(file_get_contents($this->host."/res.php?action=userinfo&key=".$this->apikey),1);
 		return $res["balance"];
 	}
-	function wait($tmr){
+	function wait($wr,$xr,$tmr){
+		$xwr = [$wr,p,$wr,p];
 		$sym = [' ─ ',' / ',' │ ',' \ ',];
 		$timr = time()+$tmr;$a = 0;
 		while(1){
 			$res=$timr-time();
 			if(!$res)break;
-			print " bypass".$sym[$a % 4]." \r";
+			print $xwr[$a % 4]." bypass $xr%".$sym[$a % 4]." \r";
 			usleep(100000);
 			$a++;
 		}
@@ -33,15 +34,31 @@ Class RequestApi{
 			print $get_in["request"]."\n";
 			return 0;
 		}
+		$a = 0;
 		while(true){
-			echo " bypass |   \r";
+			if($a < 50){$wr=h;}elseif($a >= 50 && $a < 80){$wr=k;}else{$wr=m;}
+			echo " bypass $a% |   \r";
 			$get_res = $this->res_api($get_in["request"]);
 			if($get_res["request"] == "CAPCHA_NOT_READY"){
-				echo " bypass ─ \r";
-				$this->wait(10);
+				$ran = rand(10,20);
+				$a+=$ran;
+				if($a>99)$a=99;
+				echo " bypass $a% ─ \r";
+				$this->wait($wr,$a,5);
 				continue;
 			}
-			if($get_res["status"])return $get_res["request"];
+			if($get_res["status"]){
+				echo " bypass 100%";
+				sleep(1);
+				print "\r                     \r";
+				print h."[".p."√".h."] bypass success";
+				sleep(2);
+				print "\r                     \r";
+				return $get_res["request"];
+			}
+			print m."[".p."!".m."] bypass failed";
+			sleep(2);
+			print "\r                     \r";
 			return 0;
 		}
 	}

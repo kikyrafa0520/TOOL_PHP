@@ -105,7 +105,7 @@ function TimeZone(){
 		date_default_timezone_set("UTC");
 		return "UTC";
 	}
-	print b."Channel".m.": ".p."t.me/MaksaJoin/1".m." >".n;
+	print b."Channel".m.": ".p."t.me/MaksaJoin".m." >".n;
 	print b."Insta  ".m.": ".p."instagram.com/iewil_13".m." >".n;
 	print b."Youtube".m.": ".p."youtube.com/@iewil".m." >".n;
 	print line();
