@@ -58,37 +58,6 @@ function Cetak($label, $msg = "[No Content]"){
 function Line(){
 	return b.str_repeat('─',50).n;
 }
-function Simpan($nama_data){
-	if(file_exists("Data/".nama_file."/".$nama_data)){
-		$data = file_get_contents("Data/".nama_file."/".$nama_data);
-	}else{
-		if(!file_exists("Data/".nama_file)){
-			system("mkdir ".nama_file);
-			if(PHP_OS_FAMILY == "Windows"){
-				system("move ".nama_file." Data");
-			}else{
-				system("mv ".nama_file." Data");
-			}
-			print Sukses(h."Berhasil membuat Folder untuk ".k.nama_file.n);
-		}
-		$data = readline(Isi($nama_data));echo "\n";
-		file_put_contents("Data/".nama_file."/".$nama_data,$data);
-	}
-	return $data;
-}
-function ua(){
-	$nama_data = "User_Agent";
-	if(file_exists('Data/'.$nama_data)){
-		$data = file_get_contents('Data/'.$nama_data);
-	}else{
-		$data = readline(Isi($nama_data));echo "\n";
-		file_put_contents('Data/'.$nama_data,$data);
-	}
-	return $data;
-}
-function Hapus($nama_data){
-	unlink("Data/".nama_file."/".$nama_data);
-}
 
 /************Banner****************/
 function TimeZone(){
@@ -309,3 +278,40 @@ function _Fly($url){
 }
 
 
+/*******GLOBAL CHECK*******/
+function Simpan($nama_data){
+	if(file_exists("Data/".nama_file."/".$nama_data)){
+		$data = file_get_contents("Data/".nama_file."/".$nama_data);
+	}else{
+		if(!file_exists("Data/".nama_file)){
+			system("mkdir ".nama_file);
+			if(PHP_OS_FAMILY == "Windows"){
+				system("move ".nama_file." Data");
+			}else{
+				system("mv ".nama_file." Data");
+			}
+			print Sukses(h."Berhasil membuat Folder untuk ".k.nama_file.n);
+		}
+		$data = readline(Isi($nama_data));echo "\n";
+		file_put_contents("Data/".nama_file."/".$nama_data,$data);
+	}
+	return $data;
+}
+function ua(){
+	$nama_data = "User_Agent";
+	if(file_exists('Data/'.$nama_data)){
+		$data = file_get_contents('Data/'.$nama_data);
+	}else{
+		$data = readline(Isi($nama_data));echo "\n";
+		file_put_contents('Data/'.$nama_data,$data);
+	}
+	return $data;
+}
+function Hapus($nama_data){
+	unlink("Data/".nama_file."/".$nama_data);
+}
+function GlobalCheck($source){
+	(preg_match('/Cloudflare/',$source) || preg_match('/Just a moment.../',$source))? $data['cf']=true:$data['cf']=false;
+	(preg_match('/Firewall/',$source))? $data['fw']=true:$data['fw']=false;
+	return $data;
+}
