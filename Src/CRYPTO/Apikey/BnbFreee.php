@@ -71,10 +71,6 @@ while(true){
 	$cap = $api->RecaptchaV2("6LcK--IdAAAAAEmWdU_-U5Dm578lJNwAtmPzqqRT", "https://bnbfreee.com/lucky");
 	$data = '{"recaptha":"'.$cap.'"}';
 	$r = json_decode(curl("https://api.bnbfreee.com/lucky",h($data,$akses_token),$data,1)[1],1);
-	$cek = GlobalCheck($r);
-	if($cek['fw']){
-		Exit(Error("Firewall Detect\n"));
-	}
 	if($r['status'] == "success"){
 		Cetak("Number",$r['lucky']['number']);
 		Cetak("You Win",sprintf('%.8f',floatval($r['lucky']['money']))." BNB");

@@ -1,7 +1,5 @@
 <?php
 const
-provider_api = "Xevil",
-provider_ref = "https://t.me/Xevil_check_bot?start=6192660395",
 register_link = "https://liteonion.online/?r=595",
 host = "https://liteonion.online/",
 youtube = "https://youtube.com/c/iewil",
