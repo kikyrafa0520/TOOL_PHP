@@ -25,8 +25,10 @@ Class RequestApi{
 			if(!$res)break;
 			print $xwr[$a % 4]." bypass $xr%".$sym[$a % 4]." \r";
 			usleep(100000);
+			if($xr < 99)$xr+=1;
 			$a++;
 		}
+		return $xr;
 	}
 	function getResult($data ,$method, $header = 0){
 		$get_in = $this->in_api($data ,$method, $header);
@@ -40,11 +42,11 @@ Class RequestApi{
 			echo " bypass $a% |   \r";
 			$get_res = $this->res_api($get_in["request"]);
 			if($get_res["request"] == "CAPCHA_NOT_READY"){
-				$ran = rand(10,20);
+				$ran = rand(5,10);
 				$a+=$ran;
 				if($a>99)$a=99;
 				echo " bypass $a% ─ \r";
-				$this->wait($wr,$a,5);
+				$a = $this->wait($wr,$a,5);
 				continue;
 			}
 			if($get_res["status"]){
@@ -183,54 +185,58 @@ Class ApiXevil extends RequestApi {
 		return 0;
 	}
 }
-/*
-error_reporting(0);
-# because no headers file get contents
 
-
-$apikey = "SoulqKkCaWdD7iWx5WNq7y6QuMpuljHm";
-$api = new ApiXevil($apikey);
-
-# Balance
-$balance = $api->getBalance();
-print " Balance: ".$balance."\n";;
-# 15033
-
-
-# reCaptcha
-$sitekey = "6LfD3PIbAAAAAJs_eEHvoOl75_83eXSqpPSRFJ_u";
-$pageurl = "https://2captcha.com/demo/recaptcha-v2";
-$reCaptcha = $api->RecaptchaV2($sitekey, $pageurl );
-print " reCaptcha: ".substr($reCaptcha,0,20)."\n";
-# 03AFcWeA4Rup5qQLKz3O
-
-# hCaptcha
-$sitekey = "9409f20b-6b75-4057-95c4-138e85f69789";
-$pageurl = "https://2captcha.com/demo/hcaptcha?difficulty=always-on";
-$hCaptcha =  $api->Hcaptcha($sitekey, $pageurl );
-print " hCaptcha: ".substr($hCaptcha,0,20)."\n";
-# P1_eyJ0eXAiOiJKV1QiL
-
-
-# turnstile
-$pageurl = "https://onlyfaucet.com/faucet/currency/ltc";
-$sitekey = "0x4AAAAAAAPSP6CaBc510-qc";
-$Turnstile = $api->Turnstile($sitekey, $pageurl);
-print " turstile: ".substr($Turnstile,0,20)."\n";
-# 0.8IlRqCONhotKoKHZFk
-
-
-# image Ocr
-# image as base64
-$img = base64_encode(file_get_contents("https://nopecha.com/image/demo/textcaptcha/00Ge55.png"));
-$Ocr = $api->Ocr($img);
-print " ocr: ".$Ocr."\n";
-# o0ge55
-
-
-# anti-botlinks 
-$source = file_get_contents("https://bitonefaucet.com.tr/rsshort/index.php");
-$Antibot = $api->AntiBot($source);
-print " antibotlink: ".$Antibot."\n";
-# +6378+7470+8895+5907
-*/
+/*************************** APIKEY ***************************/
+function Simpan_Api($nama_data){
+	if(file_exists("Data/Apikey/".$nama_data)){
+		$data = file_get_contents("Data/Apikey/".$nama_data);
+	}else{
+		if(!file_exists("Data/Apikey")){
+			system("mkdir Apikey");
+			if(PHP_OS_FAMILY == "Windows"){
+				system("move Apikey Data");
+			}else{
+				system("mv Apikey Data");
+			}
+			print Sukses(h."Berhasil membuat Folder untuk ".k."Apikey".n);
+		}
+		$data = readline(Isi($nama_data));echo "\n";
+		file_put_contents("Data/Apikey/".$nama_data,$data);
+	}
+	return $data;
+}
+function CheckApi(){
+	Cetak("Register",provider_ref);
+	$apikey = Simpan_Api(provider_api."_Apikey");
+	if(provider_api == "Xevil"){
+		$api = New ApiXevil($apikey);
+	}
+	if(provider_api == "Multibot"){
+		$api = New ApiMultibot($apikey);
+	}
+	if($api->getBalance()){
+		print Sukses(h."OK\n");
+		sleep(3);
+		return $apikey;
+	}else{
+		unlink("Data/Apikey/".provider_api."_Apikey");
+		exit(Error("Apikey: ".m."Something wrong!".n));
+	}
+}
+function MenuApi(){
+	Menu(1, "Multibot");
+	Menu(2, "Xevil");
+	$pil = readline(Isi("Provider Apikey"));
+	if($pil == 1){
+		define("provider_api","Multibot");
+		define("provider_ref", "http://api.multibot.in/");
+		$apikey = CheckApi();
+	}elseif($pil == 2){
+		define("provider_api","Xevil");
+		define("provider_ref", "t.me/Xevil_check_bot?start=6192660395");
+		$apikey = CheckApi();
+	}else{
+		exit(Error("Tolol\n"));
+	}
+	return $apikey;
+}

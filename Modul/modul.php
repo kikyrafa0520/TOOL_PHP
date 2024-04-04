@@ -58,7 +58,9 @@ function Cetak($label, $msg = "[No Content]"){
 function Line(){
 	return b.str_repeat('─',50).n;
 }
-
+function clean($extensi){
+	return str_replace(".php","",$extensi);
+}
 /************Banner****************/
 function TimeZone(){
 	system("clear");
@@ -227,43 +229,6 @@ function Satoshi($int){
 	return sprintf('%.8f',floatval($int));
 }
 
-/*************************** APIKEY ***************************/
-function Simpan_Api($nama_data){
-	if(file_exists("Data/Apikey/".$nama_data)){
-		$data = file_get_contents("Data/Apikey/".$nama_data);
-	}else{
-		if(!file_exists("Data/Apikey")){
-			system("mkdir Apikey");
-			if(PHP_OS_FAMILY == "Windows"){
-				system("move Apikey Data");
-			}else{
-				system("mv Apikey Data");
-			}
-			print Sukses(h."Berhasil membuat Folder untuk ".k."Apikey".n);
-		}
-		$data = readline(Isi($nama_data));echo "\n";
-		file_put_contents("Data/Apikey/".$nama_data,$data);
-	}
-	return $data;
-}
-function CheckApi(){
-	Cetak("Register",provider_ref);
-	$apikey = Simpan_Api(provider_api."_Apikey");
-	if(provider_api == "Xevil"){
-		$api = New ApiXevil($apikey);
-	}
-	if(provider_api == "Multibot"){
-		$api = New ApiMultibot($apikey);
-	}
-	if($api->getBalance()){
-		print Sukses(h."OK\n");
-		sleep(3);
-		return $apikey;
-	}else{
-		unlink("Data/Apikey/".provider_api."_Apikey");
-		exit(Error("Apikey: ".m."Something wrong!".n));
-	}
-}
 /********SL********/
 function _Fly($url){
 	$scheme = parse_url($url)['scheme'].'://';
@@ -318,7 +283,6 @@ function GlobalCheck($source){
 function Parsing($source){
 	preg_match_all('#<input type="(.*?)" name="(.*?)" value="(.*?)"#',$source,$input);
 	for($i = 0; $i<count($input[0]);$i++){
-		//$clear = str_replace(['" autocomplete="off','" id="token'],'',$input[2][$i]);
 		$clear = explode('"',$input[2][$i])[0];
 		$data[$clear] = $input[3][$i];
 	}
