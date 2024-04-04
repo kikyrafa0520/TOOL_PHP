@@ -315,3 +315,12 @@ function GlobalCheck($source){
 	(preg_match('/Firewall/',$source))? $data['fw']=true:$data['fw']=false;
 	return $data;
 }
+function Parsing($source){
+	preg_match_all('#<input type="(.*?)" name="(.*?)" value="(.*?)"#',$source,$input);
+	for($i = 0; $i<count($input[0]);$i++){
+		//$clear = str_replace(['" autocomplete="off','" id="token'],'',$input[2][$i]);
+		$clear = explode('"',$input[2][$i])[0];
+		$data[$clear] = $input[3][$i];
+	}
+	return $data;
+}

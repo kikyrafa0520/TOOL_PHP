@@ -71,7 +71,7 @@ print line();
 
 gaslagi:
 $r = curl(host.'faucet.php',h())[1];
-$cek = GlobalCheck($source);
+$cek = GlobalCheck($r);
 if($cek['cf']){
 	print Error("Cloudflare\n");
 	hapus("Cookie");
