@@ -16,13 +16,12 @@ Class RequestApi{
 		$res =  json_decode(file_get_contents($this->host."/res.php?action=userinfo&key=".$this->apikey),1);
 		return $res["balance"];
 	}
-	function wait($wr,$xr,$tmr){
+	function wait($xr,$tmr){
+		if($xr < 50){$wr=h;}elseif($xr >= 50 && $xr < 80){$wr=k;}else{$wr=m;}
 		$xwr = [$wr,p,$wr,p];
 		$sym = [' ─ ',' / ',' │ ',' \ ',];
-		$timr = time()+$tmr;$a = 0;
-		while(1){
-			$res=$timr-time();
-			if(!$res)break;
+		$a = 0;
+		for($i=$tmr*4;$i>0;$i--){
 			print $xwr[$a % 4]." bypass $xr%".$sym[$a % 4]." \r";
 			usleep(100000);
 			if($xr < 99)$xr+=1;
@@ -38,7 +37,6 @@ Class RequestApi{
 		}
 		$a = 0;
 		while(true){
-			if($a < 50){$wr=h;}elseif($a >= 50 && $a < 80){$wr=k;}else{$wr=m;}
 			echo " bypass $a% |   \r";
 			$get_res = $this->res_api($get_in["request"]);
 			if($get_res["request"] == "CAPCHA_NOT_READY"){
@@ -46,7 +44,7 @@ Class RequestApi{
 				$a+=$ran;
 				if($a>99)$a=99;
 				echo " bypass $a% ─ \r";
-				$a = $this->wait($wr,$a,5);
+				$a = $this->wait($a,5);
 				continue;
 			}
 			if($get_res["status"]){
@@ -105,16 +103,6 @@ Class ApiMultibot extends RequestApi {
 		return $this->getResult($data, "POST");
 	}
 	function AntiBot($source){
-		/*
-		# true Data like this, but i make easy with source website
-		$data = http_build_query([
-			"method" => "antibot",
-			"main" => "data:image/png;base64,iVxxxx",
-			"6181" => "data:image/png;base64,iVxxxx",
-			"1354" => "data:image/png;base64,iVxxxx",
-			"5643" => "data:image/png;base64,iVxxxx"
-			]);
-		*/
 		$main = explode('"',explode('src="',explode('Bot links',$source)[1])[1])[0];
 		if(!$main)return 0;
 		$data["method"] = "antibot";
@@ -183,6 +171,15 @@ Class ApiXevil extends RequestApi {
 		$res = $this->getResult($data, "POST");
 		if($res)return "+".str_replace(",","+",$res);
 		return 0;
+	}
+	function Teaserfast($main, $small){
+		$data = http_build_query([
+			"method" => "teaserfast",
+			"main_photo" => $main,
+			"task" => $small
+		]);
+		//$data = "method=teaserfast&main_photo=".$main."&task=".$small;
+		return $this->getResult($data, "GET");
 	}
 }
 

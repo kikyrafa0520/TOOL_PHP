@@ -24,9 +24,6 @@ function HourlyFaucet($api){
 	while(true){
 		$r = curl(host.'faucet.php',h());
 		$tmr = explode('|',explode('select_hourly_faucet|',$r[1])[1])[0];
-		if(is_numeric($tmr)){
-			return $tmr;
-		}
 		preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $r[0], $matches);
 		$cookies = array();
 		foreach($matches[1] as $item) {
@@ -39,13 +36,13 @@ function HourlyFaucet($api){
 		
 		$r = json_decode(curl(host.'process.php',h(),$data)[1],1);
 		if($r["ret"]){
-			Cetak("Type","Hourly Faucet");
 			Cetak("Number",$r["num"]);
 			print Sukses($r["mes"]);
 			Cetak("Balance",GetDashboard()["bal"]);
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
 		}
+		Tmr(3600);
 	}
 }
 
@@ -53,7 +50,10 @@ function ClaimBonus(){
 	while(true){
 		$r = curl(host.'faucet.php',h());
 		$bonus = explode('</span>',explode('<span id="free_spins">',$r[1])[1])[0];
-		if(!$bonus)return 0;
+		if(!$bonus){
+			print Error("No Bonus\n");
+			break;
+		}
 		preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $r[0], $matches);
 		$cookies = array();
 		foreach($matches[1] as $item) {
@@ -63,7 +63,6 @@ function ClaimBonus(){
 		$data = "action=claim_bonus_faucet&csrf_test_name=".$cookies['csrf_cookie_name'];
 		$r = json_decode(curl(host.'process.php',h(),$data)[1],1);
 		if($r["ret"]){
-			Cetak("Type","Bonus Faucet");
 			Cetak("Number",$r["num"]);
 			print Sukses($r["mes"]);
 			Cetak("Balance",GetDashboard()["bal"]);
@@ -103,8 +102,14 @@ Cetak("Balance",$r["bal"]);
 Cetak("Bal_Api",$api->getBalance());
 print line();
 
-while(true){
-	$bonus = ClaimBonus();
-	$limit = HourlyFaucet($api);
-	if($limit)Tmr($limit);
-}
+menu:
+$r = curl(host.'faucet.php',h());
+$bonus = explode('</span>',explode('<span id="free_spins">',$r[1])[1])[0];
+
+Menu(1,"Claim Bonus [$bonus]");
+Menu(2, "Hourly Bonus [Unlimited]");
+$pil = readline(Isi("Nomor"));
+print line();
+if($pil == 1)ClaimBonus();
+if($pil == 2)HourlyFaucet($api);
+goto menu;

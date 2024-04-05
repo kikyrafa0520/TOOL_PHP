@@ -1,5 +1,3 @@
 @Crypto
 
-[*] Free -> from CoinsLiteOnion
-to LiteOnion
-[*] Api_Multibot & Api_Xevil -> Apikey
+[+] Apikey -> Bnbpick

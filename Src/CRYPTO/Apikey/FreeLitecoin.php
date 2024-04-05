@@ -1,3 +1,4 @@
+<?php
 const
 host = "https://free-litecoin.com/",
 register_link = "https://free-litecoin.com/login?referer=1931549",

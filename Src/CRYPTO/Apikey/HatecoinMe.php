@@ -30,8 +30,8 @@ function Claim($api, $patch){
 	$r = Get_Faucet($patch);
 	$sl = explode('</button>',explode('<button class="btn btn-primary btn-lg " disabled><i class="far fa-check-circle"></i>',$r)[1])[0];//You need to do 1 shortlinks to unlock
 	if($sl){
-	print Error($sl.n);
-	return 0;
+		print Error($sl.n);
+		return 0;
 	}
 	if(preg_match('/Cloudflare/',$r) || preg_match('/Just a moment.../',$r)){
 		print Error("Cloudflare\n");
@@ -48,7 +48,7 @@ function Claim($api, $patch){
 	$csrf = explode('"',explode('_token_name" id="token" value="',$r)[1])[0];
 	$token = explode('"',explode('name="token" value="',$r)[1])[0];
 	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
-	
+	if(!$sitekey){print Error("Sitekey Error\n"); continue;}
 	$atb = $api->Antibot($r);
 	if(!$atb){print Error("@".provider_api." Error\n"); continue;}
 	$cap = $api->RecaptchaV2($sitekey, host.$patch);
@@ -72,69 +72,69 @@ function Claim($api, $patch){
 	print Error("Daily claim limit\n");
 }
 function auto(){
-while(true){
-	$r=curl(host."auto",h())[1];
-	if(preg_match("/Firewall/",$r)){
-		exit(Error("Firewall\n"));
+	while(true){
+		$r=curl(host."auto",h())[1];
+		if(preg_match("/Firewall/",$r)){
+			exit(Error("Firewall\n"));
+		}
+		if(preg_match("/You don't have enough energy/",$r)){
+			echo Error("You don't have enough energy".n);
+			print line();break;
+		}
+		$tmr=explode(',',explode('let timer = ',$r)[1])[0];
+		$token=explode('"',explode('name="token" value="',$r)[1])[0];
+		
+		if($tmr){tmr($tmr);}
+		
+		$data = "token=".$token;
+		$r = curl(host."auto/verify",h(),$data)[1];
+		$ss = explode('has',explode("Swal.fire('Good job!', '",$r)[1])[0];
+		if($ss){
+			Cetak("Sukses",$ss);
+			Cetak("Balance",Get_Dashboard()["balance"]);
+			Cetak("Energy",Get_Dashboard()["energy"]);
+			print line();
+		}
 	}
-	if(preg_match("/You don't have enough energy/",$r)){
-		echo Error("You don't have enough energy".n);
-		print line();break;
-	}
-	$tmr=explode(',',explode('let timer = ',$r)[1])[0];
-	$token=explode('"',explode('name="token" value="',$r)[1])[0];
-	
-	if($tmr){tmr($tmr);}
-	
-	$data = "token=".$token;
-	$r = curl(host."auto/verify",h(),$data)[1];
-	$ss = explode('has',explode("Swal.fire('Good job!', '",$r)[1])[0];
-	if($ss){
-		Cetak("Sukses",$ss);
-		Cetak("Balance",Get_Dashboard()["balance"]);
-		Cetak("Energy",Get_Dashboard()["energy"]);
-		print line();
-	}
-}
 }
 function ptc($api){
-while(true){
-	$r = curl(host.'ptc',h())[1];
-	$id = explode("'",explode("/ptc/view/",$r)[1])[0];
-	if(!$id){
-		break;
+	while(true){
+		$r = curl(host.'ptc',h())[1];
+		$id = explode("'",explode("/ptc/view/",$r)[1])[0];
+		if(!$id){
+			break;
+		}
+		$r = curl(host.'ptc/view/'.$id,h())[1];
+		$ptc = explode("'",explode("var url = '",$r)[1])[0];
+		$ptc = explode("/",$ptc)[2];
+		
+		if($idptc == 0){
+			print Cetak("Visit",$ptc);
+		}
+		$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+		$token = explode('"',explode('name="token" value="',$r)[1])[0];
+		$csrf = explode('"',explode('<input type="hidden" name="csrf_token_name" value="',$r)[1])[0];
+		$tmr = explode(';',explode('var timer = ',$r)[1])[0];
+		if($tmr){tmr($tmr);}
+		$cap = $api->RecaptchaV2($sitekey, host.$patch);
+		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		$data = 'captcha=recaptchav2&g-recaptcha-response='.$cap.'&csrf_token_name='.$csrf.'&token='.$token;
+		$r = curl(host.'ptc/verify/'.$id,h(),$data)[1];
+		$ss = explode('has',explode("Swal.fire('Good job!', '",$r)[1])[0];
+		print "\r             \r";
+		if($ss) {
+			Cetak("Sukses",$ss);
+			Cetak("Balance",Get_Dashboard()["balance"]);
+			Cetak("Bal_Api",$api->getBalance());
+			print line();
+			$idptc = 0;
+		}else{
+			$idptc = 1;
+			print Error("Invalid Captcha\n");
+		}
 	}
-	$r = curl(host.'ptc/view/'.$id,h())[1];
-	$ptc = explode("'",explode("var url = '",$r)[1])[0];
-	$ptc = explode("/",$ptc)[2];
-	
-	if($idptc == 0){
-		print Cetak("Visit",$ptc);
-	}
-	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
-	$token = explode('"',explode('name="token" value="',$r)[1])[0];
-	$csrf = explode('"',explode('<input type="hidden" name="csrf_token_name" value="',$r)[1])[0];
-	$tmr = explode(';',explode('var timer = ',$r)[1])[0];
-	if($tmr){tmr($tmr);}
-	$cap = $api->RecaptchaV2($sitekey, host.$patch);
-	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
-	$data = 'captcha=recaptchav2&g-recaptcha-response='.$cap.'&csrf_token_name='.$csrf.'&token='.$token;
-	$r = curl(host.'ptc/verify/'.$id,h(),$data)[1];
-	$ss = explode('has',explode("Swal.fire('Good job!', '",$r)[1])[0];
-	print "\r             \r";
-	if($ss) {
-		Cetak("Sukses",$ss);
-		Cetak("Balance",Get_Dashboard()["balance"]);
-		Cetak("Bal_Api",$api->getBalance());
-		print line();
-		$idptc = 0;
-	}else{
-		$idptc = 1;
-		print Error("Invalid Captcha\n");
-	}
-}
-print Error("Ptc Habis\n");
-print line();
+	print Error("Ptc Habis\n");
+	print line();
 }
 function aciv(){
 	$r = curl(host."achievements",h())[1];

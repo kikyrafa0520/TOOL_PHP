@@ -141,5 +141,5 @@ while(true){
 		
 	}
 	tmr(120);
-	if(min($res) < 5)break;
+	if(max($res) < 5)break;
 }

@@ -51,6 +51,9 @@ function claim($api, $coin, $email){
 		if(preg_match('/does not have sufficient/',$r)){
 			exit(Error("The faucet does not have sufficient funds for this transaction.\n"));
 		}
+		if(preg_match('/Your daily claim limit/',$r)){
+			exit(Error("Your daily claim limit\n"));
+		}
 		if($ss){
 			print Sukses(trim($ss)." Faucetpay!");
 			Cetak("Bal_Api",$api->getBalance());
@@ -59,7 +62,7 @@ function claim($api, $coin, $email){
 			print Error($wr.n);
 			print line();
 		}else{
-		continue;
+			continue;
 			print $r;exit;
 		}
 		tmr(300);
@@ -122,6 +125,7 @@ while(true){
 		$r = curl($coin.r,h(),'',1)[1];
 		if(preg_match('/You have to wait/',$r)){
 			$res = his([$coint=>1],$res);
+			continue;
 		}
 		$sesion = explode('"',explode('<input type="hidden" name="session-token" value="',$r)[1])[0];
 		$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
@@ -148,9 +152,16 @@ while(true){
 		$ss = explode('<',explode('<i class="fas fa-money-bill-wave"></i> ',$r)[1])[0];
 		$wr = explode('</div>',explode('<div class="alert alert-danger">',$r)[1])[0];
 		if(preg_match('/does not have sufficient/',$r)){
-			print c.strtoupper($coint).": ".Error(" The faucet does not have sufficient funds\n");
+			print c.strtoupper($coint).": ".Error("The faucet does not have sufficient funds\n");
 			$res = his([$coint=>3],$res);
 			print line();
+			continue;
+		}
+		if(preg_match('/Your daily claim limit/',$r)){
+			print c.strtoupper($coint).": ".Error("Your daily claim limit\n");
+			$res = his([$coint=>3],$res);
+			print line();
+			continue;
 		}
 		if($ss){
 			print Sukses($coint.": ".trim($ss)." Faucetpay!");
