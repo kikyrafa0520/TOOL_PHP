@@ -1,7 +1,7 @@
 <?php
 const
-host = "https://maticpick.io/",
-register_link = "https://maticpick.io/?ref=anjim127",
+host = "https://dogepick.io/",
+register_link = "https://dogepick.io/?ref=iewilmaestro",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
@@ -37,9 +37,10 @@ function HourlyFaucet($api){
 			parse_str($item, $cookie);
 			$cookies = array_merge($cookies, $cookie);
 		}
-		$cap = $api->Hcaptcha("2827ab4d-e726-41fd-a05f-a2b0575a3c7b", host.'faucet.php');
+		$sitekey = explode('">',explode('<div class="g-recaptcha" id="g_recaptcha" style="margin-top:20px" data-sitekey="',$r[1])[1])[0];//6Le5mIwlAAAAADmaHuGxaf5KTEiWwG9FhQex0JDc
+		$cap = $api->Recaptchav2($sitekey, host.'faucet.php');
 		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
-		$data = 'action=claim_hourly_faucet&g-recaptcha-response=null&h-captcha-response='.$cap.'&captcha=&ft=&csrf_test_name='.$cookies['csrf_cookie_name'];
+		$data = 'action=claim_hourly_faucet&g-recaptcha-response='.$cap.'&h-captcha-response=null&captcha=&ft=&csrf_test_name='.$cookies['csrf_cookie_name'];
 		
 		$r = json_decode(curl(host.'process.php',h(),$data)[1],1);
 		if($r["ret"]){
@@ -48,6 +49,8 @@ function HourlyFaucet($api){
 			Cetak("Balance",GetDashboard()["bal"]);
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
+		}else{
+			print Error('Please wait for a minutes\n');
 		}
 		Tmr(3600);
 	}

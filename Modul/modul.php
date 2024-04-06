@@ -6,31 +6,47 @@ author = "iewilmaestro",
 author_email = "<purna.iera@gmail.com>";
 
 if( PHP_OS_FAMILY == "Linux" ){
-	define("b","\033[1;34m");
-	define("c","\033[1;36m");
 	define("d","\033[0m");
+	define("m","\033[1;31m");
 	define("h","\033[1;32m");
 	define("k","\033[1;33m");
-	define("m","\033[1;31m");
-	define("p","\033[1;37m");
+	define("b","\033[1;34m");
 	define("u","\033[1;35m");
+	define("c","\033[1;36m");
+	define("p","\033[1;37m");
 	define("mp","\033[101m\033[1;37m");
-	define("pm","\033[107m\033[1;31m");
-	define("ph","\033[107m\033[1;30m");
+	define("hp","\033[102m\033[1;30m");
+	define("kp","\033[103m\033[1;37m");
 	define("bp","\033[104m\033[1;37m");
+	define("up","\033[105m\033[1;37m");
+	define("cp","\033[106m\033[1;37m");
+	define("pm","\033[107m\033[1;31m");
+	define("ph","\033[107m\033[1;32m");
+	define("pk","\033[107m\033[1;33m");
+	define("pb","\033[107m\033[1;34m");
+	define("pu","\033[107m\033[1;35m");
+	define("pc","\033[107m\033[1;36m");
 } else {
-	define("b","");
-	define("c","");
-	define("d","");
+	define("d","\033[0m");
+	define("m","");
 	define("h","");
 	define("k","");
-	define("m","");
-	define("p","");
+	define("b","");
 	define("u","");
+	define("c","");
+	define("p","");
 	define("mp","");
+	define("hp","");
+	define("kp","");
+	define("bp","");
+	define("up","");
+	define("cp","");
 	define("pm","");
 	define("ph","");
-	define("bp","");
+	define("pk","");
+	define("pb","");
+	define("pu","");
+	define("pc","");
 }
 function replace_txt($msg){
 	$awal = ["[","]","+","-",">","*"];
@@ -56,7 +72,7 @@ function Cetak($label, $msg = "[No Content]"){
 	print h."[".p.$label.h.str_repeat(" ",$lenstr)."]─> ".p.$msg.n;
 }
 function Line(){
-	return b.str_repeat('─',50).n;
+	return c.str_repeat('─',44).n;
 }
 function clean($extensi){
 	return str_replace(".php","",$extensi);
@@ -81,19 +97,32 @@ function TimeZone(){
 	print b."Youtube".m.": ".p."youtube.com/@iewil".m." >".n;
 	print line();
 }
+function authBan($title, $str){
+	$title_len_s = 8;
+	$strlen_s = 19;
+	$title_len = $title_len_s - strlen($title);
+	$strlen = $strlen_s - strlen($str);
+	return bp." ".$title.str_repeat(" ",$title_len).d.pb." ".$str.str_repeat(" ",$strlen).d.n;
+}
 function Ban($sc = 0){
-	TimeZone();
-	print m."~~~~~\t┌┬┐ ┌─┐ ┌─┐ ┬    ┬─┐ ┬ ┬ ┬─┐\t ~~~~~".n;
-	print m."~~~~~\t │  │ │ │ │ │    ├─┘ ├─┤ ├─┘\t ~~~~~".n;
-	print p."~~~~~\t ┴  └─┘ └─┘ ┴─┘  ┴   ┴ ┴ ┴ \t ~~~~~".n;
+	system("clear");
+	$line = c;
+	$check = json_decode(file_get_contents("setup.php"),1);
+	print n.pm.str_pad(strtoupper("v ".$check['version']),44, " ", STR_PAD_BOTH).d.n;
+	print $line."──────────────┬".str_repeat("─",29).n;
+	print m."<?╔╦╗╔═╗╔═╗".p."╦  ".$line."│".authBan("Author", "@fat9ght");
+	print m."   ║ ║ ║║ ".p."║║  ".$line."│".authBan("Channel", "t.me/MaksaJoin");
+	print m."   ╩ ╚═╝╚".p."═╝╩═╝".$line."│".authBan("Youtube", "youtube.com/@iewil");
+	print m."  ╔═╗╦ ".p."╦╔═╗   ".$line."│".mp.str_pad("!--- 2022 REBORN >", 29, " ", STR_PAD_BOTH).d.n;
+	print m."  ╠═╝╠".p."═╣╠═╝   ".$line."│".up.str_pad("@PetapaGenit2, @Zhy_08", 29, " ", STR_PAD_BOTH).d.n;
+	print m."  ╩  ".p."╩ ╩╩  ?> ".$line."│".up.str_pad("@IPeop, @MetalFrogs", 29, " ", STR_PAD_BOTH).d.n;
+	print $line."──────────────┴".str_repeat("─",29).n;
 	if($sc){
-		print Line();
-		print h."Sc Aktif: ".k.strtoupper(nama_file).n;
-		print Line();
-	}else{
+		print hp.str_pad(strtoupper(nama_file),44, " ", STR_PAD_BOTH).d.n;
 		print Line();
 	}
 }
+
 function run($url, $ua, $data = null,$cookie=null) {
 	while(true){
 		$ch = curl_init();curl_setopt_array($ch, array(CURLOPT_URL => $url,CURLOPT_FOLLOWLOCATION => 1,));

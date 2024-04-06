@@ -188,7 +188,7 @@ game("pacman-lite","2");
 game("hextris-lite","3");
 game("taptaptap","4");
 
-autofaucet();
 acivement();
+autofaucet();
 leaderboard();
 saldo();

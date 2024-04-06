@@ -57,6 +57,9 @@ if($tam){
 	Ban();
 }
 
+menu_pertama:
+print mp.str_pad(strtoupper("menu"),44, " ", STR_PAD_BOTH).d.n;
+print line();
 $r = scandir("Src");$a = 0;
 foreach($r as $act){
 	if($act == '.' || $act == '..') continue;
@@ -68,6 +71,9 @@ $pil = readline(Isi("Nomor"));
 print line();
 if($pil == '' || $pil >= Count($menu))exit(Error("Tolol"));
 
+menu_kedua:
+print mp.str_pad(strtoupper("menu -> ".$menu[$pil]),44, " ", STR_PAD_BOTH).d.n;
+print line();
 $r = scandir("Src/".$menu[$pil]);$a = 0;
 foreach($r as $act){
 	if($act == '.' || $act == '..') continue;
@@ -75,9 +81,11 @@ foreach($r as $act){
 	Menu($a, clean($act));
 	$a++;
 }
+Menu($a, m.'<< Back');
 $pil2 = readline(Isi("Nomor"));
 print line();
-if($pil2 == '' || $pil2 >= Count($menu2))exit(Error("Tolol"));
+if($pil2 == '' || $pil2 > Count($menu2))exit(Error("Tolol"));
+if($pil2 == Count($menu2))goto menu_pertama;
 if(explode('-',$menu2[$pil2])[1])exit(Error("Tolol"));
 $is_file = is_file("Src/".$menu[$pil]."/".$menu2[$pil2]);
 if($is_file){
@@ -87,6 +95,8 @@ if($is_file){
 	exit;
 }
 
+print mp.str_pad(strtoupper('menu -> '.$menu[$pil].' -> '.$menu2[$pil2]),44, " ", STR_PAD_BOTH).d.n;
+print line();
 $r = scandir("Src/".$menu[$pil]."/".$menu2[$pil2]);$a=0;
 foreach($r as $act){
 	if($act == '.' || $act == '..') continue;
@@ -94,9 +104,11 @@ foreach($r as $act){
 	Menu($a, clean($act));
 	$a++;
 }
+Menu($a, m.'<< Back');
 $pil3 = readline(Isi("Nomor"));
 print line();
-if($pil3 == '' || $pil3 >= Count($menu3))exit(Error("Tolol"));
+if($pil3 == '' || $pil3 > Count($menu3))exit(Error("Tolol"));
+if($pil3 == Count($menu3))goto menu_kedua;
 if(explode('-',$menu3[$pil3])[1])exit(Error("Tolol"));
 
 define("nama_file",clean($menu3[$pil3]));

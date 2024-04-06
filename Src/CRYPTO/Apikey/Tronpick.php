@@ -1,7 +1,7 @@
 <?php
 const
-host = "https://maticpick.io/",
-register_link = "https://maticpick.io/?ref=anjim127",
+host = "https://tronpick.io/",
+register_link = "https://tronpick.io/?ref=iewilmaestro",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
@@ -37,7 +37,7 @@ function HourlyFaucet($api){
 			parse_str($item, $cookie);
 			$cookies = array_merge($cookies, $cookie);
 		}
-		$cap = $api->Hcaptcha("2827ab4d-e726-41fd-a05f-a2b0575a3c7b", host.'faucet.php');
+		$cap = $api->Hcaptcha("8628f615-3f07-4c0b-a889-c8a20544e46e", host.'faucet.php');
 		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
 		$data = 'action=claim_hourly_faucet&g-recaptcha-response=null&h-captcha-response='.$cap.'&captcha=&ft=&csrf_test_name='.$cookies['csrf_cookie_name'];
 		
@@ -48,6 +48,8 @@ function HourlyFaucet($api){
 			Cetak("Balance",GetDashboard()["bal"]);
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
+		}else{
+			print Error('Please wait for a minutes\n');
 		}
 		Tmr(3600);
 	}

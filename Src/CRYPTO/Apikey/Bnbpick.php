@@ -23,6 +23,13 @@ function GetDashboard(){
 function HourlyFaucet($api){
 	while(true){
 		$r = curl(host.'faucet.php',h());
+		$cek = GlobalCheck($r[1]);
+		if($cek['cf']){
+			print Error("Cloudflare Detect\n");
+			hapus("Cookie");
+			print line();
+			return 'cf';
+		}
 		$tmr = explode('|',explode('select_hourly_faucet|',$r[1])[1])[0];
 		preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $r[0], $matches);
 		$cookies = array();
@@ -114,5 +121,8 @@ Menu(2, "Hourly Bonus [Unlimited]");
 $pil = readline(Isi("Nomor"));
 print line();
 if($pil == 1)ClaimBonus();
-if($pil == 2)HourlyFaucet($api);
+if($pil == 2){
+	$x = HourlyFaucet($api);
+	if($x == 'cf')goto cookie;
+}
 goto menu;

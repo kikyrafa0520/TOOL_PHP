@@ -1,3 +1,8 @@
 @Crypto
 
 [+] Apikey -> Bnbpick
+[+] Apikey -> Claimclicks
+[+] Apikey -> Tronpick
+[+] Apikey -> Dogepick
+
+[+] Free -> Minifaucet
