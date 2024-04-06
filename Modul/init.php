@@ -43,7 +43,8 @@ if($tam){
 	if($tam[$pil] == "update"){
 		system("git reset --hard");
 		system("git pull");
-		sleep(3);
+		print line();
+		exit(sukses("re run script if return succes"));
 	}elseif($tam[$pil] == "multi"){
 		unlink("Data/Apikey/Multibot_Apikey");
 		print "Berhasil Menghapus Apikey Multibot";
