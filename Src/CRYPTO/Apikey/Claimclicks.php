@@ -25,6 +25,12 @@ Cetak("Register",register_link);
 print line();
 cookie:
 $email = simpan("Username_Faucetpay");
+if(explode('@',$email)[1]){
+	hapus("Username_Faucetpay");
+	print error("invalid username!\n");
+	print line();
+	goto cookie;
+}
 if(!ua())print "\n".line();
 
 $apikey = MenuApi();
@@ -78,6 +84,12 @@ while(true){
 		$r = curl(host.$coint.r,h(host.$coint.r),$data,1)[1];
 		$ss = explode('<',explode('<div class="alert alert-success">',$r)[1])[0];
 		$wr = explode('</div>',explode('<div class="alert alert-danger">',$r)[1])[0];
+		if(preg_match('/invalid address/',$r){
+			print error("invalid address\n");
+			print line();
+			hapus("Username_Faucetpay");
+			goto cookie;
+		}
 		if(preg_match('/does not have sufficient/',$r)){
 			print c.strtoupper($coint).": ".Error("The faucet does not have sufficient funds\n");
 			$res = his([$coint=>3],$res);
