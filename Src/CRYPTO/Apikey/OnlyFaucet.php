@@ -1,4 +1,5 @@
 <?php
+Exit(Error("progress\n"));
 const
 host = "https://onlyfaucet.com/",
 register_link = "https://onlyfaucet.com/?r=985",
