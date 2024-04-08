@@ -84,7 +84,7 @@ while(true){
 		$r = curl(host.$coint.r,h(host.$coint.r),$data,1)[1];
 		$ss = explode('<',explode('<div class="alert alert-success">',$r)[1])[0];
 		$wr = explode('</div>',explode('<div class="alert alert-danger">',$r)[1])[0];
-		if(preg_match('/invalid address/',$r){
+		if(preg_match('/invalid address/',$r)){
 			print error("invalid address\n");
 			print line();
 			hapus("Username_Faucetpay");
