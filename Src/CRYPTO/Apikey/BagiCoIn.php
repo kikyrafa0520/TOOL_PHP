@@ -2,6 +2,7 @@
 const
 host = "https://bagi.co.in/",
 register_link = "https://bagi.co.in/?ref=2684",
+typeCaptcha = "RecaptchaV2",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
@@ -16,9 +17,9 @@ function dash(){
 	return ["user"=>$user];
 }
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 if(!Simpan("Cookie"))print "\n".line();
 if(!ua())print "\n".line();
 

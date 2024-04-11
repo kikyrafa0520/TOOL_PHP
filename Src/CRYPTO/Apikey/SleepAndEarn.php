@@ -2,6 +2,7 @@
 const
 host = "https://sleepandearn.online/",
 register_link = "https://sleepandearn.online/index.php?ref=3460",
+typeCaptcha = "hcaptcha",
 youtube = "https://youtube.com/@iewil";
 
 function h(){
@@ -30,9 +31,9 @@ function getBalance(){
 }
 
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 $email = Simpan("Email");
 $password = Simpan("Password");
 if(!ua())print "\n".line();

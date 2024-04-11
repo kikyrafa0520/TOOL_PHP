@@ -2,6 +2,7 @@
 const
 host = "https://api.bnbfreee.com/",
 register_link = "https://bnbfreee.com?r=0x00f3D58C2657c4c4b0F838C97d3879F9139fe5C2",
+typeCaptcha = "RecaptchaV2",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0,$au=0){
@@ -19,9 +20,9 @@ function login($api, $email, $password){
 	return json_decode(curl("https://api.bnbfreee.com/users/login",h($data),$data,1)[1],1);
 }
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 $email = Simpan("Email");
 $password = Simpan("Password");
 if(!ua())print "\n".line();

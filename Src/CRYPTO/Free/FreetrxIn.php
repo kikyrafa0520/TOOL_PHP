@@ -1,7 +1,7 @@
 <?php
 const
-register_link = "https://freeth.in/?r=143382",
-host = "https://freeth.in/",
+register_link = "https://freetrx.in/?r=8162",
+host = "https://freetrx.in/",
 youtube = "https://youtube.com/c/iewil";
 
 function h(){
@@ -37,7 +37,8 @@ ua();
 
 Ban(1);
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
-system("termux-open-url ".youtube);Ban(1);
+//system("termux-open-url ".youtube);
+Ban(1);
 
 $r = run(host."/?op=home",h());
 $rp = trim(explode('</div>',explode('<div class="reward_table_box br_0_0_5_5 user_reward_points font_bold" style="border-top:none;">',$r)[1])[0]);
@@ -47,7 +48,7 @@ if(!$bal){
 	hapus("Cookie");
 	goto cookie;
 }
-print Cetak("Balance",$bal." ETH");
+print Cetak("Balance",$bal." TRX");
 print Cetak("Reward",$rp);
 //Multibot_Bal();
 print line();
@@ -68,8 +69,8 @@ while(true){
 	$x = explode(':',$r);
 	if($x[2]){
 		Cetak("Number",$x[1]);
-		Cetak("You Win",$x[3]." ETH");
-		Cetak("Balance",$x[2]." ETH");
+		Cetak("You Win",$x[3]." TRX");
+		Cetak("Balance",$x[2]." TRX");
 		$r = run(host."/?op=home",h());
 		$rp = trim(explode('</div>',explode('<div class="reward_table_box br_0_0_5_5 user_reward_points font_bold" style="border-top:none;">',$r)[1])[0]);
 		Cetak("Reward",$rp);

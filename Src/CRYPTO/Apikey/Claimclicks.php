@@ -2,6 +2,7 @@
 const
 register_link = "https://claimclicks.com/eth/?r=iewilmaestro",
 host = "https://claimclicks.com/",
+typeCaptcha = "hcaptcha",
 youtube = "https://youtube.com/c/iewil",
 r = "/?r=iewilmaestro";
 
@@ -21,9 +22,9 @@ function h($ref=0){
 }
 
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 $email = simpan("Username_Faucetpay");
 if(explode('@',$email)[1]){
 	hapus("Username_Faucetpay");

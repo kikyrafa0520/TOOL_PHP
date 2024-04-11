@@ -2,6 +2,7 @@
 const
 host = "https://bnbpick.io/",
 register_link = "https://bnbpick.io/?ref=iewilmaestro",
+typeCaptcha = "RecaptchaV2",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
@@ -50,7 +51,7 @@ function HourlyFaucet($api){
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
 		}else{
-			print Error('Please wait for a minutes\n');
+			print Error("Please wait for a minutes\n");
 		}
 		Tmr(3600);
 	}
@@ -82,9 +83,9 @@ function ClaimBonus(){
 }
 
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 if(!Simpan("Cookie"))print "\n".line();
 if(!ua())print "\n".line();
 

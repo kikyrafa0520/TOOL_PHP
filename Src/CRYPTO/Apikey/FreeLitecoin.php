@@ -2,6 +2,7 @@
 const
 host = "https://free-litecoin.com/",
 register_link = "https://free-litecoin.com/login?referer=1931549",
+typeCaptcha = "RecaptchaV2",
 youtube = "https://youtu.be/S6wRxEjbCYQ";
 
 function h($xml=0){
@@ -41,9 +42,9 @@ function gabut($str){
 	print h."Number: ".p.$str;
 }
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 $email = Simpan("Email");
 $pass = Simpan("Password");
 if(!ua())print "\n".line();

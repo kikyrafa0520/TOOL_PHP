@@ -2,6 +2,7 @@
 const
 register_link = "https://sollcrypto.com/home/page?r=purna.iera@gmail.com",
 host = "https://sollcrypto.com/",
+typeCaptcha = "RecaptchaV2",
 youtube = "https://youtube.com/c/iewil",
 r = "?r=purna.iera@gmail.com";
 
@@ -69,9 +70,9 @@ function claim($api, $coin, $email){
 	}
 }
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 $email = simpan("Email_Faucetpay");
 if(!ua())print "\n".line();
 

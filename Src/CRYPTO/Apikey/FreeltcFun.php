@@ -2,6 +2,7 @@
 const
 host = "https://freeltc.fun/",
 register_link = "https://freeltc.fun/?r=1890",
+typeCaptcha = "Turnstile",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){

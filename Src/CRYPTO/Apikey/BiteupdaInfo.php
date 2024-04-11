@@ -2,6 +2,7 @@
 const
 host = "https://bitupdate.info/",
 register_link = "https://bitupdate.info/?r=8227",
+typeCaptcha = "RecaptchaV2 | AntiBot",
 youtube = "https://youtube.com/@iewil";
 
 function h(){
@@ -66,9 +67,9 @@ function Claim($api, $patch){
 	endwhile;
 }
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 if(!Simpan("Cookie"))print "\n".line();
 if(!ua())print "\n".line();
 $apikey = MenuApi();

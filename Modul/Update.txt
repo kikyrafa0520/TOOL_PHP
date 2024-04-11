@@ -1,5 +1,5 @@
 @Crypto
 
-[+] Apikey -> Freeltcfun
+[+] Apikey -> Litepick
 
-[+] Free -> AutofaucetOrg
+[+] Free -> FreetrxIn

@@ -2,6 +2,7 @@
 const
 host = "https://autofaucet.dutchycorp.space/",
 register_link = "https://autofaucet.dutchycorp.space/?r=anjim127",
+typeCaptcha = "hcaptcha",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0,$au=0){
@@ -142,9 +143,9 @@ function GetTimer($patch){
 	return $tmr;
 }
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 if(!Simpan("Cookie"))print "\n".line();
 if(!ua())print "\n".line();
 

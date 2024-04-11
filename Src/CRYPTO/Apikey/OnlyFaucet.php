@@ -3,6 +3,7 @@ Exit(Error("progress\n"));
 const
 host = "https://onlyfaucet.com/",
 register_link = "https://onlyfaucet.com/?r=985",
+typeCaptcha = "Turnstile",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
@@ -38,9 +39,9 @@ function login($email){
 	}
 }
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 $email = Simpan("Email");
 if(!ua())print "\n".line();
 

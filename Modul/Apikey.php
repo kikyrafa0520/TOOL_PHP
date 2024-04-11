@@ -221,9 +221,18 @@ function CheckApi(){
 	}
 }
 function MenuApi(){
-	Menu(1, "Multibot");
-	Menu(2, "Xevil");
+	Cetak("Captcha",typeCaptcha);
+	if(typeCaptcha == "hcaptcha"){
+		$multi = p."[".k."required".p."]";
+		$xevil = "";
+	}else{
+		$multi = "";
+		$xevil = p."[".k."required".p."]";
+	}
+	Menu(1, "Multibot $multi");
+	Menu(2, "Xevil $xevil");
 	$pil = readline(Isi("Provider Apikey"));
+	print line();
 	if($pil == 1){
 		define("provider_api","Multibot");
 		define("provider_ref", "http://api.multibot.in/");

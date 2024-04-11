@@ -2,6 +2,7 @@
 const
 host = "https://hatecoin.me/",
 register_link = "https://hatecoin.me/?r=20999",
+typeCaptcha = "RecaptchaV2 | AntiBot",
 youtube = "https://youtube.com/@iewil";
 
 function h(){
@@ -161,9 +162,9 @@ function aciv(){
 	}
 }
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 if(!Simpan("Cookie"))print "\n".line();
 if(!ua())print "\n".line();
 

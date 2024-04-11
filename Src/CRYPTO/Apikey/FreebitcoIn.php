@@ -2,6 +2,7 @@
 const
 register_link = "https://freebitco.in/?r=48171588",
 host = "https://freebitco.in/",
+typeCaptcha = "hcaptcha",
 youtube = "https://youtube.com/c/iewil";
 
 function h(){
@@ -28,9 +29,9 @@ function finger($csrf,$h){
 	}
 }
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 if(!Simpan("Cookie"))print "\n".line();
 if(!ua())print "\n".line();
 
