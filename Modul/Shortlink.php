@@ -1,8 +1,8 @@
 <?php
-
 #belum selesai
+#@bpsl06_bot
 
-Class Shortlinks{
+Class Shortlinks {
 	function __construc($apikey, $shortlink){
 		$this->host = "https://mcm-faucet.biz.id";
 		$this->developer = "@PetapaGenit2";
@@ -21,7 +21,7 @@ Class Shortlinks{
 		$name = "ShrinkMe";
 		return $this->api($name);
 	}
-	function bypas(){
+	function bypas($url){
 		if($this->shorthost == "shrinkme.site"){
 			return $this->Shrinkme();
 		}
