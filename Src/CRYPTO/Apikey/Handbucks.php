@@ -69,6 +69,7 @@ while(1){
 print Error("You have watched all ads".n);
 print Line();
 
+exit;
 while(1){
 	$r = curl(host.'faucet',h())[1];
 	$cek = GlobalCheck($r);

@@ -21,6 +21,9 @@ Class Shortlinks {
 		$name = "ShrinkMe";
 		return $this->api($name);
 	}
+	function Fly(){
+		
+	}
 	function bypas($url){
 		if($this->shorthost == "shrinkme.site"){
 			return $this->Shrinkme();

@@ -5,22 +5,23 @@ register_link = "https://ourinfo.top/?r=2378",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
-	$h[] = "Host: ourinfo.top";
+	//$h[] = "Host: ourinfo.top";
 	$h[] = "user-agent: ".ua();
+	$h[] = "Cookie: ".Simpan("Cookie");
 	return $h;
 }
 
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
-simpan("Email_Faucetpay");
+simpan("Cookie");
 ua();
 
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
 //system("termux-open-url ".youtube);
 Ban(1);
-
+/*
 if(!file_exists("Data/".nama_file."/cookie.txt")){
 	loginagain:
 	$r = curl(register_link,h(),'',1)[1];
@@ -41,20 +42,30 @@ if(!file_exists("Data/".nama_file."/cookie.txt")){
 	}
 }
 Ban(1);
-$r = curl(host,h(),'',1)[1];
+*/
+$r = curl(host,h())[1];
 if(!explode('Logout',$r)[1]){
 	hapus("cookie.txt");
-	goto loginagain;
+	hapus("Cookie");
+	goto cookie;
 }
-Cetak("Wallet: ",simpan("Email_Faucetpay"));
-print line();
+//Cetak("Wallet: ",simpan("Email_Faucetpay"));
+//print line();
+
 $con = explode('/faucet/currency/',$r);
 $num = 0;
 while(true){
 	foreach($con as $a => $coins){
 		if($a == 0)continue;
 		$coin = explode('"',$coins)[0];
-		$r = curl(host."faucet/currency/".$coin,h(),'',1)[1];
+		$r = curl(host."faucet/currency/".$coin,h())[1];
+		$cek = GlobalCheck($r);
+		if($cek['cf']){
+			print Error("Cloudflare Detect\n");
+			hapus("cookie.txt");
+			hapus("Cookie");
+			goto cookie;
+		}
 		if(preg_match('/Daily claim limit/',$r)){
 			exit(Error("Daily claim limit for this coin reached\n"));
 		}

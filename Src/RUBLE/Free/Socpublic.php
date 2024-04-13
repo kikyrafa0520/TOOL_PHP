@@ -1,4 +1,4 @@
-<?
+<?php
 const
 register_link = "http://socpublic.com/?i=8785300",
 host = "http://socpublic.com/",

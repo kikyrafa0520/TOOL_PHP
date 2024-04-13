@@ -1,4 +1,4 @@
-<?
+<?php
 const
 register_link = "https://serfclick.net/i/141324",
 host = "https://serfclick.net/",

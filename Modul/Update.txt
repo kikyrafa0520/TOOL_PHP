@@ -1,5 +1,5 @@
 @Crypto
 
-[+] Apikey -> Litepick
-
-[+] Free -> FreetrxIn
+[+] Apikey -> Firefaucet
+[+] Apikey -> Solpick
+[+] Apikey -> Claimlitoshi

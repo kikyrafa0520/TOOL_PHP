@@ -1,5 +1,4 @@
 <?php
-//Exit(Error("progress\n"));
 const
 host = "https://firefaucet.win/",
 register_link = "https://firefaucet.win/ref/1258480",
@@ -69,11 +68,13 @@ menu_fire:
 Menu(1, "Faucet");
 Menu(2, "Visit Ptc");
 Menu(3, "Auto Faucet");
+Menu(4, "Shortlink");
 $pil = readline(Isi("Nomor"));
 print line();
 if($pil==1){goto faucet;
 }elseif($pil==2){goto ptc;
 }elseif($pil==3){goto auto;
+}elseif($pil==4){goto Shortlink;
 }else{echo Error("Bad Number\n");print line();goto menu_fire;}
 
 faucet:
@@ -85,7 +86,7 @@ while(true){
 	}
 	$csrf = explode('">',explode('name="csrf_token" value="',$r)[1])[0];
 	$activeCaptcha = explode('"',explode('<input name="selected-captcha" type="radio" id="select-',$r)[1])[0];
-	
+	Cetak("Captcha",strtoupper($activeCaptcha));
 	if($activeCaptcha == 'turnstile'){
 		$cap = $api->Turnstile("0x4AAAAAAAEUvFih09RuyAna", host.'faucet');
 		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
@@ -115,7 +116,7 @@ while(true){
 		$data["adcopy_response"] = $cap;
 		$data["adcopy_challenge"] = $ca;
 	}else{
-		print Error("No sitekey Detect\n");
+		print Error("No Captcha Detect\n");
 		continue;
 	}
 	$data["csrf_token"] = $csrf;
@@ -126,14 +127,14 @@ while(true){
 	$wr = explode('</div>',explode('<div class="error_msg hoverable">',$r)[1])[0];
 	$ss = strip_tags(explode('</div>',explode('<div class="success_msg hoverable"><b>',$r)[1])[0]);
 	if($ss){
-		print h.$ss.n;
-		print h."Acp      ".p."-> ".k.dash()["acp"].n;
+		print Sukses($ss);
+		Cetak("Acp",dash()["acp"]);
+		Cetak("Bal_Api",$api->getBalance());
 		print line();
 	}else{
-		print m.$wr.n;
+		print Error($wr.n);
 		print line();
 	}
-	print $r;exit;
 }
 ptc:
 while(true){
@@ -144,61 +145,68 @@ while(true){
 		print line();
 		goto menu_fire;
 	}
-	while(true){
-		$r = curl(host.'viewptc?id='.$id,h(),'',1)[1];
-		$csrf = explode('"',explode('name="csrf_token" value="',$r)[1])[0];
-		$key = explode("')",explode("onclick=continueptc('",$r)[1])[0];
-		$img = explode("'>",explode("<img src='data:image/png;base64, ",$r)[1])[0];
-		$tmr = explode("')",explode("parseInt('",$r)[1])[0];
-		if($tmr){tmr($tmr);}
-		$cap = $api->Ocr($img);
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+	$r = curl(host.'viewptc?id='.$id,h(),'',1)[1];
+	$csrf = explode('"',explode('name="csrf_token" value="',$r)[1])[0];
+	$key = explode("')",explode("onclick=continueptc('",$r)[1])[0];
+	$img = explode("'>",explode("<img src='data:image/png;base64, ",$r)[1])[0];
+	$tmr = explode("')",explode("parseInt('",$r)[1])[0];
+	if($tmr){tmr($tmr);}
+	$cap = $api->Ocr($img);
+	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
 		
-		$data = ["captcha"=>$cap,"csrf_token"=>$csrf];
+	$data = ["captcha"=>$cap,"csrf_token"=>$csrf];
 		
-		$arr = ["Host: firefaucet.win","content-length: ".strlen(http_build_query($data)),"accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/viewptc?id=".$id];
-		curl(host."ptcverify?key=".$key."&id=".$id,array_merge($arr,h()),http_build_query($data),'',1);
-		$r = curl(host.'ptc',h(),'',1)[1];
-		$ss = strip_tags(explode('</b>',explode('<div class="success_msg hoverable">',$r)[1])[0]);
-		if($ss){
-			print "\r                            \r";
-			print h.$ss.n;
-			print h."Acp      ".p."-> ".k.dash()["acp"].n;
-			print line();
-			break;
-		}
-		print $r;exit;
+	$arr = ["Host: firefaucet.win","content-length: ".strlen(http_build_query($data)),"accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/viewptc?id=".$id];
+	curl(host."ptcverify?key=".$key."&id=".$id,array_merge($arr,h()),http_build_query($data),'',1);
+	$r = curl(host.'ptc',h(),'',1)[1];
+	$ss = strip_tags(explode('</b>',explode('<div class="success_msg hoverable">',$r)[1])[0]);
+	if($ss){
+		print Sukses($ss);
+		Cetak("Acp",dash()["acp"]);
+		Cetak("Bal_Api",$api->getBalance());
+		print line();
 	}
 }
+
 auto:
-if(file_exists('Cookie_AutoClaim')){
-	$cookie = simpan('Cookie_AutoClaim');
-}else{
-	$cookie = simpan('Cookie_AutoClaim');
-	bn();
+$r = curl(host,h(),'',1)[1];
+$csrf = explode('">', explode('<input type="hidden" name="csrf_token" value="', $r)[1])[0];
+$data = 'csrf_token='.$token;
+preg_match_all('/<input(.*?)value="([\w]+)"/is',$r,$coins);$a=0;
+foreach ($coins[2] as $a => $coin){
+	Menu($a, $coin);
+	$curency[$a] = $coin;
 }
+$pilih_coin = readline(Isi("Nomor"));
+print line();
+$coin_pilih = explode(',',$pilih_coin);
+foreach($coin_pilih as $number){
+	$data .= "&coins=".$curency[$number];
+}
+
 while(true){
 	$arr = ["Host: firefaucet.win","cache-control: max-age=0","upgrade-insecure-requests: 1","sec-fetch-dest: document","accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9","referer: https://firefaucet.win/",];
-	$r = curl(host."start",array_merge($arr,h()));
+	$r = curl(host."start",array_merge($arr,h()),$data,1)[1];
 	tmr(60);
 	
-	$header = ["Host: firefaucet.win","accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/start","user-agent: ".simpan('User_Agent'),"cookie: ".$cookie];
-	$r = json_decode(curl(host."internal-api/payout/",$header),1);
+	$header = ["Host: firefaucet.win","accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/start"];
+	$r = json_decode(curl(host."internal-api/payout/",array_merge($header,h()),'',1)[1],1);
 	if($r["success"]==1){
 		$coin = array_keys($r["logs"]);
 		for($i=0;$i<count($coin);$i++){
-			print h."Success  ".p."-> ".k.$r["logs"][$coin[$i]]." ".$coin[$i].n;
+			print Sukses("Success ".$r["logs"][$coin[$i]]." ".$coin[$i]);
 		}
-		print h."Acp      ".p."-> ".k.dash()["acp"].n;
+		Cetak("Acp",dash()["acp"]);
 		print line();
 	}else{
-		print m.$r["message"].n;
+		print Error($r["message"].n);
 		print line();
 		goto menu_fire;
 	}
 	if($r["time_left"] == "0 seconds"){
-		print m."Acp Mencapai batas terendah!\n";
+		print Error("Acp Mencapai batas terendah!\n");
 		print line();
 		goto menu_fire;
 	}
 }
+Shortlink:
