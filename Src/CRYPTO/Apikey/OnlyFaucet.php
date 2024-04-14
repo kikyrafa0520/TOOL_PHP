@@ -1,5 +1,4 @@
 <?php
-Exit(Error("progress\n"));
 const
 host = "https://onlyfaucet.com/",
 register_link = "https://onlyfaucet.com/?r=985",
@@ -10,7 +9,8 @@ function h($data=0){
 	preg_match('@^(?:https://)?([^/]+)@i',host,$host);
 	$h[] = "Host: ".$host[1];
 	if($data)$h[] = "Content-Length: ".strlen($data);;
-	$h[] = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0";
+	$h[] = "User-Agent: ".ua();
+	$h[] = "Cookie: ".simpan("Cookie");
 	return $h;
 }
 function login($email){
@@ -42,7 +42,7 @@ Ban(1);
 cookie:
 Cetak("Register",register_link);
 print line();
-$email = Simpan("Email");
+simpan("Cookie");
 if(!ua())print "\n".line();
 
 $apikey = MenuApi();
@@ -57,15 +57,15 @@ print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";slee
 Ban(1);
 
 login:
-login($email);
-$r = curl(host,h(),'',1)[1];
+//login($email);
+$r = curl(host,h())[1];
 if(!explode('Logout',$r)[1]){
-	login($email);
-	hapus("cookie.txt");
-	goto login;
+	//login($email);
+	hapus("Cookie");
+	goto cookie;
 }
 
-Cetak("Email",$email);
+//Cetak("Email",$email);
 Cetak("Bal_Api",$api->getBalance());
 print line();
 
@@ -76,7 +76,7 @@ while(true){
 	foreach($con as $a => $coins){
 		if($a == 0)continue;
 		$coin = explode('"',$coins)[0];
-		$r = curl(host."faucet/currency/".$coin,h(),'',1)[1];
+		$r = curl(host."faucet/currency/".$coin,h())[1];
 		if(preg_match('/An uncaught Exception was encountered/',$r)){print Error("An uncaught Exception was encountered\n");sleep(2);print "\r                                 \r";tmr(60);continue;}
 		if(preg_match('/Just moment/',$r)){exit(Error("Cloudflare\n"));}
 		if(preg_match('/Please confirm your email address to be able to claim or withdraw/',$r)){print Error("Please confirm your email address to be able to claim or withdraw\n");print line();exit;}
@@ -97,7 +97,7 @@ while(true){
 		$tmr = explode("-",explode('var wait = ',$r)[1])[0];
 		$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
 		$sisa = explode('</span>',explode('<span class="badge badge-info">',$r)[1])[0];
-		if(!$sitekey)continue;
+		if(!$sitekey){print Error("Sitekey Error\n");continue;}
 		if($tmr){
 			tmr($tmr);
 		}
@@ -105,7 +105,7 @@ while(true){
 		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
 		
 		$data = "csrf_token_name=".$csrf."&token=".$hiden."&captcha=turnstile&cf-turnstile-response=".$cap;
-		$r = curl(host."faucet/verify/".$coin,h(),$data,1)[1];
+		$r = curl(host."faucet/verify/".$coin,h(),$data)[1];
 		$ban = explode('</div>',explode('<div class="alert text-center alert-danger"><i class="fas fa-exclamation-circle"></i> Your account',$r)[1])[0];
 		$ss = explode("account!",explode("html: '0.",$r)[1])[0];
 		$wr = explode(".",explode("html: '",$r)[1])[0];

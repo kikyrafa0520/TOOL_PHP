@@ -258,20 +258,6 @@ function Satoshi($int){
 	return sprintf('%.8f',floatval($int));
 }
 
-/********SL********/
-function _Fly($url){
-	$scheme = parse_url($url)['scheme'].'://';
-	$host = parse_url($url)['host'];
-    $path = parse_url($url)['path'];
-    $context = stream_context_create(['http' => ['header' => ['origin: https://advertisingexcel.com', 'referer: https://advertisingexcel.com/outgoing/']]]);
-    $res_head = get_headers($scheme.$host.'/flyinc.'.$path, true, $context);
-    print_r($res_head);exit;
-    $final = $res_head["location"];
-    if($final)tmr(20);
-    return $final;
-}
-
-
 /*******GLOBAL CHECK*******/
 function Simpan($nama_data){
 	if(file_exists("Data/".nama_file."/".$nama_data)){
@@ -316,4 +302,75 @@ function Parsing($source){
 		$data[$clear] = $input[3][$i];
 	}
 	return $data;
+}
+
+/*************************** APIKEY ***************************/
+function Simpan_Api($nama_data){
+	if(file_exists("Data/Apikey/".$nama_data)){
+		$data = file_get_contents("Data/Apikey/".$nama_data);
+	}else{
+		if(!file_exists("Data/Apikey")){
+			system("mkdir Apikey");
+			if(PHP_OS_FAMILY == "Windows"){
+				system("move Apikey Data");
+			}else{
+				system("mv Apikey Data");
+			}
+			print Sukses(h."Berhasil membuat Folder untuk ".k."Apikey".n);
+		}
+		$data = readline(Isi($nama_data));echo "\n";
+		file_put_contents("Data/Apikey/".$nama_data,$data);
+	}
+	return $data;
+}
+function CheckApi(){
+	Cetak("Register",provider_ref);
+	$apikey = Simpan_Api(provider_api."_Apikey");
+	if(provider_api == "Xevil"){
+		$api = New ApiXevil($apikey);
+	}
+	if(provider_api == "Multibot"){
+		$api = New ApiMultibot($apikey);
+	}
+	if($api->getBalance()){
+		print Sukses(h."OK\n");
+		sleep(3);
+		return $apikey;
+	}else{
+		unlink("Data/Apikey/".provider_api."_Apikey");
+		exit(Error("Apikey: ".m."Something wrong!".n));
+	}
+}
+function MenuApi(){
+	Cetak("Captcha",typeCaptcha);
+	if(typeCaptcha == "hcaptcha"){
+		$multi = p."[".k."required".p."]";
+		$xevil = "";
+	}else{
+		$multi = "";
+		$xevil = p."[".k."required".p."]";
+	}
+	Menu(1, "Multibot $multi");
+	Menu(2, "Xevil $xevil");
+	$pil = readline(Isi("Provider Apikey"));
+	print line();
+	if($pil == 1){
+		define("provider_api","Multibot");
+		define("provider_ref", "http://api.multibot.in/");
+		$apikey = CheckApi();
+	}elseif($pil == 2){
+		define("provider_api","Xevil");
+		define("provider_ref", "t.me/Xevil_check_bot?start=6192660395");
+		$apikey = CheckApi();
+	}else{
+		exit(Error("Tolol\n"));
+	}
+	return $apikey;
+}
+/********SL********/
+function ApiShortlink(){
+	if(!file_exists("Data/Apikey/Shortlink_Apikey")){
+		Cetak("Register","@bpsl06_bot");
+	}
+	return Simpan_Api("Shortlink_Apikey");
 }

@@ -1,35 +1,75 @@
 <?php
-#belum selesai
-#@bpsl06_bot
-
 Class Shortlinks {
-	function __construc($apikey, $shortlink){
-		$this->host = "https://mcm-faucet.biz.id";
-		$this->developer = "@PetapaGenit2";
+	function __construct($apikey){
+		$this->host = "https://api-bintang.my.id";
 		$this->apikey = $apikey;
-		$this->shortlink = $shortlink;
-		$this->shorthost = parse_url($shortlink)['host'];
 	}
-	function api($name){
-		$r = json_decode(file_get_contents($this->host."/Api/api.php?apikey=".$this->apikey."&name=".$name."&url=".$this->shortlink),1);
-		if($url){
-			return $url;
+	function check($nama){
+		print k."--[".p."?".k."] ".p."check shortlink";
+		$check = strtolower($nama);
+		$supported = [
+		"linksfly" => "fly",
+		"shortsfly" => "fly",
+		"urlsfly" => "fly",
+		"wefly" => "fly",
+		"clicksflyme" => "fly",
+		"linksly" => "linksly",
+		"adcorto" => "adcorto",
+		"c2g" => "C2G",
+		"shrinkme" => "ShrinkMe",
+		"shrkearn" => "ShrkEarn",
+		"urlhives" => "UrlHives",
+		"linkhives" =>"LinkHives",
+		"shortsme" => "shortsme",
+		"adlink" => "adlink",
+		"ez4short" => "ez4short"
+		];
+		sleep(2);
+		$filter = $supported[$check];
+		if($filter){
+			print "\r                              \r";
+			print h."[".p."√".h."] support shortlink";
+			sleep(2);
+			print "\r                              \r";
+			return ["status" => 1,"shortlink_name" => $filter];
+		}else{
+			print "\r                              \r";
+			print m."[".p."!".m."] not support shortlink";
+			sleep(2);
+			print "\r                              \r";
+			return ["status" => 0,"message" => "not supported shortlink"];
 		}
-		return 0;
 	}
-	function Shrinkme(){
-		$name = "ShrinkMe";
-		return $this->api($name);
-	}
-	function Fly(){
-		
-	}
-	function bypas($url){
-		if($this->shorthost == "shrinkme.site"){
-			return $this->Shrinkme();
+	function Bypass($name, $shortlink){
+		$r = json_decode(
+			file_get_contents(
+				$this->host."/Api/api.php?apikey=".$this->apikey."&name=".$name."&url=".$shortlink
+			),
+			true
+		);
+		if($r['status'] == "success"){
+			return $r;
+		}else{
+			exit(Error($r['msg']."\n"));
 		}
-		return 0;
 	}
 }
+/*
+$apikey = "xxx";
+$short = new Shortlinks($apikey);
+
+$name = "Linksfly";
+$cek = $short->Check($name);
+if($cek['status']){
+	//cari link short nya
+	$shortlink = "https://linksfly.me/9Pxek";
+	$res = $short->Bypass($cek['shortlink_name'], $shortlink);
+}
+print_r($res);
+exit;
+*/
+
+
+
 
 ?>

@@ -11,10 +11,14 @@ function Gsolv($url){$r=curl($url,Hd(),'',1)[1];$ca=explode('"',$r)[5];return $c
 function Gmed($ca){$url="https://api-secure.solvemedia.com/papi/media?c=".$ca.";w=300;h=150;fg=000000;bg=f8f8f8";$r=Curl($url,Hd(),'',1)[1];return $r;}
 
 function h(){
-	$h = [
-	"cookie: ".simpan("Cookie"),
-	"user-agent: ".ua()
-	];
+	$h[] = "Host: firefaucet.win";
+	$h[] = "x-requested-with: XMLHttpRequest";
+	$h[] = "user-agent: ".ua();
+	$h[] = "referer: https://firefaucet.win/";
+	$h[] = "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+	$h[] = "content-type: application/x-www-form-urlencoded";
+	$h[] = "accept-language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7";
+	$h[] = "cookie: ".simpan('Cookie');
 	return $h;
 }
 function dash(){
@@ -121,8 +125,8 @@ while(true){
 	}
 	$data["csrf_token"] = $csrf;
 	
-	$arr = ["Host: firefaucet.win","content-length: ".strlen(http_build_query($data)),"accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/faucet/"];
-	curl(host.'faucet',array_merge(h(),$arr),http_build_query($data),'',1);
+	//$arr = ["Host: firefaucet.win","content-length: ".strlen(http_build_query($data)),"accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/faucet/"];
+	curl(host.'faucet',h(),http_build_query($data),'',1);
 	$r = curl(host.'faucet',h(),'',1)[1];
 	$wr = explode('</div>',explode('<div class="error_msg hoverable">',$r)[1])[0];
 	$ss = strip_tags(explode('</div>',explode('<div class="success_msg hoverable"><b>',$r)[1])[0]);
@@ -156,8 +160,8 @@ while(true){
 		
 	$data = ["captcha"=>$cap,"csrf_token"=>$csrf];
 		
-	$arr = ["Host: firefaucet.win","content-length: ".strlen(http_build_query($data)),"accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/viewptc?id=".$id];
-	curl(host."ptcverify?key=".$key."&id=".$id,array_merge($arr,h()),http_build_query($data),'',1);
+	//$arr = ["Host: firefaucet.win","content-length: ".strlen(http_build_query($data)),"accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/viewptc?id=".$id];
+	curl(host."ptcverify?key=".$key."&id=".$id,h(),http_build_query($data),1,1);
 	$r = curl(host.'ptc',h(),'',1)[1];
 	$ss = strip_tags(explode('</b>',explode('<div class="success_msg hoverable">',$r)[1])[0]);
 	if($ss){
@@ -185,12 +189,12 @@ foreach($coin_pilih as $number){
 }
 
 while(true){
-	$arr = ["Host: firefaucet.win","cache-control: max-age=0","upgrade-insecure-requests: 1","sec-fetch-dest: document","accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9","referer: https://firefaucet.win/",];
-	$r = curl(host."start",array_merge($arr,h()),$data,1)[1];
+	//$arr = ["Host: firefaucet.win","cache-control: max-age=0","upgrade-insecure-requests: 1","sec-fetch-dest: document","accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9","referer: https://firefaucet.win/",];
+	$r = curl(host."start",h(),$data,1)[1];
 	tmr(60);
 	
-	$header = ["Host: firefaucet.win","accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/start"];
-	$r = json_decode(curl(host."internal-api/payout/",array_merge($header,h()),'',1)[1],1);
+	//$header = ["Host: firefaucet.win","accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/start"];
+	$r = json_decode(curl(host."internal-api/payout/",h(),'',1)[1],1);
 	if($r["success"]==1){
 		$coin = array_keys($r["logs"]);
 		for($i=0;$i<count($coin);$i++){
@@ -210,3 +214,51 @@ while(true){
 	}
 }
 Shortlink:
+$short = new Shortlinks(ApiShortlink());
+function d($html, $r) {
+   $data = array();
+   preg_match_all('/<input[^>]+>/', $html, $matches);
+   foreach ($matches[0] as $input) {
+      if (preg_match('/name="([^"]+)"/', $input, $name_match) && preg_match('/value="([^"]+)"/', $input, $value_match)) {
+         $name = $name_match[1];
+         $value = $value_match[1];
+         $val = explode("');", explode("\$(\"[name='".$name."']\").val('", $r)[1])[0];
+         if ($val) {
+            $value = $val;
+         }
+         $data[$name] = $value;
+      }
+   }
+   return http_build_query($data);
+}
+$r = curl(host."shortlinks",h(),'',1)[1];
+preg_match_all('#<span class="sl-title">(.*?)<div class="sl-name-section">#si', $r, $has);
+foreach ($has[1] as $res) {
+	$n = trim(explode('<', $res)[0]);
+	$cek = $short->Check($n);
+	if ($cek['status']) {
+		$j = trim(explode('/', explode('<span class="box views-left-box">', $res)[1])[0]);
+		for ($i = 10 - $j + 1; $i <= 10; $i++) {
+			$rr = explode('</form', explode('<form target="_blank"', $res)[$i])[0];
+			$url = explode('"', explode('action="/', $rr)[1])[0];
+			
+			$data = d($rr, $r);
+			$get = curl(host . $url, array_merge(h(), ['sec-fetch-dest: document','origin: https://firefaucet.win','upgrade-insecure-requests: 1','cache-control: max-age=0','sec-fetch-site: same-origin','sec-fetch-mode: navigate','sec-fetch-user: ?1','content-length:' . strlen($data)]), $data,1)[0];
+			$shortlink = trim(explode(n, explode('location:', $get)[1])[0]);
+			$bypas = $short->Bypass($cek['shortlink_name'], $shortlink);
+			$pass = $bypas['url'];
+			if($pass){
+				$bal1 = dash()["acp"];
+				tmr($bypas['timer']);
+				$claim = curl($bypas['url'], h(),'',1)[1];
+				$bal2 = dash()['acp'];
+				if ($bal1 != $bal2) {
+					print Sukses("Success bypass ".$n);
+					Cetak("Acp", $bal2);
+					Cetak("SL_Api",$bypas['balance']);
+					print line();
+				}
+			}
+		}
+	}
+}

@@ -3,6 +3,7 @@ if(!file_exists("Data")){system("mkdir Data");}
 if(file_exists("User_Agent")){$nama_file = "User_Agent";if(PHP_OS_FAMILY == "Windows"){system("move ".$nama_file." Data");}else{system("mv ".$nama_file." Data");}}
 
 require "Modul/Apikey.php";
+require "Modul/Shortlink.php";
 require "Modul/Lisensi.php";
 
 Ban();
@@ -33,6 +34,10 @@ if(file_exists("Data/Apikey/Xevil_Apikey")){
 	Menu($a+=1,"Hapus APi Xevil");
 	$tam[$a] = "xevil";
 }
+if(file_exists("Data/Apikey/Shortlink_Apikey")){
+	Menu($a+=1,"Hapus APi Shortlink");
+	$tam[$a] = "sl";
+}
 if($a > 0){
 	Menu($a+=1,"Skip");
 	$tam[$a] = "skip";
@@ -52,6 +57,10 @@ if($tam){
 	}elseif($tam[$pil] == "xevil"){
 		unlink("Data/Apikey/Xevil_Apikey");
 		print "Berhasil Menghapus Apikey Xevil";
+		sleep(3);
+	}elseif($tam[$pil] == "sl"){
+		unlink("Data/Apikey/Shortlink_Apikey");
+		print "Berhasil Menghapus Apikey Shortlink";
 		sleep(3);
 	}else{
 	}
