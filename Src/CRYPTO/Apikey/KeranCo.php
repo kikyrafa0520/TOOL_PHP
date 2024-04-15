@@ -79,7 +79,6 @@ foreach($list_coin as $a => $coins){
 	$r = curl(host.'captha.php',h(),$data)[1];
 	$direc = explode('"',explode('<form method="post" action="',$r)[1])[0];
 	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
-	if(!$sitekey){print Error("Sitekey Error\n"); continue;}
 	preg_match_all('/(input:?.*?)name=\"(.*?)\" value=\"([^"]+)"/is',$r,$datax);
 	$match=[];
 	for($i = 0;$i<count($datax[2]);$i++){

@@ -1,5 +1,7 @@
 @Crypto
 
-[+] Apikey -> Firefaucet
-[+] Apikey -> Solpick
-[+] Apikey -> Claimlitoshi
+[+] Apikey -> Ourcoincash
+[+] Apikey -> AllfaucetXyz
+[*] Apikey -> Onlyfaucet
+[*] Apikey -> BagiCoIn
+[*] Apikey -> KeranCo

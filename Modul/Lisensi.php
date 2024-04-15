@@ -19,19 +19,19 @@ Dont forget to subscribe to my YT and join my Telegram channel
 ';
 }
 function CreateLisensi($txt){
-$api_paste_name= urlencode("License");
-$api_paste_code= urlencode($txt);
-$url 				= 'https://pastebin.com/api/api_post.php';
-$ch 				= curl_init($url);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, 'api_option=paste&api_user_key=&api_paste_private=1&api_paste_name='.$api_paste_name.'&api_paste_expire_date=10M&api_paste_format=php&api_dev_key=krbn97_fY2uyWgaqpsI9nH-N4NRGyiOT&api_paste_code='.$api_paste_code.'');
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_VERBOSE, 0);
-curl_setopt($ch, CURLOPT_NOBODY, 0);
+	$api_paste_name= urlencode("License");
+	$api_paste_code= urlencode($txt);
+	$url 				= 'https://pastebin.com/api/api_post.php';
+	$ch 				= curl_init($url);
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, 'api_option=paste&api_user_key=&api_paste_private=1&api_paste_name='.$api_paste_name.'&api_paste_expire_date=10M&api_paste_format=php&api_dev_key=krbn97_fY2uyWgaqpsI9nH-N4NRGyiOT&api_paste_code='.$api_paste_code.'');
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_VERBOSE, 0);
+	curl_setopt($ch, CURLOPT_NOBODY, 0);
 
-$response  			= curl_exec($ch);
-$patch = explode('https://pastebin.com/',$response)[1];
-return ["url"=>'https://pastebin.com/raw/',"patch"=>$patch];
+	$response  			= curl_exec($ch);
+	$patch = explode('https://pastebin.com/',$response)[1];
+	return ["url"=>'https://pastebin.com/raw/',"patch"=>$patch];
 }
 function ShortExe($link){
 	$long_url = urlencode($link);
