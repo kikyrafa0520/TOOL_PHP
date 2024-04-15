@@ -73,6 +73,12 @@ gaslagi:
 $con = explode('/faucet/currency/',$r);
 $num = 0;
 while(true){
+	$cecker = curl(host,h())[1];
+	if(!explode('Logout',$cecker)[1]){
+		//login($email);
+		hapus("Cookie");
+		goto cookie;
+	}
 	foreach($con as $a => $coins){
 		if($a == 0)continue;
 		$coin = explode('"',$coins)[0];

@@ -38,7 +38,7 @@ if(!file_exists("Data/".nama_file."/cookie.txt")){
 		Cetak("INFO",$ss);print line();sleep(5);
 		Ban(1);
 	}else{
-	print Error("Sepertinya akun di banned\n");
+		print Error("Sepertinya akun di banned\n");
 		hapus("cookie.txt");
 		goto loginagain;
 	}

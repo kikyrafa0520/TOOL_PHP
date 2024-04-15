@@ -55,6 +55,12 @@ if(!explode('Logout',$r)[1]){
 $con = explode('/faucet/currency/',$r);
 $num = 0;
 while(true){
+	$cecker = curl(host,h())[1];
+	if(!explode('Logout',$cecker)[1]){
+		hapus("cookie.txt");
+		hapus("Cookie");
+		goto cookie;
+	}
 	foreach($con as $a => $coins){
 		if($a == 0)continue;
 		$coin = explode('"',$coins)[0];
@@ -81,7 +87,8 @@ while(true){
 			tmr($tmr);
 		}
 		$data = "auto_faucet_token=".$auto."&csrf_token_name=".$csrf."&token=".$hiden;
-		$r = curl(host."faucet/verify/".$coin,h(),$data,1)[1];
+		$r = curl(host."faucet/verify/".$coin,h(),$data)[1];
+		print_r($r);exit;
 		$ss = explode("account!',",explode("html: '0.",$r)[1])[0];
 		$wr = explode(".",explode("html: '",$r)[1])[0];
 		if($ss){
