@@ -16,20 +16,29 @@ Class RequestApi{
 		$res =  json_decode(file_get_contents($this->host."/res.php?action=userinfo&key=".$this->apikey),1);
 		return $res["balance"];
 	}
-	function wait($xr,$tmr){
+	function wait($xr,$tmr, $cap){
 		if($xr < 50){$wr=h;}elseif($xr >= 50 && $xr < 80){$wr=k;}else{$wr=m;}
 		$xwr = [$wr,p,$wr,p];
 		$sym = [' ─ ',' / ',' │ ',' \ ',];
 		$a = 0;
 		for($i=$tmr*4;$i>0;$i--){
-			print $xwr[$a % 4]." bypass $xr%".$sym[$a % 4]." \r";
+			print $xwr[$a % 4]." Bypass $cap $xr%".$sym[$a % 4]." \r";
 			usleep(100000);
 			if($xr < 99)$xr+=1;
 			$a++;
 		}
 		return $xr;
 	}
+	function filter($method){
+		if($method == "userrecaptcha")return "RecaptchaV2";
+		if($method == "hcaptcha")return "Hcaptcha";
+		if($method == "turnstile")return "Turnstile";
+		if($method == "universal" || $method == "base64")return "Ocr";
+		if($method == "antibot")return "Antibot";
+		if($method == " authkong")return "Authkong";
+	}
 	function getResult($data ,$method, $header = 0){
+		$cap = $this->filter(explode('&',explode("method=",$data)[1])[0]);
 		$get_in = $this->in_api($data ,$method, $header);
 		if(!$get_in["status"]){
 			print $get_in["request"]."\n";
@@ -37,28 +46,29 @@ Class RequestApi{
 		}
 		$a = 0;
 		while(true){
-			echo " bypass $a% |   \r";
+			echo " Bypass $cap $a% |   \r";
 			$get_res = $this->res_api($get_in["request"]);
 			if($get_res["request"] == "CAPCHA_NOT_READY"){
 				$ran = rand(5,10);
 				$a+=$ran;
 				if($a>99)$a=99;
-				echo " bypass $a% ─ \r";
-				$a = $this->wait($a,5);
+				echo " Bypass $cap $a% ─ \r";
+				$a = $this->wait($a,5, $cap);
 				continue;
 			}
 			if($get_res["status"]){
-				echo " bypass 100%";
+				echo " Bypass $cap 100%";
 				sleep(1);
-				print "\r                     \r";
-				print h."[".p."√".h."] bypass success";
+				print "\r                              \r";
+				print h."[".p."√".h."] Bypass $cap success";
 				sleep(2);
-				print "\r                     \r";
+				print "\r                              \r";
 				return $get_res["request"];
 			}
-			print m."[".p."!".m."] bypass failed";
+			print m."[".p."!".m."] Bypass $cap failed";
 			sleep(2);
-			print "\r                     \r";
+			print "\r                              \r";
+			print Error($cap." @".$this->provider." Error\n");
 			return 0;
 		}
 	}
@@ -90,6 +100,14 @@ Class ApiMultibot extends RequestApi {
 	function Turnstile($sitekey, $pageurl){
 		$data = http_build_query([
 			"method" => "turnstile",
+			"sitekey" => $sitekey,
+			"pageurl" => $pageurl
+			]);
+		return $this->getResult($data, "GET");
+	}
+	function Authkong($sitekey, $pageurl){
+		$data = http_build_query([
+			"method" => "authkong",
 			"sitekey" => $sitekey,
 			"pageurl" => $pageurl
 			]);
@@ -182,3 +200,6 @@ Class ApiXevil extends RequestApi {
 		return $this->getResult($data, "GET");
 	}
 }
+
+
+

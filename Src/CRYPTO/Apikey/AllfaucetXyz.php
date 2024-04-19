@@ -44,11 +44,11 @@ function faucet(){
 		if($tmr){tmr($tmr);}
 		if(explode('\"',explode('rel=\"',$r)[1])[0]){
 			$atb = $api->AntiBot($r);
-			if(!$atb){print Error("Atb @".provider_api." Error\n"); continue;}
+			if(!$atb)continue;
 			$data = "antibotlinks=".$atb."&";
 		}
 		$cap = $api->RecaptchaV2($sitekey, host.'faucet');
-		if(!$cap){print Error("Rv2 @".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		
 		$data .= "csrf_token_name=".$csrf."&token=".$token."&captcha=recaptchav2&g-recaptcha-response=".$cap;
 		$r = curl(host.'faucet/verify',h(),$data)[1];
@@ -106,7 +106,7 @@ function ptc(){
 		}
         
 		$cap = $api->RecaptchaV2($sitekey, host."ptc/view/".$id);
-		if(!$cap){print Error("Rv2 @".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		
 		$data = "captcha=recaptchav2&g-recaptcha-response=".$cap."&csrf_token_name=".$csrf."&token=".$token;
 		$r = curl(host."ptc/verify/".$id,h(),$data)[1];

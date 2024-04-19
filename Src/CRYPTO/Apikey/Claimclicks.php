@@ -13,6 +13,7 @@ function h($ref=0){
 	"origin: ".host,
 	"content-type: application/x-www-form-urlencoded",
 	"user-agent: ".ua(),
+	"cookie: ".simpan("Cookie"),
 	"accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
 	"accept-language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7"];
 	if($ref){
@@ -23,15 +24,19 @@ function h($ref=0){
 
 Ban(1);
 cookie:
+hapus("cookie.txt");
 Cetak("Register",register_link);
 print line();
 $email = simpan("Username_Faucetpay");
+simpan("Cookie");
+/*
 if(explode('@',$email)[1]){
 	hapus("Username_Faucetpay");
 	print error("invalid username!\n");
 	print line();
 	goto cookie;
 }
+*/
 if(!ua())print "\n".line();
 
 $apikey = MenuApi();
@@ -48,6 +53,14 @@ Ban(1);
 
 while(true){
 	$r = Curl(host,h())[1];
+	$cek = GlobalCheck($r[1]);
+	if($cek['cf']){
+		print Error("Cloudflare Detect\n");
+		hapus("Cookie");
+		hapus("cookie.txt");
+		print line();
+		goto cookie;
+	}
 	$coinx = explode('class="btnbtc" href="/',$r);
 	foreach($coinx as $a => $coin){
 		if($a == 0)continue;
@@ -56,6 +69,13 @@ while(true){
 			if($res[$coint] > 2)continue;
 		}
 		$r = curl(host.$coint.r,h(),'',1)[1];
+		if($cek['cf']){
+			print Error("Cloudflare Detect\n");
+			hapus("Cookie");
+			hapus("cookie.txt");
+			print line();
+			goto cookie;
+		}
 		if(preg_match('/You have to wait/',$r)){
 			$res = his([$coint=>1],$res);
 			continue;
