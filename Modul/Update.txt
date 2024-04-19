@@ -1,7 +1,5 @@
 @Crypto
 
-[+] Apikey -> Ourcoincash
-[+] Apikey -> AllfaucetXyz
-[*] Apikey -> Onlyfaucet
-[*] Apikey -> BagiCoIn
-[*] Apikey -> KeranCo
+[+] Apikey-> FreeusdClick
+[+] Free -> Adviewsatoshi
+[+] Free -> FaucetclickSite

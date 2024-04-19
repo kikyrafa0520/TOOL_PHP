@@ -68,7 +68,7 @@ Class RequestApi{
 			print m."[".p."!".m."] Bypass $cap failed";
 			sleep(2);
 			print "\r                              \r";
-			print Error($cap." @".$this->provider." Error\n");
+			print Error($cap." @".provider_api." Error\n");
 			return 0;
 		}
 	}
@@ -170,6 +170,14 @@ Class ApiXevil extends RequestApi {
 			]);
 		return $this->getResult($data, "GET");
 	}
+	function Authkong($sitekey, $pageurl){
+		$data = http_build_query([
+			"method" => "authkong",
+			"sitekey" => $sitekey,
+			"pageurl" => $pageurl
+			]);
+		return $this->getResult($data, "GET");
+	}
 	function Ocr($img){
 		$data = "method=base64&body=".$img;
 		//$ua = "Content-type: application/x-www-form-urlencoded";
@@ -200,6 +208,12 @@ Class ApiXevil extends RequestApi {
 		return $this->getResult($data, "GET");
 	}
 }
-
-
-
+/*
+$apikey = "SoulqKkCaWdD7iWx5WNq7y6QuMpuljHm";
+$api = new ApiXevil($apikey);
+$sitekey = "08f2c2d465d09d4dfd64eeb53f8b579f135b15abf170407747312a066f88b2a1";
+$pageurl = "https://onlyfaucet.com/";
+$authkong = $api->Authkong($sitekey, $pageurl);
+print $authkong;
+//a06ec146ea90f3befa42d8d830b790e9
+*/

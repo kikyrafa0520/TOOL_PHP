@@ -52,9 +52,10 @@ exit(Error("Script on progres\n"));
 date_default_timezone_set("UTC");
 while(1){
 	$r = curl(host.'main.php',h())[1];
-	$tmr = explode(';',explode('var claimTime = ',$r)[1])[0];
-	$cooldown = $tmr/1000-time();
-	print $cooldown.n;
+	//$tmr = explode(';',explode('var claimTime = ',$r)[1])[0];
+	//$cooldown = $tmr/1000-time();
+	//print $cooldown.n;
+	//exit;
 	$sitekey = explode('>',explode('<div class="h-captcha" data-sitekey=',$r)[1])[0];
 	if(!$sitekey){print Error("Sitekey Error\n"); continue;}
 	$cap = $api->Hcaptcha($sitekey, host.'main.php');
