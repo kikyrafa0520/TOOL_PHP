@@ -2,7 +2,7 @@
 const
 host = "https://claimlitoshi.top/",
 register_link = "https://claimlitoshi.top/?r=2963",
-typeCaptcha = "Turnstile",
+typeCaptcha = "Authkong",
 youtube = "https://youtube.com/@iewil";
 
 function h(){
@@ -38,17 +38,23 @@ function Claimfct(){
 		$tmr = explode('-',explode('var wait = ',$r)[1])[0];
 		if($tmr){tmr($tmr);continue;}
 		
-		$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
-		if(!$sitekey){
+		$data = Parsing($r);
+		$turnstile = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
+		$authkong = explode('"',explode('<div class="authkong_captcha" data-sitekey="',$r)[1])[0];
+		if($turnstile){
+			$cap = $api->Turnstile($turnstile, host.'faucet');
+			if(!$cap)continue;
+			$data["captcha"] = "turnstile";
+			$data["cf-turnstile-response"] = $cap;
+		}elseif($authkong){
+			$cap = $api->Authkong($authkong, host.'faucet');
+			if(!$cap)continue;
+			$data["captcha"] = "authkong";
+			$data["captcha-response"] = $cap;
+		}else{
 			print Error("Sitekey Error\n");
 			continue;
 		}
-		$data = Parsing($r);
-		$cap = $api->Turnstile($sitekey, host.'faucet');
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
-		$data["captcha"] = "turnstile";
-		$data["cf-turnstile-response"] = $cap;
-		
 		$r = curl(host.'faucet/verify',h(),http_build_query($data))[1];
 		$ss = explode('</p>',explode('Good job!</h2><p class="mt-2">',$r)[1])[0];//13 Tokens has been added to your balance
 		if($ss){
@@ -58,6 +64,7 @@ function Claimfct(){
 			Cetak("Balance",$r["bal"]);
 			Cetak("Aft",$r["aft"]);
 			Cetak("Bal_Api",$api->getBalance());
+			print line();
 		}
 	}
 }
