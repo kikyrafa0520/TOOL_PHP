@@ -37,7 +37,7 @@ require "Modul/Shortlink.php";
 require "Modul/Lisensi.php";
 
 Ban();
-$r = json_decode(file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/setup.php"),1);
+$r = json_decode(file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/setup.json"),1);
 $version = $r['version'];
 $versi = $check['version'];
 
