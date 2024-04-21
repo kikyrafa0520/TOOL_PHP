@@ -14,7 +14,7 @@ function h(){
 function login($api, $user, $pass){
 	ulang:
 	$cap = $api->Hcaptcha('01e97a01-3deb-46a3-968c-fb4d128cab44', host."login");
-	if(!$cap){print Error("@".provider_api." Error\n"); goto ulang;}
+	if(!$cap)goto ulang;
 	$data = http_build_query([
 	"email" => $user,
 	"password" => $pass,
@@ -96,7 +96,7 @@ while(true){
 		continue;
 	}
 	$cap = $api->Hcaptcha($sitekey, host."account/money/claims");
-	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+	if(!$cap)continue;
 	$num = rand($cit[$x]["rand1"],$cit[$x]["rand2"]);
 	$data = "roll_num=".$num."&g-recaptcha-response=".$cap."&h-captcha-response=".$cap;
 	$r = curl(host.'callbacks/faucetroll.php',h(),$data, 1)[1];

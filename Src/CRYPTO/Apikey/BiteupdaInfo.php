@@ -47,7 +47,7 @@ function Claim($api, $patch){
 	$atb = $api->Antibot($r);
 	if(!$atb){print Error("@".provider_api." Error\n"); continue;}
 	$cap = $api->RecaptchaV2($sitekey, host.$patch);
-	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+	if(!$cap)continue;
 	
 	$r = Post_Faucet($patch, $csrf, $atb, $cap);
 	$ss = explode("has",explode("Swal.fire('Good job!', '",$r)[1])[0];

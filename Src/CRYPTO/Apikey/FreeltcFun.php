@@ -23,7 +23,7 @@ function login($email){
 	$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
 	if(!$sitekey)exit(error("Capcha turnstile tidak terdeteksi\n"));
 	$cap = $api->Turnstile($sitekey, host);
-	if(!$cap){print Error("@".provider_api." Error\n"); goto ulang;}
+	if(!$cap)goto ulang;
 	$csrf = explode('">',explode('<input type="hidden" name="csrf_token_name" id="token" value="',$r)[1])[0];
 	$data = [
 	"wallet" => simpan("Email"),
@@ -108,7 +108,7 @@ while(true){
 			tmr($tmr);
 		}
 		$cap = $api->Turnstile($sitekey, host."faucet/currency/".$coin);
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		
 		$data = "csrf_token_name=".$csrf."&token=".$hiden."&captcha=turnstile&cf-turnstile-response=".$cap;
 		$r = curl(host."faucet/verify/".$coin,h(),$data,1)[1];

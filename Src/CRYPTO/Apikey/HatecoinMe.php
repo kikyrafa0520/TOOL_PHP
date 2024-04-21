@@ -51,9 +51,9 @@ function Claim($api, $patch){
 	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 	if(!$sitekey){print Error("Sitekey Error\n"); continue;}
 	$atb = $api->Antibot($r);
-	if(!$atb){print Error("@".provider_api." Error\n"); continue;}
+	if(!$atb)continue;
 	$cap = $api->RecaptchaV2($sitekey, host.$patch);
-	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+	if(!$cap)continue;
 	$r = Post_Faucet($patch, $csrf, $token, $atb, $cap);
 	$ss = explode("has",explode("Swal.fire('Good job!', '",$r)[1])[0];
 	if($ss){
@@ -118,7 +118,7 @@ function ptc($api){
 		$tmr = explode(';',explode('var timer = ',$r)[1])[0];
 		if($tmr){tmr($tmr);}
 		$cap = $api->RecaptchaV2($sitekey, host.$patch);
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		$data = 'captcha=recaptchav2&g-recaptcha-response='.$cap.'&csrf_token_name='.$csrf.'&token='.$token;
 		$r = curl(host.'ptc/verify/'.$id,h(),$data)[1];
 		$ss = explode('has',explode("Swal.fire('Good job!', '",$r)[1])[0];

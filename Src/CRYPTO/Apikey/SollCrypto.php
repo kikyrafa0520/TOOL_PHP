@@ -44,7 +44,7 @@ function claim($api, $coin, $email){
 			continue;
 		}
 		$cap = $api->RecaptchaV2($sitekey, $coin);
-		if(!$cap){print Error("Rv2 @".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		$data = "session-token=".$sesion."&address=".urlencode($email)."&antibotlinks=".$atb."&captcha=recaptcha&g-recaptcha-response=".$cap."&login=Verify+Captcha";
 		$r = curl($coin.r,h($coin.r),$data,1)[1];
 		$ss = explode('<',explode('<i class="fas fa-money-bill-wave"></i> ',$r)[1])[0];
@@ -146,7 +146,7 @@ while(true){
 			continue;
 		}
 		$cap = $api->RecaptchaV2($sitekey, $coin);
-		if(!$cap){print Error("Rv2 @".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		$data = "session-token=".$sesion."&address=".urlencode($email)."&antibotlinks=".$atb."&captcha=recaptcha&g-recaptcha-response=".$cap."&login=Verify+Captcha";
 		
 		$r = curl($coin.r,h($coin.r),$data,1)[1];

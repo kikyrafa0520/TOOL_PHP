@@ -93,19 +93,19 @@ while(true){
 	Cetak("Captcha",strtoupper($activeCaptcha));
 	if($activeCaptcha == 'turnstile'){
 		$cap = $api->Turnstile("0x4AAAAAAAEUvFih09RuyAna", host.'faucet');
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		$data["selected-captcha"] = "turnstile";
 		$data["cf-turnstile-response"] = $cap;
 	}else
 	if($activeCaptcha == 'hcaptcha'){
 		$cap = $api->Hcaptcha("034eb992-02f4-4cd7-8f90-5dfb05fb21a2", host.'faucet');
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		$data["selected-captcha"] = "hcaptcha";
 		$data["h-captcha-response"] = $cap;
 	}else
 	if($activeCaptcha == 'recaptcha'){
 		$cap = $api->RecaptchaV2("6LcLRHMUAAAAAImKcp7V9dcmD3ILWPEBJjlFnnrB", host.'faucet');
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		$data["selected-captcha"] = "recaptcha";
 		$data["g-recaptcha-response"] = $cap;
 	}else
@@ -115,7 +115,7 @@ while(true){
 		$img = base64_encode(Gmed($ca));
 		$cap = $api->Ocr($img);
 		
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		$data["selected-captcha"] = "solvemedia";
 		$data["adcopy_response"] = $cap;
 		$data["adcopy_challenge"] = $ca;
@@ -156,7 +156,7 @@ while(true){
 	$tmr = explode("')",explode("parseInt('",$r)[1])[0];
 	if($tmr){tmr($tmr);}
 	$cap = $api->Ocr($img);
-	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+	if(!$cap)continue;
 		
 	$data = ["captcha"=>$cap,"csrf_token"=>$csrf];
 		

@@ -15,9 +15,12 @@ function h($data=0,$au=0){
 	return $h;
 }
 function login($api, $email, $password){
-	$cap = $api->RecaptchaV2("6LcK--IdAAAAAEmWdU_-U5Dm578lJNwAtmPzqqRT", "https://bnbfreee.com/lucky");
-	$data = '{"email":"'.$email.'","password":"'.$password.'","recaptha":"'.$cap.'"}';
-	return json_decode(curl("https://api.bnbfreee.com/users/login",h($data),$data,1)[1],1);
+	while(true){
+		$cap = $api->RecaptchaV2("6LcK--IdAAAAAEmWdU_-U5Dm578lJNwAtmPzqqRT", "https://bnbfreee.com/lucky");
+		if(!$cap)continue;
+		$data = '{"email":"'.$email.'","password":"'.$password.'","recaptha":"'.$cap.'"}';
+		return json_decode(curl("https://api.bnbfreee.com/users/login",h($data),$data,1)[1],1);
+	}
 }
 Ban(1);
 cookie:
@@ -70,6 +73,7 @@ if($r['statusCode'] == 200){
 
 while(true){
 	$cap = $api->RecaptchaV2("6LcK--IdAAAAAEmWdU_-U5Dm578lJNwAtmPzqqRT", "https://bnbfreee.com/lucky");
+	if(!$cap)continue;
 	$data = '{"recaptha":"'.$cap.'"}';
 	$r = json_decode(curl("https://api.bnbfreee.com/lucky",h($data,$akses_token),$data,1)[1],1);
 	if($r['status'] == "success"){

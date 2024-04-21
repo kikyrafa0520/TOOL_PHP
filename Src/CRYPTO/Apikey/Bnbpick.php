@@ -40,7 +40,7 @@ function HourlyFaucet($api){
 		}
 		$sitekey = explode('">',explode('<div class="g-recaptcha" id="g_recaptcha" style="margin-top:20px" data-sitekey="',$r[1])[1])[0];//6Le5mIwlAAAAADmaHuGxaf5KTEiWwG9FhQex0JDc
 		$cap = $api->Recaptchav2($sitekey, host.'faucet.php');
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		$data = 'action=claim_hourly_faucet&g-recaptcha-response='.$cap.'&h-captcha-response=null&captcha=&ft=&csrf_test_name='.$cookies['csrf_cookie_name'];
 		
 		$r = json_decode(curl(host.'process.php',h(),$data)[1],1);

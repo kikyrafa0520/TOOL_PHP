@@ -93,7 +93,7 @@ foreach($list_coin as $a => $coins){
 		$cap = $api->Turnstile($sitekey, host.'captha.php');
 		$match['cf-turnstile-response']=$cap;
 	}
-	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+	if(!$cap)continue;
 	$data = http_build_query($match);
 	$r = curl(host.$direc,h(),$data)[1];
 	if(preg_match('/does not have sufficient/',$r)){

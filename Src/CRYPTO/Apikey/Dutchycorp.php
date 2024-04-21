@@ -37,19 +37,11 @@ function GetClaim($api, $patch, $captcha, $sitekey){
 		$val_boost = explode('"',explode('btn.value = "',$r)[1])[0];
 		if($captcha == "Hcaptcha"){
 			$cap = $api->Hcaptcha($sitekey, host.$patch);
-			if(!$cap){
-				print Error("@".provider_api." Error\n"); 
-				print line();
-				continue;
-			}
+			if(!$cap)continue;
 			$data = "g-recaptcha-response=".$cap."&h-captcha-response=".$cap."&".$id_boost."=".$val_boost;
 		}else{
 			$cap = $api->RecaptchaV2($sitekey, host.$patch);
-			if(!$cap){
-				print Error("@".provider_api." Error\n"); 
-				print line();
-				continue;
-			}
+			if(!$cap)continue;
 			$data = "g-recaptcha-response=".$cap."&".$id_boost."=".$val_boost;
 		}
 		
@@ -101,19 +93,11 @@ function GetPtc($api, $captcha, $sitekey){
 		}
 		if($captcha == "Hcaptcha"){
 			$cap = $api->Hcaptcha($sitekey, "https://autofaucet.dutchycorp.space/ptc/view.php?vid=".$id);
-			if(!$cap){
-				print Error("@".provider_api." Error\n"); 
-				print line();
-				continue;
-			}
+			if(!$cap)continue;
 			$data = "hash=".$hash."&g-recaptcha-response=".$cap."&h-captcha-response=".$cap;
 		}else{
 			$cap = $api->RecaptchaV2($sitekey, "https://autofaucet.dutchycorp.space/ptc/view.php?vid=".$id);
-			if(!$cap){
-				print Error("@".provider_api." Error\n"); 
-				print line();
-				continue;
-			}
+			if(!$cap)continue;
 			$data = "hash=".$hash."&g-recaptcha-response=".$cap;
 		}
 		

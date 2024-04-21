@@ -39,7 +39,7 @@ function HourlyFaucet($api){
 			$cookies = array_merge($cookies, $cookie);
 		}
 		$cap = $api->Hcaptcha("2827ab4d-e726-41fd-a05f-a2b0575a3c7b", host.'faucet.php');
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		$data = 'action=claim_hourly_faucet&g-recaptcha-response=null&h-captcha-response='.$cap.'&captcha=&ft=&csrf_test_name='.$cookies['csrf_cookie_name'];
 		
 		$r = json_decode(curl(host.'process.php',h(),$data)[1],1);

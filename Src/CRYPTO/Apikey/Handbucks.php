@@ -94,11 +94,7 @@ while(1){
         sleep(5);continue;
 	}
 	$cap = $api->Hcaptcha($sitekey, host.'faucet');
-	if(!$cap){
-		print Error("@".provider_api." Error\n"); 
-		print line();
-		continue;
-	}
+	if(!$cap)continue;
 	$data = [];
 	$data = Parsing($r);
 	$data['g-recaptcha-response'] = $cap;

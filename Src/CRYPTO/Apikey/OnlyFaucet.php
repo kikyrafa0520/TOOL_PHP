@@ -108,7 +108,7 @@ while(true){
 			tmr($tmr);
 		}
 		$cap = $api->Turnstile($sitekey, host."faucet/currency/".$coin);
-		if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+		if(!$cap)continue;
 		
 		$data = "csrf_token_name=".$csrf."&token=".$hiden."&captcha=turnstile&cf-turnstile-response=".$cap;
 		$r = curl(host."faucet/verify/".$coin,h(),$data)[1];

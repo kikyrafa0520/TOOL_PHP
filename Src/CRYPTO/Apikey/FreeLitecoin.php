@@ -91,7 +91,7 @@ while(true){
 		continue;
 	}
 	$cap = $api->Ocr($img);
-	if(!$cap){print Error("@".provider_api." Error\n"); continue;}
+	if(!$cap)continue;
 	
 	$data = "recaptcha=".$cap;
 	$r = json_decode(curl(host.'php/rollnumber.php',h(1),$data,1)[1],1);
