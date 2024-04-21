@@ -80,7 +80,7 @@ if($pil == 1){
 	$coin = explode('"',explode('value="',explode('<input class="form-check-input" type="radio" name="currency"',$r)[1])[1])[0];
 	$data = "csrf_token_name=".$csrf."&token=".$token."&amount=".substr($bal,0,5)."&currency=".$coin;
 	$r = curl(host."withdraw",h(),$data)[1];
-	$ss = explode("account!'",explode("html: '0.",$r)[1])[0];
+	$ss = explode("'",explode("html: '0.",$r)[1])[0];
 	$wr = explode("'",explode("html: '",$r)[1])[0];
 	if($ss){
 		print Sukses("0.".$ss);
@@ -117,7 +117,7 @@ while(true){
 	
 	$final = explode('"',explode('<form id="ptcform" action="',$r)[1])[0];
 	$r = curl($final, h(), http_build_query($data))[1];
-	$ss = explode("account!'",explode("html: '0.",$r)[1])[0];
+	$ss = explode("'",explode("html: '0.",$r)[1])[0];
 	$wr = explode("'",explode("html: '",$r)[1])[0];
 	if($ss){
 		print Sukses("0.".$ss);

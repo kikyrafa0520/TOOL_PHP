@@ -58,7 +58,7 @@ function Claimfct(){
 		$r = curl(host.'faucet/verify',h(),http_build_query($data))[1];
 		$ss = explode('</p>',explode('Good job!</h2><p class="mt-2">',$r)[1])[0];//13 Tokens has been added to your balance
 		if($ss){
-			Sukses($ss);
+			print Sukses($ss);
 			Cetak("Limit",$limit);
 			$r = GetDashboard();
 			Cetak("Balance",$r["bal"]);
