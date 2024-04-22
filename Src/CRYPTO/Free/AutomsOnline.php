@@ -55,7 +55,7 @@ menu:
 Menu(1,"No timer");
 Menu(2,"Normal");
 $mode = readline(Isi("Nomor"));
-
+print line();
 while(true){
 $r = curl(host,h(),'',1)[1];
 $con = explode('/faucet/currency/',$r);

@@ -84,9 +84,14 @@ if($pil==1){goto faucet;
 faucet:
 while(true){
 	$r = curl(host.'faucet',h(),'',1)[1];
-	if(preg_match('/Please come back after/',$r)){
+	if(preg_match('/Please come back/',$r)){
 		$r = json_decode(curl(host.'api/additional-details-dashboard/?sidebar=true', h())[1],1);
-		tmr(str_replace('m','',$r['faucet_status'])*60);continue;
+		$tmr = str_replace('m','',$r['faucet_status']);
+		if(is_numeric($tmr)){
+			tmr(*60);continue;
+		}else{
+			tmr(3600);continue;
+		}
 	}
 	$csrf = explode('">',explode('name="csrf_token" value="',$r)[1])[0];
 	$activeCaptcha = explode('"',explode('<input name="selected-captcha" type="radio" id="select-',$r)[1])[0];
@@ -125,7 +130,6 @@ while(true){
 	}
 	$data["csrf_token"] = $csrf;
 	
-	//$arr = ["Host: firefaucet.win","content-length: ".strlen(http_build_query($data)),"accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/faucet/"];
 	curl(host.'faucet',h(),http_build_query($data),'',1);
 	$r = curl(host.'faucet',h(),'',1)[1];
 	$wr = explode('</div>',explode('<div class="error_msg hoverable">',$r)[1])[0];
@@ -160,7 +164,6 @@ while(true){
 		
 	$data = ["captcha"=>$cap,"csrf_token"=>$csrf];
 		
-	//$arr = ["Host: firefaucet.win","content-length: ".strlen(http_build_query($data)),"accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/viewptc?id=".$id];
 	curl(host."ptcverify?key=".$key."&id=".$id,h(),http_build_query($data),1,1);
 	$r = curl(host.'ptc',h(),'',1)[1];
 	$ss = strip_tags(explode('</b>',explode('<div class="success_msg hoverable">',$r)[1])[0]);
@@ -189,11 +192,9 @@ foreach($coin_pilih as $number){
 }
 
 while(true){
-	//$arr = ["Host: firefaucet.win","cache-control: max-age=0","upgrade-insecure-requests: 1","sec-fetch-dest: document","accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9","referer: https://firefaucet.win/",];
 	$r = curl(host."start",h(),$data,1)[1];
 	tmr(60);
 	
-	//$header = ["Host: firefaucet.win","accept: */*","sec-fetch-dest: empty","x-requested-with: XMLHttpRequest","referer: https://firefaucet.win/start"];
 	$r = json_decode(curl(host."internal-api/payout/",h(),'',1)[1],1);
 	if($r["success"]==1){
 		$coin = array_keys($r["logs"]);

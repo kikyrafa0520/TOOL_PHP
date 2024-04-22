@@ -88,7 +88,6 @@ while(true){
 		}
 		$data = "auto_faucet_token=".$auto."&csrf_token_name=".$csrf."&token=".$hiden;
 		$r = curl(host."faucet/verify/".$coin,h(),$data)[1];
-		print_r($r);exit;
 		$ss = explode("account!',",explode("html: '0.",$r)[1])[0];
 		$wr = explode(".",explode("html: '",$r)[1])[0];
 		if($ss){

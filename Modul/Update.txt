@@ -1,5 +1,6 @@
 @Crypto
 
 [+] Apikey-> FreeusdClick
-[+] Free -> Adviewsatoshi
+[+] Apikey-> Chuksblog
+[+] Apikey-> Coindoog
 [+] Free -> FaucetclickSite

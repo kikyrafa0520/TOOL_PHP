@@ -273,12 +273,31 @@ Cetak("Balance",$r["balance"]);
 Cetak("Energy",$r["energy"]);
 print line();
 
+while(true){
+	$r = dash();
+	if(!$r["user"]){
+		print Error("Cookie Expired!\n");
+		hapus("Cookie");
+		goto cookie;
+	}
+	game("2048-lite","1");
+	game("pacman-lite","2");
+	game("hextris-lite","3");
+	game("taptaptap","4");
+	ads();
+	article();
+	faucet();
+	acivement();
+	autofaucet();
+	tmr(600);
+}
+/*
 menu:
-Menu(1, "Game");
-Menu(2, "Faucet");
-Menu(3, "Visit Ptc");
+Menu(1, "Game"); ok
+Menu(2, "Faucet"); ok
+Menu(3, "Visit Ptc"); ok
 Menu(4, "Auto Faucet");
-Menu(5, "Read Article");
+Menu(5, "Read Article");ok
 Menu(6, "Achievements");
 //Game
 $pil = readline(Isi("Nomor"));
@@ -310,3 +329,4 @@ if($pil==1){
 //mining
 leaderboard();
 saldo();
+*/

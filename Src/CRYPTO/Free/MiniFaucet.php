@@ -35,7 +35,6 @@ function Colum($a,$b,$c=0){
 	return rata($a,"|").rata($b,"|").rata($c).n;
 }
 function autofaucet(){
-	print k.str_pad("AUTO FAUCET",50," ",STR_PAD_BOTH)."\n";
 	while(true){
 		$r = curl(host."auto",h())[1];
 		$cost = explode('</div>',explode('<div class="text-3xl font-medium leading-8 mt-6">',$r)[2])[0];
@@ -136,7 +135,6 @@ function leaderboard(){
 	}
 }
 function acivement(){
-	print k.str_pad("ACHIEVEMENTS",50," ",STR_PAD_BOTH)."\n";
 	$r = curl(host."achievements",h())[1];
 	$list = explode('<div class="text-1xl font-medium leading-8">Daily Achievement</div>',$r);
 	foreach($list as $a => $aciv){
@@ -158,6 +156,40 @@ function acivement(){
 			print line();
 		}
 	}
+}
+function article(){
+	while(true){
+		$r = curl(host."articles",h())[1];
+		$id = explode("'",explode('article/view/',$r)[1])[0];;
+		if(!$id)break;
+		
+		$r = curl(host.'article/view/'.$id,h())[1];
+		$csrf = explode('"',explode('_token_name" value="',$r)[1])[0];
+		$token = explode('"',explode('name="token" value="',$r)[1])[0];
+		$slug = explode('"',explode('name="slug" value="',$r)[1])[0];
+		
+		$data = "csrf_token_name=$csrf&token=$token&slug=$slug";
+		$r = curl(host.'articles/antibot',h(),$data)[0];
+		$loc = trim(explode(n, explode('q=',explode('location:', $r)[1])[1])[0]);
+		$arr = ['referer: https://www.google.com/'];
+		$r = curl(urldecode($loc),array_merge($arr,h()))[1];
+		$tmr = explode(';',explode('let timer = ',$r)[1])[0];
+		if($tmr)tmr($tmr);
+		$csrf = explode('"',explode('_token_name" value="',$r)[1])[0];
+		$final = explode('"',explode('<form action="',$r)[1])[0];
+		$data = "csrf_token_name=$csrf";
+		$r = curl($final,h(),$data)[1];
+		$ss = explode("`",explode("html: `",$r)[1])[0];
+		if($ss){
+			print Sukses($ss);
+			$r = dash();
+			Cetak("Balance",$r["balance"]);
+			Cetak("Energy",$r["energy"]);
+			print line();
+		}
+	}
+	print Error("Article has finished\n");
+	print line();
 }
 Ban(1);
 Cetak("Register",register_link);
@@ -181,8 +213,26 @@ Cetak("Balance",$r["balance"]);
 Cetak("Energy",$r["energy"]);
 print line();
 
-//Game
-print k.str_pad("HACK GAME",50," ",STR_PAD_BOTH)."\n";
+while(true){
+	$r = dash();
+	if(!$r["user"]){
+		print Error("Cookie Expired!\n");
+		hapus("Cookie");
+		goto cookie;
+	}
+	game("2048-lite","1");
+	game("pacman-lite","2");
+	game("hextris-lite","3");
+	game("taptaptap","4");
+	//ads();
+	article();
+	//faucet();
+	acivement();
+	autofaucet();
+	tmr(600);
+}
+/*
+
 game("2048-lite","1");
 game("pacman-lite","2");
 game("hextris-lite","3");
@@ -192,3 +242,4 @@ acivement();
 autofaucet();
 leaderboard();
 saldo();
+*/

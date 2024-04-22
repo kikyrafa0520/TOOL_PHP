@@ -4,7 +4,7 @@ host = "https://leadercryptonly.xyz/",
 register_link = "https://leadercryptonly.xyz/?r=4230",
 youtube = "https://youtube.com/@iewil";
 
-function h($data=0){
+function h(){
 	$h[] = "cookie: ".simpan("Cookie");
 	$h[] = "user-agent: ".ua();
 	return $h;
@@ -46,7 +46,7 @@ while(true){
 		if(explode("/",$stat[1][2])[0] == "0")continue;
 		
 		$tmr = explode(",",explode('let timer = ',$r)[1])[0];
-		if($tmr)tmr($tmr);
+		//if($tmr)tmr($tmr);
 		
 		$r = curl(host."faucet/verify/".$coin,h(),http_build_query($data))[1];
 		preg_match_all('#<p class="lh-1 mb-1 font-weight-bold">(.*?)</p>#',$r,$stat2);

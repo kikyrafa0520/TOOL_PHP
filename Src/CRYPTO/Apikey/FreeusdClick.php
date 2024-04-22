@@ -102,8 +102,8 @@ while(true){
 	if(!$id)break;
 	$r = curl(host."ads/view/".$id,h())[1];
 	$cek = GlobalCheck($r);
-	if($cek['cf']){print Erro("Cloudflare Detect\n");hapus("Cookie");print line();goto cookie;}
-	if($cek['fw']){print Erro("Firewall Detect\n");hapus("Cookie");print line();goto cookie;}
+	if($cek['cf']){print Error("Cloudflare Detect\n");hapus("Cookie");print line();goto cookie;}
+	if($cek['fw']){print Error("Firewall Detect\n");hapus("Cookie");print line();goto cookie;}
 	$data = Parsing($r);
 	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 	if(!$sitekey){
@@ -118,12 +118,16 @@ while(true){
 	$final = explode('"',explode('<form id="ptcform" action="',$r)[1])[0];
 	$r = curl($final, h(), http_build_query($data))[1];
 	$ss = explode("'",explode("html: '0.",$r)[1])[0];
-	$wr = explode("'",explode("html: '",$r)[1])[0];
 	if($ss){
 		print Sukses("0.".$ss);
 		print line();
 	}else{
-		print Error($wr.n);
+		$wr = explode("'",explode("html: '",$r)[1])[0];
+		if($wr){
+			print Error($wr.n);
+		}else{
+			print Error("Something wrong".n);
+		}
 		print line();
 	}
 }

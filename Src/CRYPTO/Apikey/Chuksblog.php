@@ -1,9 +1,9 @@
 <?php
 const
-host = "https://ourcoincash.xyz/",
-register_link = "https://ourcoincash.xyz/?r=3408",
+host = "https://chuksblog.top/",
+register_link = "https://chuksblog.top/?r=387",
 typeCaptcha = "RecaptchaV2",
-youtube = "https://youtu.be/xSEIsTlVqig";
+youtube = "https://youtube.com/@iewil";
 
 function h(){
 	$h[] = "Cookie: ".simpan("Cookie");
