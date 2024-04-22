@@ -1,7 +1,7 @@
 <?php
 const
-host = "https://coindoog.com/",
-register_link = "https://coindoog.com/?r=74172",
+host = "https://lovely-faucet.com/",
+register_link = "https://lovely-faucet.com/?r=16322",
 typeCaptcha = "RecaptchaV2",
 youtube = "https://youtube.com/@iewil";
 

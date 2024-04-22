@@ -74,6 +74,7 @@ if($a > 0){
 }
 if($tam){
 	$pil = readline(Isi("Nomor"));
+	print d;
 	if($pil == '' || $pil >= Count($tam)+1)exit(Error("Tolol"));
 	if($tam[$pil] == "update"){
 		system("git reset --hard");

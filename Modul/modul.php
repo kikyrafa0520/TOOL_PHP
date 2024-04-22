@@ -230,7 +230,7 @@ function Tmr($tmr){
 	date_default_timezone_set("UTC");
 	$col = [b,c,d,h,k,m,u];
 	$sym = [' ─ ',' / ',' │ ',' \ ',];
-	$timr = time()+$tmr;
+	$timr = time()+$tmr+rand(5,10);
 	$a = 0;
 	while(true){
 		$a +=1;
