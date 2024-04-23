@@ -21,6 +21,12 @@ function faucet($patch){
 	global $api;
 	while(true){
 		$r = curl(host.$patch,h())[1];
+		if (preg_match('/Locked/', $r)) {
+			print Error("Faucet locked\n");
+			print line();
+			$tmr = explode("'",explode("let wait = '",$r)[1])[0];
+			tmr($tmr);continue;
+		}
 		$cek = GlobalCheck($r);
 		if($cek['cf']){
 			print Error("Cloudflare Detect\n");

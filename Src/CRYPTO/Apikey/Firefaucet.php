@@ -42,7 +42,7 @@ cookie:
 Cetak("Register",register_link);
 print line();
 simpan("Cookie");
-if(!ua())print "\n".line();
+ua();
 
 $apikey = MenuApi();
 if(provider_api == "Multibot"){
@@ -59,6 +59,7 @@ Ban(1);
 $r = dash();
 if(!$r["user"]){
 	hapus("Cookie");
+	hapus("cookie.txt");
 	goto cookie;
 }
 Cetak("Username", $r["user"]);
@@ -88,13 +89,14 @@ while(true){
 		$r = json_decode(curl(host.'api/additional-details-dashboard/?sidebar=true', h())[1],1);
 		$tmr = str_replace('m','',$r['faucet_status']);
 		if(is_numeric($tmr)){
-			tmr(*60);continue;
+			tmr($tmr*60);continue;
 		}else{
 			tmr(3600);continue;
 		}
 	}
 	$csrf = explode('">',explode('name="csrf_token" value="',$r)[1])[0];
 	$activeCaptcha = explode('"',explode('<input name="selected-captcha" type="radio" id="select-',$r)[1])[0];
+	activCaptcha:
 	Cetak("Captcha",strtoupper($activeCaptcha));
 	if($activeCaptcha == 'turnstile'){
 		$cap = $api->Turnstile("0x4AAAAAAAEUvFih09RuyAna", host.'faucet');
@@ -115,6 +117,8 @@ while(true){
 		$data["g-recaptcha-response"] = $cap;
 	}else
 	if($activeCaptcha == 'solvemedia'){
+		$activeCaptcha = explode('"',explode('<input name="selected-captcha" type="radio" id="select-',$r)[2])[0];
+		goto activCaptcha;
 		$solvemedia = "https://api-secure.solvemedia.com/papi/_challenge.js?k=z59ESC-Y0q8vs9l4gg1yur9HoeNRbisB;f=_ACPuzzleUtil.callbacks%5B0%5D;l=en;t=img;s=300x150;c=js,h5c,h5ct,svg,h5v,v/h264,v/webm,h5a,a/mp3,a/ogg,ua/chrome,ua/chrome116,os/android,os/android10,fwv/Acewiw.lism78,jslib/jquery,htmlplus;am=KsUkaKMseGorApdYoyx4ag;ca=script;ts=1706218734;ct=1706219349;th=custom;r=0.06568499755878143";
 		$ca = Gsolv($solvemedia);
 		$img = base64_encode(Gmed($ca));

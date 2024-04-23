@@ -2,7 +2,7 @@
 const
 host = "https://solpick.io/",
 register_link = "https://solpick.io/?ref=iewilmaestro",
-typeCaptcha = "RecaptchaV2",
+typeCaptcha = "hcaptcha",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
@@ -38,8 +38,8 @@ function HourlyFaucet($api){
 			parse_str($item, $cookie);
 			$cookies = array_merge($cookies, $cookie);
 		}
-		$sitekey = explode('">',explode('<div class="g-recaptcha" id="g_recaptcha" style="margin-top:20px" data-sitekey="',$r[1])[1])[0];//6Le5mIwlAAAAADmaHuGxaf5KTEiWwG9FhQex0JDc
-		$cap = $api->Recaptchav2($sitekey, host.'faucet.php');
+		//6Le5mIwlAAAAADmaHuGxaf5KTEiWwG9FhQex0JDc
+		$cap = $api->Hcaptcha("f67eb825-e7db-46b8-a48c-819b59bad81c", host.'faucet.php');
 		if(!$cap)continue;
 		$data = 'action=claim_hourly_faucet&g-recaptcha-response='.$cap.'&h-captcha-response=null&captcha=&ft=&csrf_test_name='.$cookies['csrf_cookie_name'];
 		
