@@ -46,7 +46,16 @@ if(!$r["user"]){
 Cetak("Email",$r["user"]);
 Cetak("Bal_Api",$api->getBalance());
 print line();
-
+menu:
+Menu(1,"Claim Faucet");
+Menu(2,"Update Cookie");
+$pil = readline(Isi("Number"));
+print line();
+if($pil == 2){
+	hapus("Cookie");
+	Simpan("Cookie");
+	goto cookie;
+}
 gaslagi:
 $r = curl(host.'faucet.php',h())[1];
 $cek = GlobalCheck($r);
