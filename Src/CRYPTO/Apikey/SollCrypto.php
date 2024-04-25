@@ -138,7 +138,7 @@ while(true){
 		}
 		if(explode('\"',explode('rel=\"',$r)[1])[0]){
 			$atb = $api->AntiBot($r);
-			if(!$atb){print Error("Atb @".provider_api." Error\n"); continue;}
+			if(!$atb)continue;
 		}else{
 			print Error("atb error!");
 			sleep(6);

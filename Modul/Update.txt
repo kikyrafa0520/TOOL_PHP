@@ -1,11 +1,7 @@
 @Crypto
 
-[-] Free-> CoinmediaHub
-[-] Free-> BitstepsPro
-[-] Apikey-> Bnbfreee
+[*] Apikey-> Ourcoincash
+[*] Apikey-> AllfaucetXyz
 
-[*] Apikey->Onlyfaucet
-
-[+] Apikey-> Earnfreebtc
-[+] Apikey-> Altcryp
-[+] Apikey-> Earncryptowrs
+[+] Apikey-> Aruble
+[+] Ruble-> Teaserfast

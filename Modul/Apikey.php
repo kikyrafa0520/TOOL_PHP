@@ -239,8 +239,8 @@ Class ApiXevil extends RequestApi {
 			"main_photo" => $main,
 			"task" => $small
 		]);
-		//$data = "method=teaserfast&main_photo=".$main."&task=".$small;
-		return $this->getResult($data, "GET");
+		$ua = "Content-type: application/x-www-form-urlencoded";
+		return $this->getResult($data, "POST",$ua);
 	}
 }
 /*

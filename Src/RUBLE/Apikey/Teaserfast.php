@@ -1,5 +1,4 @@
 <?php
-exit("Script on progres\n");
 const
 provider_api = "Xevil",
 provider_ref = "t.me/Xevil_check_bot?start=6192660395",
@@ -71,11 +70,15 @@ while(true){
 			$data = "yd=$id&hd=$hd&rc=$rc";
 			$r = json_decode(curl(host.'captcha-youtube/',h(1),$data)[1],1);
 			if(!$r['success'])break;
-			$cap = $api->Teaserfast($r['captcha'], $r['small']);
-			print $cap.n;
-			print urlencode($cap).n;
-			
-			$data = "crxy=".urlencode($cap)."&dt=".$code;
+			if($r['сaptcha'] && $r['small']){
+				$cap = $api->Teaserfast($r['сaptcha'], $r['small']);
+				$x = explode(',',explode('=',$cap)[1])[0];
+				$y = explode('=',$cap)[2];
+				$cap = "$x:$y";
+			}else{
+				continue;
+			}
+			$data = "crxy=".$cap."&dt=".$code;
 			$r = json_decode(curl(host.'check-youtube/',h(1),$data)[1],1);
 			if($r['captcha']){
 				print Error("Oops");
