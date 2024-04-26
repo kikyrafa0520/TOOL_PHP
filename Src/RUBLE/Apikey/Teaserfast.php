@@ -38,7 +38,7 @@ $r = curl(host,h())[1];
 $user = explode('</div>',explode('<div class="main_user_login">',$r)[1])[0];
 $bal= explode('</span>',explode('">',explode('<span class="int blue" id="basic_balance" title="',$r)[1])[1])[0];
 if(!$user){
-	unlink("Cookie");
+	hapus("Cookie");
 	goto cookie;
 }
 

@@ -44,11 +44,13 @@ print line();
 simpan("Cookie");
 ua();
 
-$apikey = MenuApi();
-if(provider_api == "Multibot"){
-	$api = New ApiMultibot($apikey);
-}else{
-	$api = New ApiXevil($apikey);
+if(!$api){
+	$apikey = MenuApi();
+	if(provider_api == "Multibot"){
+		$api = New ApiMultibot($apikey);
+	}else{
+		$api = New ApiXevil($apikey);
+	}
 }
 
 

@@ -28,11 +28,13 @@ print line();
 simpan("Cookie");
 if(!ua())print "\n".line();
 
-$apikey = MenuApi();
-if(provider_api == "Multibot"){
-	$api = New ApiMultibot($apikey);
-}else{
-	$api = New ApiXevil($apikey);
+if(!$api){
+	$apikey = MenuApi();
+	if(provider_api == "Multibot"){
+		$api = New ApiMultibot($apikey);
+	}else{
+		$api = New ApiXevil($apikey);
+	}
 }
 
 Ban(1);

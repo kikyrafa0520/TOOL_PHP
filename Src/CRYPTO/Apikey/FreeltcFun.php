@@ -20,16 +20,19 @@ function login($email){
 	}else{
 		$r = curl(register_link,h(),'',1)[1];
 	}
-	$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
-	if(!$sitekey)exit(error("Capcha turnstile tidak terdeteksi\n"));
-	$cap = $api->Turnstile($sitekey, host);
+	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+	//$sitekey = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
+	if(!$sitekey)exit(error("ReCapchaV2 tidak terdeteksi\n"));
+	$cap = $api->RecaptchaV2($sitekey, host);
 	if(!$cap)goto ulang;
 	$csrf = explode('">',explode('<input type="hidden" name="csrf_token_name" id="token" value="',$r)[1])[0];
 	$data = [
 	"wallet" => simpan("Email"),
 	"csrf_token_name" => $csrf,
-	"captcha" => "turnstile",
-	"cf-turnstile-response" => $cap
+	//"captcha" => "turnstile",
+	//"cf-turnstile-response" => $cap
+	"captcha"=>"recaptchav2",
+	"g-recaptcha-response"=>$cap
 	];
 	$r = curl(host."auth/login",h(),http_build_query($data),1)[1];
 	$ss = explode("',",explode("html: '",$r)[1])[0];
@@ -51,11 +54,13 @@ print line();
 $email = Simpan("Email");
 if(!ua())print "\n".line();
 
-$apikey = MenuApi();
-if(provider_api == "Multibot"){
-	$api = New ApiMultibot($apikey);
-}else{
-	$api = New ApiXevil($apikey);
+if(!$api){
+	$apikey = MenuApi();
+	if(provider_api == "Multibot"){
+		$api = New ApiMultibot($apikey);
+	}else{
+		$api = New ApiXevil($apikey);
+	}
 }
 
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);

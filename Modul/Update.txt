@@ -1,7 +1,3 @@
 @Crypto
 
-[*] Apikey-> Ourcoincash
-[*] Apikey-> AllfaucetXyz
-
-[+] Apikey-> Aruble
-[+] Ruble-> Teaserfast
+[-] Apikey-> Buxwall

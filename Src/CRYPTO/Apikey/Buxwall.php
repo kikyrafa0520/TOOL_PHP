@@ -27,13 +27,14 @@ print line();
 if(!Simpan("Cookie"))print "\n".line();
 if(!ua())print "\n".line();
 
-$apikey = MenuApi();
-if(provider_api == "Multibot"){
-	$api = New ApiMultibot($apikey);
-}else{
-	$api = New ApiXevil($apikey);
+if(!$api){
+	$apikey = MenuApi();
+	if(provider_api == "Multibot"){
+		$api = New ApiMultibot($apikey);
+	}else{
+		$api = New ApiXevil($apikey);
+	}
 }
-
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
 //system("termux-open-url ".youtube);
 Ban(1);
@@ -60,7 +61,7 @@ while(true){
 	$csrf=explode('"',explode('<input type="hidden" name="csrfToken" value="',$r)[1])[0];
 	if(explode('\"',explode('rel=\"',$r)[1])[0]){
 		$atb = $api->AntiBot($r);
-		if(!$atb){print Error("Atb @".provider_api." Error\n"); continue;}
+		if(!$atb)continue;
 	}else{
 		print Error("atb error!");
 		sleep(6);

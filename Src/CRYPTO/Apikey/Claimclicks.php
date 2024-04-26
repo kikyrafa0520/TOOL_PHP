@@ -39,11 +39,13 @@ if(explode('@',$email)[1]){
 */
 if(!ua())print "\n".line();
 
-$apikey = MenuApi();
-if(provider_api == "Multibot"){
-	$api = New ApiMultibot($apikey);
-}else{
-	$api = New ApiXevil($apikey);
+if(!$api){
+	$apikey = MenuApi();
+	if(provider_api == "Multibot"){
+		$api = New ApiMultibot($apikey);
+	}else{
+		$api = New ApiXevil($apikey);
+	}
 }
 
 Ban(1);
@@ -134,7 +136,7 @@ while(true){
 			print line();
 			$res = his([$coint=>1],$res);
 		}else{
-			//continue;
+			continue;
 			print_r($r);exit;
 		}
 	}

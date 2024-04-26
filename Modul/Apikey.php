@@ -66,6 +66,7 @@ Class RequestApi{
 		if($method == "universal" || $method == "base64")return "Ocr";
 		if($method == "antibot")return "Antibot";
 		if($method == "authkong")return "Authkong";
+		if($method == "teaserfast")return "Teaserfast";
 	}
 	function getResult($data ,$method, $header = 0){
 		$cap = $this->filter(explode('&',explode("method=",$data)[1])[0]);
