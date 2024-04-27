@@ -107,6 +107,10 @@ function Line(){
 function clean($extensi){
 	return str_replace(".php","",$extensi);
 }
+function Title($activitas){
+	print bp.str_pad(strtoupper(nama_file)."-".strtoupper($activitas),44, " ", STR_PAD_BOTH).d.n;
+	print Line();
+}
 /************Banner****************/
 function TimeZone(){
 	system("clear");

@@ -39,13 +39,14 @@ if(explode('@',$email)[1]){
 */
 if(!ua())print "\n".line();
 
-if(!$api){
+if(!$cek_api_input){
 	$apikey = MenuApi();
 	if(provider_api == "Multibot"){
 		$api = New ApiMultibot($apikey);
 	}else{
 		$api = New ApiXevil($apikey);
 	}
+	$cek_api_input = 1;
 }
 
 Ban(1);

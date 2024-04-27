@@ -54,13 +54,14 @@ print line();
 $email = Simpan("Email");
 if(!ua())print "\n".line();
 
-if(!$api){
+if(!$cek_api_input){
 	$apikey = MenuApi();
 	if(provider_api == "Multibot"){
 		$api = New ApiMultibot($apikey);
 	}else{
 		$api = New ApiXevil($apikey);
 	}
+	$cek_api_input = 1;
 }
 
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);

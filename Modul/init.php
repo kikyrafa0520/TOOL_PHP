@@ -35,6 +35,7 @@ if(file_exists("User_Agent")){$nama_file = "User_Agent";if(PHP_OS_FAMILY == "Win
 require "Modul/Apikey.php";
 require "Modul/Shortlink.php";
 require "Modul/Lisensi.php";
+require "Modul/Offerwall.php";
 
 Ban();
 $r = json_decode(file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/setup.json"),1);

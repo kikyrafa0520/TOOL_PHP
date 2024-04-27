@@ -1,3 +1,8 @@
 @Crypto
 
-[-] Apikey-> Buxwall
+[-] Apikey-> buxwall
+
+[+] Apikey-> Aruble
+[+] Apikey-> BitstepsPro
+[+] Apikey-> MoonboomNet
+[+] Ruble-> Teaserfast

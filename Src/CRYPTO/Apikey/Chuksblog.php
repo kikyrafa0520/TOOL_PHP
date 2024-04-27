@@ -33,9 +33,19 @@ function faucet(){
 		}
 		$csrf = explode('"',explode('id="token" value="',$r)[1])[0];
 		$token = explode('"',explode('name="token" value="',$r)[1])[0];
-		$sitekey = explode('"',explode('data-sitekey="',$r)[1])[0];
+		$recaptcha = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+		$hcaptcha = explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
 		$tmr = explode(';',explode('let timer = ',$r)[1])[0];
-		if(!$sitekey){
+		if($recaptcha){
+			$cap = $api->RecaptchaV2($recaptcha, host.'faucet');
+			if(!$cap)continue;
+			$data = "captcha=recaptchav2&g-recaptcha-response=".$cap."&";
+		}else
+		if($hcaptcha){
+			$cap = $api->Hcaptcha($hcaptcha, host.'faucet');
+			if(!$cap)continue;
+			$data = "captcha=hcaptcha&g-recaptcha-response=".$cap."&h-captcha-response=".$cap."&";
+		}else{
 			print Error("Sitekey Error");
 			sleep(6);
 			print "\r                         \r";
@@ -45,12 +55,10 @@ function faucet(){
 		if(explode('\"',explode('rel=\"',$r)[1])[0]){
 			$atb = $api->AntiBot($r);
 			if(!$atb)continue;
-			$data = "antibotlinks=".$atb."&";
+			$data .= "antibotlinks=".$atb."&";
 		}
-		$cap = $api->RecaptchaV2($sitekey, host.'faucet');
-		if(!$cap)continue;
+		$data .= "csrf_token_name=".$csrf."&token=".$token;
 		
-		$data .= "csrf_token_name=".$csrf."&token=".$token."&captcha=recaptchav2&g-recaptcha-response=".$cap;
 		$r = curl(host.'faucet/verify',h(),$data)[1];
 		$ss = explode('has',explode("text: '",$r)[1])[0];
 		if($ss){
@@ -90,7 +98,7 @@ function ptc(){
 		$r = curl(host."ptc/view/".$id,h())[1];
 		$csrf = explode('"',explode('name="csrf_token_name" value="',$r)[1])[0];
 		$token = explode('"',explode('name="token" value="',$r)[1])[0];
-		$sitekey = explode('"',explode('data-sitekey="',$r)[1])[0];
+		$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 		if(!$sitekey){
 			print Error("Sitekey Error");
 			sleep(6);
@@ -131,13 +139,14 @@ print line();
 if(!Simpan("Cookie"))print "\n".line();
 if(!ua())print "\n".line();
 
-if(!$api){
+if(!$cek_api_input){
 	$apikey = MenuApi();
 	if(provider_api == "Multibot"){
 		$api = New ApiMultibot($apikey);
 	}else{
 		$api = New ApiXevil($apikey);
 	}
+	$cek_api_input = 1;
 }
 
 print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";sleep(2);
