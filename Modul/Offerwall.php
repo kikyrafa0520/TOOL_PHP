@@ -38,6 +38,7 @@ Class Offerwall {
 		return $h;
 	}
 	function Excentiv(){
+		hapus("cookie.txt");
 		while(1){
 			$r = curl($this->host."excentiv",h())[1];
 			$iframe = explode('"',explode('<iframe src="',$r)[1])[0];
@@ -66,6 +67,12 @@ Class Offerwall {
 			}
 		}
 		return ["status" => 0,"message" => "game finish"];
+	}
+	function Offers4crypto(){
+		hapus("cookie.txt");
+		while(1){
+			
+		}
 	}
 	function Offerwall($offer){
 		$cek = $this->check($offer);

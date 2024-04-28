@@ -35,7 +35,10 @@ function faucet(){
 		$token = explode('"',explode('name="token" value="',$r)[1])[0];
 		$recaptcha = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 		$hcaptcha = explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
+		$tmr = explode('-',explode('let wait = ',$r)[1])[0];
+		if($tmr){tmr($tmr);continue;}
 		$tmr = explode(';',explode('let timer = ',$r)[1])[0];
+		if($tmr){tmr($tmr);}
 		if($recaptcha){
 			$cap = $api->RecaptchaV2($recaptcha, host.'faucet');
 			if(!$cap)continue;
@@ -51,7 +54,6 @@ function faucet(){
 			print "\r                         \r";
 			continue;
 		}
-		if($tmr){tmr($tmr);}
 		if(explode('\"',explode('rel=\"',$r)[1])[0]){
 			$atb = $api->AntiBot($r);
 			if(!$atb)continue;
