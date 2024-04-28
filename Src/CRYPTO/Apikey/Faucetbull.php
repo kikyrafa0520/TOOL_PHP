@@ -263,7 +263,7 @@ if($pil == 1){
 			$r = $offer->Excentiv();
 			if(!$r['status']){
 				print $r['message'].n;
-				print line():
+				print line();
 			}
 			break;
 		}
@@ -279,7 +279,7 @@ if($pil == 1){
 			$r = $offer->Offers4crypto();
 			if(!$r['status']){
 				print $r['message'].n;
-				print line():
+				print line();
 			}
 			break;
 		}

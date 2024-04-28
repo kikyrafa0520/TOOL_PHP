@@ -49,7 +49,7 @@ Class Offerwall {
 			$val = explode('"',explode('<button value="',$r)[1])[0];
 			if(!$val)break;
 			$r = curl($val, $this->Excentiv_header("coins-battle.com"),'',1)[1];
-			$id = explode('"',explode('game/play/',$r)[rand(1,32)])[0];
+			$id = explode('"',explode('game/play/',$r)[rand(1,20)])[0];
 			$r = curl('https://coins-battle.com/game/play/'.$id, $this->Excentiv_header("coins-battle.com"),'',1)[1];
 			$tmr = explode("'",explode("let ctimer = '",$r)[1])[0];
 			$csrf = explode('"',explode('name="csrf_token" value="',$r)[1])[0];
@@ -71,7 +71,7 @@ Class Offerwall {
 	function Offers4crypto(){
 		hapus("cookie.txt");
 		while(1){
-			
+			$r = curl($this->host."offers4crypto",h())[1];
 		}
 	}
 	function Offerwall($offer){
