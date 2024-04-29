@@ -135,7 +135,7 @@ function GetFaucet($patch){
 			print line();
 		}else{
 			echo Error("Error response\n");
-			print $r;exit;
+			//print $r;exit;
 			Cetak("Balance",GetDashboard()["balance"]);
 			Cetak("Bal_Api",$api->getBalance());
 			sleep(2);
@@ -259,6 +259,7 @@ if($pil == 1){
 	Achievements();
 	goto menu;
 }elseif($pil == 5){
+	Title("Offerwall [Excentiv]");
 	$r = curl(host.'offerlist',h())[1];
 	$offerlist = explode('offerwall/',$r);
 	foreach($offerlist as $a => $list){
@@ -275,6 +276,7 @@ if($pil == 1){
 	}
 	goto menu;
 }elseif($pil == 6){
+	Title("Offerwall [Offers4crypto]");
 	$r = curl(host.'offerlist',h())[1];
 	$offerlist = explode('offerwall/',$r);
 	foreach($offerlist as $a => $list){

@@ -51,7 +51,6 @@ while(true){
 	$data = [];
 	$r = run(host."surf/browse/",h());
 	if(!preg_match("/Skip/",$r)){
-	//if(!$price){
 		print Error("Ads habis".n);
 		print line();
 		break;

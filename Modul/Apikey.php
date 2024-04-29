@@ -245,7 +245,7 @@ Class ApiXevil extends RequestApi {
 	}
 }
 /*
-$apikey = "SoulqKkCaWdD7iWx5WNq7y6QuMpuljHm";
+$apikey = "xxx";
 $api = new ApiXevil($apikey);
 $sitekey = "08f2c2d465d09d4dfd64eeb53f8b579f135b15abf170407747312a066f88b2a1";
 $pageurl = "https://onlyfaucet.com/";
