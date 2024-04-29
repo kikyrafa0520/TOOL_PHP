@@ -180,7 +180,7 @@ Class ApiXevil extends RequestApi {
 	
 	function __construct($apikey){
 		$this->host = "https://sctg.xyz";
-		$this->apikey = $apikey."|SOFTID6192660395";
+		$this->apikey = $apikey."|SOFTID1204538927";
 	}
 	function RecaptchaV2($sitekey, $pageurl){
 		$data = http_build_query([

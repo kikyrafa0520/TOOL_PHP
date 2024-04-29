@@ -88,6 +88,7 @@ function GetPtc(){
 		}else{
 			$idptc = 1;
 			print Error("Invalid Captcha\n");
+			print line();
 		}
 	}
 	print Error("PTC Finish\n");
@@ -247,12 +248,16 @@ $pil = readline(Isi("Number"));
 print line();
 if($pil == 1){
 	if(GetFaucet("faucet"))goto cookie;
+	goto menu;
 }elseif($pil == 2){
 	GetAutoFaucet();
+	goto menu;
 }elseif($pil == 3){
 	GetPtc();
+	goto menu;
 }elseif($pil == 4){
 	Achievements();
+	goto menu;
 }elseif($pil == 5){
 	$r = curl(host.'offerlist',h())[1];
 	$offerlist = explode('offerwall/',$r);

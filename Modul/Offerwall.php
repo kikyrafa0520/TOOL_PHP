@@ -8,28 +8,6 @@ Class Offerwall {
 			$this->api = New ApiXevil($apikey);
 		}
 	}
-	function check($nama){
-		print k."--[".p."?".k."] ".p."check offerwall";
-		$check = strtolower($nama);
-		$supported = [
-			"excentiv" => "excentiv"
-		];
-		sleep(2);
-		$filter = $supported[$check];
-		if($filter){
-			print "\r                                     \r";
-			print h."[".p."√".h."] $check support offerwall";
-			sleep(2);
-			print "\r                                     \r";
-			return ["status" => 1,"offerwall_name" => $filter];
-		}else{
-			print "\r                                     \r";
-			print m."[".p."!".m."] $check not support offerwall";
-			sleep(2);
-			print "\r                                     \r";
-			return ["status" => 0,"message" => "not supported offerwall"];
-		}
-	}
 	function Excentiv_header($_host, $_ref = 0){
 		$h[] = 'host: '.$_host;
 		$h[] = 'user-agent: '.ua();
@@ -63,6 +41,7 @@ Class Offerwall {
 				Cetak('Game id', $id);
 				print Sukses($ss);
 				Cetak("Bal_Api",$this->api->getBalance());
+				Cetak("Balance",GetDashboard()["balance"]);
 				print line();
 			}
 		}
@@ -70,17 +49,63 @@ Class Offerwall {
 	}
 	function Offers4crypto(){
 		hapus("cookie.txt");
+		$r = curl($this->host."offers4crypto",h())[1];
+		$link_key = 'https://offerwall.me/offerwall/'.explode('"',explode('offerwall.me/offerwall/',$r)[1])[0];
+		
+		$ua = [
+		"host: offerwall.me",
+		"user-agent: ".ua(),
+		"accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+		];
+		
+		$hd = [
+		"host: 123games.site",
+		"user-agent: ".ua(),
+		"accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+		];
+		
 		while(1){
-			$r = curl($this->host."offers4crypto",h())[1];
+			$r = curl($link_key, $ua,'',1)[1];
+			$token = explode("'",explode("var token = '",$r)[1])[0];
+			$data = "type=games&token=".$token."&action=switch_cat";
+			$r = curl($link_key, $ua, $data,1)[1];
+			$data = "token=".$token."&action=start_gs";
+			$r = curl($link_key, $ua, $data,1)[1];
+			if(preg_match('/Session Created!/',$r)){
+				$link = str_replace('\/','/',explode("'",explode("window.open('",$r)[1])[0]);
+				$r = curl($link, $hd,'',1)[1];
+				preg_match_all('#<a href="https://'.parse_url($link)['host'].'/game/(.*?)">#',$r,$games);
+				$game = $games[1][rand(0,count($games[1])-1)];
+				while(true){
+					$r = curl("https://123games.site/game/".$game, $hd, '',1)[1];
+					$key = explode('&',explode('game.php?key=',$r)[1])[0];
+					$tmr = explode(';',explode('var timer = ',$r)[1])[0];
+					
+					$data = "action=start_game";
+					$r = curl("https://123games.site/game/".$game, $hd, $data,1)[1];
+					if(trim($r) == 'ok'){
+						tmr($tmr);
+						$r = curl("https://offerwall.me/game.php?key=$key&game_name=Moto%20X3M:%20Spooky%20Land",  $ua, '', 1);
+						
+						$data = "action=verify";
+						$r = json_decode(curl("https://offerwall.me/game.php?key=$key&game_name=Moto%20X3M:%20Spooky%20Land", $ua, $data, 1)[1],1);
+						if($r['valid']){
+							Cetak('Game id', $game);
+							print Sukses($r['msg']);
+							Cetak("Balance",GetDashboard()["balance"]);
+							print line();
+						}else{
+							return ["status" => 0,"message" => $r['msg']];
+						}
+					}else{
+						return ["status" => 0,"message" => "games.site has change"];
+					}
+				}
+			}else{
+				return ["status" => 0,"message" => "invalid session"];
+			}
 		}
-	}
-	function Offerwall($offer){
-		$cek = $this->check($offer);
-		if(!$cek['status'])return 0;
-		$offerwall_name = $cek['offerwall_name'];
-		if($offerwall_name == "excentiv"){
-			$this->Excentiv();
-		}
+		
 	}
 }
 ?>
