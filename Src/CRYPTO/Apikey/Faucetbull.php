@@ -77,18 +77,17 @@ function GetPtc(){
 		$recap = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 		$hcap =  explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
 		if($recap){
-			$cap = $api->RecaptchaV2($recap, host.$patch);
+			$cap = $api->RecaptchaV2($recap, host.'ptc/view/'.$id);
 			$datacap = "captcha=recaptchav2&g-recaptcha-response=".$cap."&";
 		}elseif($turnstile){
-			$cap = $api->Turnstile($turnstile, host.$patch);
+			$cap = $api->Turnstile($turnstile, host.'ptc/view/'.$id);
 			$datacap = "captcha=turnstile&cf-turnstile-response=".$cap."&";
 		}elseif($hcap){
-			$cap = $api->Hcaptcha($hcap, host.$patch);
+			$cap = $api->Hcaptcha($hcap, host.'ptc/view/'.$id);
 			$datacap = "captcha=hcaptcha&g-recaptcha-response=".$cap."&h-captcha-response=".$cap."&";
 		}else{
 			print Error("Sitekey Error\n"); continue;
 		}
-		$cap = $api->RecaptchaV2($sitekey, host.'ptc/view/'.$id);
 		if(!$cap)continue;
 		$data = $datacap.'csrf_token_name='.$csrf;
 		$r = curl(host.'ptc/verify/'.$id,h(),$data)[1];
