@@ -29,6 +29,7 @@ Class Offerwall {
 			$r = curl($val, $this->Excentiv_header("coins-battle.com"),'',1)[1];
 			$id = explode('"',explode('game/play/',$r)[rand(1,20)])[0];
 			$r = curl('https://coins-battle.com/game/play/'.$id, $this->Excentiv_header("coins-battle.com"),'',1)[1];
+			if(preg_match('/You have already play 50/',$r))break;
 			$tmr = explode("'",explode("let ctimer = '",$r)[1])[0];
 			$csrf = explode('"',explode('name="csrf_token" value="',$r)[1])[0];
 			if($tmr)Tmr($tmr);

@@ -35,24 +35,24 @@ Class Shortlinks {
 		$this->apikey = $apikey;
 	}
 	function check($nama){
-		print k."--[".p."?".k."] ".p."check shortlink";
 		$check = strtolower($nama);
+		print k."--[".p."?".k."] ".p."check $check";
 		$supported = [
-		"linksfly" => "fly",
-		"shortsfly" => "fly",
-		"urlsfly" => "fly",
-		"wefly" => "fly",
-		"clicksflyme" => "fly",
-		"linksly" => "linksly",
-		"adcorto" => "adcorto",
-		"c2g" => "C2G",
-		"shrinkme" => "ShrinkMe",
-		"shrkearn" => "ShrkEarn",
-		"urlhives" => "UrlHives",
-		"linkhives" =>"LinkHives",
-		"shortsme" => "shortsme",
-		"adlink" => "adlink",
-		"ez4short" => "ez4short"
+			"linksfly" => "fly",
+			"shortsfly" => "fly",
+			"urlsfly" => "fly",
+			"wefly" => "fly",
+			"clicksflyme" => "fly",
+			"linksly" => "linksly",
+			"adcorto" => "adcorto",
+			"c2g" => "C2G",
+			"shrinkme" => "ShrinkMe",
+			"shrkearn" => "ShrkEarn",
+			"urlhives" => "UrlHives",
+			"linkhives" =>"LinkHives",
+			"shortsme" => "shortsme",
+			"adlink" => "adlink",
+			"ez4short" => "ez4short"
 		];
 		sleep(2);
 		$filter = $supported[$check];

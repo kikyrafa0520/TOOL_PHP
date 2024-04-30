@@ -2,7 +2,7 @@
 const
 host = "https://faucetbull.com/",
 register_link = "https://faucetbull.com/?r=720",
-typeCaptcha = "RecaptchaV2",
+typeCaptcha = "hcaptcha",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
@@ -67,15 +67,30 @@ function GetPtc(){
 		if($idptc == 0){
 			Cetak("Visit",$ptc);
 		}
-		$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
-		if(!$sitekey){print Error("Sitekey Error\n"); continue;}
+		
 		$token = explode('"',explode('name="token" value="',$r)[1])[0];
 		$csrf = explode('"',explode('<input type="hidden" name="csrf_token_name" value="',$r)[1])[0];
 		$tmr = explode(';',explode('var timer = ',$r)[1])[0];
 		if($tmr){tmr($tmr);}
+		
+		$turnstile = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
+		$recap = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+		$hcap =  explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
+		if($recap){
+			$cap = $api->RecaptchaV2($recap, host.$patch);
+			$datacap = "captcha=recaptchav2&g-recaptcha-response=".$cap."&";
+		}elseif($turnstile){
+			$cap = $api->Turnstile($turnstile, host.$patch);
+			$datacap = "captcha=turnstile&cf-turnstile-response=".$cap."&";
+		}elseif($hcap){
+			$cap = $api->Hcaptcha($hcap, host.$patch);
+			$datacap = "captcha=hcaptcha&g-recaptcha-response=".$cap."&h-captcha-response=".$cap."&";
+		}else{
+			print Error("Sitekey Error\n"); continue;
+		}
 		$cap = $api->RecaptchaV2($sitekey, host.'ptc/view/'.$id);
 		if(!$cap)continue;
-		$data = 'captcha=recaptchav2&g-recaptcha-response='.$cap.'&csrf_token_name='.$csrf;
+		$data = $datacap.'csrf_token_name='.$csrf;
 		$r = curl(host.'ptc/verify/'.$id,h(),$data)[1];
 		$ss = explode('has',explode("Swal.fire('Good job!', '",$r)[1])[0];
 		print "\r             \r";
@@ -120,11 +135,24 @@ function GetFaucet($patch){
 		if($tmr){tmr($tmr);continue;}
 		
 		$csrf = explode('"',explode('_token_name" id="token" value="',$r)[1])[0];
-		$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
-		if(!$sitekey){print Error("Sitekey Error\n"); continue;}
-		$cap = $api->RecaptchaV2($sitekey, host.$patch);
+		$turnstile = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
+		$recap = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+		$hcap =  explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
+		if($recap){
+			$cap = $api->RecaptchaV2($recap, host.$patch);
+			$datacap = "&captcha=recaptchav2&g-recaptcha-response=".$cap;
+		}elseif($turnstile){
+			$cap = $api->Turnstile($turnstile, host.$patch);
+			$datacap = "&captcha=turnstile&cf-turnstile-response=".$cap;
+		}elseif($hcap){
+			$cap = $api->Hcaptcha($hcap, host.$patch);
+			$datacap = "&captcha=hcaptcha&g-recaptcha-response=".$cap."&h-captcha-response=".$cap;
+		}else{
+			print Error("Sitekey Error\n"); continue;
+		}
+		
 		if(!$cap)continue;
-		$data = "csrf_token_name=".$csrf."&captcha=recaptchav2&g-recaptcha-response=".$cap;
+		$data = "csrf_token_name=".$csrf.$datacap;
 		$r = curl(host.$patch."/verify", h(), $data)[1];
 		$ss = explode("has",explode("Swal.fire('Good job!', '",$r)[1])[0];
 		if($ss){
@@ -268,7 +296,7 @@ if($pil == 1){
 		if($offerwall_name == "excentiv"){
 			$r = $offer->Excentiv();
 			if(!$r['status']){
-				print $r['message'].n;
+				print Error($r['message'].n);
 				print line();
 			}
 			break;
@@ -285,7 +313,7 @@ if($pil == 1){
 		if($offerwall_name == "offers4crypto"){
 			$r = $offer->Offers4crypto();
 			if(!$r['status']){
-				print $r['message'].n;
+				print Error($r['message'].n);
 				print line();
 			}
 			break;

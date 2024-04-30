@@ -191,6 +191,55 @@ function aciv(){
 		}
 	}
 }
+function shortlink(){
+	$shortlinks = new Shortlinks(ApiShortlink());
+	while(true){
+		$r = curl(host."links",h())[1];
+		if(preg_match('/Cloudflare/',$r) || preg_match('/Just a moment.../',$r)){
+			print Error("Cloudflare\n");
+			hapus("Cookie");
+			return 1;
+		}
+		if(preg_match('/Firewall/',$r)){
+			Firewall();continue;
+		}
+		$list = explode('<div class="col-lg-3">',$r);
+		foreach($list as $a => $short){
+			if($a == 0)continue;
+			$go = explode('"',explode('<a href="',$short)[1])[0];
+			$short_name = explode('</h4>',explode('<h4 class="card-title mt-0">',$short)[1])[0];//Shortsme
+			$limit = explode('/',explode('<span class="badge badge-info">',$short)[1])[0];
+			
+			$cek = $shortlinks->Check($short_name);
+			if ($cek['status']) {
+				for($i = 1; $i <= $limit; $i ++ ){
+					Cetak($short_name,$i);
+					$r = curl($go,h())[1];
+					$shortlink = explode('"',explode('location.href = "',$r)[1])[0];
+					$bypas = $shortlinks->Bypass($cek['shortlink_name'], $shortlink);
+					$pass = $bypas['url'];
+					if($pass){
+						tmr($bypas['timer']);
+						$r = curl($pass,h())[1];
+						if(preg_match('/Cloudflare/',$r) || preg_match('/Just a moment.../',$r)){
+							print Error("Cloudflare\n");
+							hapus("Cookie");
+							return 1;
+						}
+						$ss = explode("'",explode("Swal.fire('Good job!', '",$r)[1])[0];
+						if($ss){
+							Cetak("Sukses",$ss);
+							$r = Get_Dashboard();
+							Cetak("Balance",$r["balance"]);
+							Cetak("SL_Api",$bypas['balance']);
+							print line();
+						}
+					}
+				}
+			}
+		}
+	}
+}
 Ban(1);
 cookie:
 Cetak("Register",register_link);
@@ -225,14 +274,23 @@ Cetak("Balance",$r["balance"]);
 Cetak("Energy",$r["energy"]);
 Cetak("Bal_Api",$api->getBalance());
 print line();
-
-while(true){
-	ptc($api);
-	if(Claim($api, "faucet")){
-		hapus("Cookie");
-		goto cookie;
+menu:
+Menu(1, "Earn Coin");
+Menu(2, "Shortlinks");
+$pil = readline(Isi("Number"));
+print line();
+if($pil == 2){
+	if(shortlink())goto cookie;
+	goto menu;
+}else{
+	while(true){
+		ptc($api);
+		if(Claim($api, "faucet")){
+			hapus("Cookie");
+			goto cookie;
+		}
+		auto();
+		aciv();
+		tmr(600);
 	}
-	auto();
-	aciv();
-	tmr(600);
 }
