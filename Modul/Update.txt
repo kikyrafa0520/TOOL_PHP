@@ -1,4 +1,8 @@
 @Crypto
 
 [*] Polyearn-> Fix Autofaucet
+
 [-] Apikey-> Buxwall
+
+[+] Apikey-> Daycash
+[+] Apikey-> Ltchunt
