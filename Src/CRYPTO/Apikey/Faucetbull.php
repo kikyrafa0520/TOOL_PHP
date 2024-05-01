@@ -2,7 +2,7 @@
 const
 host = "https://faucetbull.com/",
 register_link = "https://faucetbull.com/?r=720",
-typeCaptcha = "hcaptcha",
+typeCaptcha = "Recaptchav2",
 youtube = "https://youtube.com/@iewil";
 
 function h($data=0){
@@ -149,9 +149,14 @@ function GetFaucet($patch){
 		}else{
 			print Error("Sitekey Error\n"); continue;
 		}
-		
 		if(!$cap)continue;
-		$data = "csrf_token_name=".$csrf.$datacap;
+		if(explode('\"',explode('rel=\"',$r)[1])[0]){
+			$atb = $api->AntiBot($r);
+			if(!$atb)continue;
+			$data = "antibotlinks=".$atb."&csrf_token_name=".$csrf.$datacap;
+		}else{
+			$data = "csrf_token_name=".$csrf.$datacap;
+		}
 		$r = curl(host.$patch."/verify", h(), $data)[1];
 		$ss = explode("has",explode("Swal.fire('Good job!', '",$r)[1])[0];
 		if($ss){
