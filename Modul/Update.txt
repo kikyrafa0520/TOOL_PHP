@@ -1,3 +1,4 @@
 @Crypto
 
-[+] Apikey-> LitefaucetIn
+[*] Polyearn-> Fix Autofaucet
+[-] Apikey-> Buxwall

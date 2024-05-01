@@ -97,18 +97,20 @@ function Getptc(){
 }
 
 function Getauto(){
-	$r = curl(host.'auto',h())[1];
-	$token = explode('"',explode('name="token" value="',$r)[1])[0];
-	$tmr = explode(',',explode('let timer = ',$r)[1])[0];//3600,
-	if($tmr)tmr($tmr);
-	
-	$data = "token=$token";
-	$r = curl(host.'auto/verify',h(),$data)[1];
-	$ss = explode("'",explode("Swal.fire('Good job!', '",$r)[1])[0];
-	if($ss){
-		Cetak("Sukses",$ss);
-		Cetak("Balance",GetDashboard()["balance"]);
-		print line();;
+	while(true){
+		$r = curl(host.'auto',h())[1];
+		$token = explode('"',explode('name="token" value="',$r)[1])[0];
+		$tmr = explode(',',explode('let timer = ',$r)[1])[0];//3600,
+		if($tmr)tmr($tmr);
+		
+		$data = "token=$token";
+		$r = curl(host.'auto/verify',h(),$data)[1];
+		$ss = explode("'",explode("Swal.fire('Good job!', '",$r)[1])[0];
+		if($ss){
+			Cetak("Sukses",$ss);
+			Cetak("Balance",GetDashboard()["balance"]);
+			print line();;
+		}
 	}
 }
 Ban(1);

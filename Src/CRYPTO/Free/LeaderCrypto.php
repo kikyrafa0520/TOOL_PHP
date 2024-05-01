@@ -11,9 +11,9 @@ function h(){
 }
 
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 simpan("Cookie");
 ua();
 
