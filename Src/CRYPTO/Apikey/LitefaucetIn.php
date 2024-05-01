@@ -102,7 +102,6 @@ function GetPtc(){
 		}else{
 			$idptc = 1;
 			print Error("Invalid Captcha\n");
-			print_r($r);exit;
 			print line();
 		}
 	}
