@@ -63,7 +63,7 @@ Class Shortlinks {
 			print "\r                              \r";
 			return ["status" => 1,"shortlink_name" => $filter];
 		}else{
-			print "\r                              \r";
+			print "\r                                \r";
 			print m."[".p."!".m."] not support shortlink";
 			sleep(2);
 			print "\r                              \r";

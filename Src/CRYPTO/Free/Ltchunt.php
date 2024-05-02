@@ -152,7 +152,7 @@ print line();
 if($pil == 1){
 	getPtc();
 	goto menu;
-elseif($pil == 2){
+}elseif($pil == 2){
 	getShortlinks();
 	goto menu;
 }else{
