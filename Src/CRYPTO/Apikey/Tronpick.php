@@ -50,6 +50,7 @@ function HourlyFaucet($api){
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
 		}else{
+			print_r($r);
 			print Error("Please wait for a minutes\n");
 		}
 		Tmr(3600);

@@ -38,7 +38,6 @@ function HourlyFaucet($api){
 			parse_str($item, $cookie);
 			$cookies = array_merge($cookies, $cookie);
 		}
-		//6Le5mIwlAAAAADmaHuGxaf5KTEiWwG9FhQex0JDc
 		$cap = $api->Hcaptcha("f67eb825-e7db-46b8-a48c-819b59bad81c", host.'faucet.php');
 		if(!$cap)continue;
 		$data = 'action=claim_hourly_faucet&g-recaptcha-response='.$cap.'&h-captcha-response=null&captcha=&ft=&csrf_test_name='.$cookies['csrf_cookie_name'];
@@ -51,6 +50,7 @@ function HourlyFaucet($api){
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
 		}else{
+			print_r($r);
 			print Error("Please wait for a minutes\n");
 		}
 		Tmr(3600);

@@ -12,6 +12,33 @@ function h($data=0){
 	$h[] = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0";
 	return $h;
 }
+function Firewall(){
+	global $api;
+	while(1){
+		$r = curl(host."firewall",h())[1];
+		$csrf = explode('"',explode('name="csrf_token_name" value="',$r)[1])[0];
+		$captcha = explode('"',explode('name="captchaType" value="',$r)[1])[0];
+		$turnstile = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
+		$recap = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+		if($turnstile){
+			$cap = $api->Turnstile($turnstile, host."firewall");
+			$data["cf-turnstile-response"] = $cap;
+		}else
+		if($recap){
+			$cap = $api->RecaptchaV2($recap, host."firewall");
+			$data["g-recaptcha-response"] = $cap;
+		}else{
+			continue;
+		}
+		if(!$cap)continue;
+		$data["captchaType"] = $captcha;
+		$data["csrf_token_name"] = $csrf;
+		$r = curl(host."firewall/verify",h(),http_build_query($data))[1];
+		if(preg_match('/Invalid Captcha/',$r))continue;
+		Cetak("Firewall","Bypassed");
+		return 0;
+	}
+}
 function login($email){
 	global $api;
 	ulang:
@@ -51,7 +78,7 @@ Ban(1);
 cookie:
 Cetak("Register",register_link);
 print line();
-$email = Simpan("Email");
+simpan("Cookie");
 if(!ua())print "\n".line();
 
 if(!$cek_api_input){
@@ -69,12 +96,12 @@ print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";slee
 Ban(1);
 
 login:
-login($email);
-$r = curl(host,h(),'',1)[1];
+//login($email);
+$r = curl(host,h())[1];
 if(!explode('Logout',$r)[1]){
-	login($email);
-	hapus("cookie.txt");
-	goto login;
+	//login($email);
+	hapus("Cookie");
+	goto cookie;
 }
 
 Cetak("Email",$email);
@@ -85,12 +112,19 @@ gaslagi:
 $con = explode('/faucet/currency/',$r);
 $num = 0;
 while(true){
+	$cecker = curl(host,h())[1];
+	if(!explode('Logout',$cecker)[1]){
+		//login($email);
+		hapus("Cookie");
+		goto cookie;
+	}
 	foreach($con as $a => $coins){
 		if($a == 0)continue;
 		$coin = explode('"',$coins)[0];
 		$r = curl(host."faucet/currency/".$coin,h(),'',1)[1];
+		if(preg_match('/Firewall/',$r)){firewall();continue;}
 		if(preg_match('/An uncaught Exception was encountered/',$r)){print Error("An uncaught Exception was encountered\n");sleep(2);print "\r                                 \r";tmr(60);continue;}
-		if(preg_match('/Just moment/',$r)){exit(Error("Cloudflare\n"));}
+		if(preg_match('/Just moment/',$r)){hapus("Cookie");print Error("Cloudflare\n");goto cookie;}
 		if(preg_match('/Please confirm your email address to be able to claim or withdraw/',$r)){print Error("Please confirm your email address to be able to claim or withdraw\n");print line();exit;}
 		if($res){
 			if($res[$coin] > 2)continue;
