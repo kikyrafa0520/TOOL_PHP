@@ -257,8 +257,8 @@ function shortlink(){
 				}
 			}
 		}
+		break;
 	}
-	break;
 }
 Ban(1);
 cookie:

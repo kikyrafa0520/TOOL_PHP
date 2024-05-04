@@ -238,6 +238,7 @@ function shortlink(){
 				}
 			}
 		}
+		break;
 	}
 }
 Ban(1);
