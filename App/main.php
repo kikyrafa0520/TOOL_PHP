@@ -75,7 +75,7 @@ if($tam){
 menu_pertama:
 print mp.str_pad(strtoupper("menu"),44, " ", STR_PAD_BOTH).d.n;
 print Line();
-$r = scandir("App/bot");$a = 0;
+$r = scandir("App/Bot");$a = 0;
 foreach($r as $act){
 	if($act == '.' || $act == '..') continue;
 	$menu[$a] =  $act;
@@ -89,7 +89,7 @@ if($pil == '' || $pil >= Count($menu))exit(Error("Tolol"));
 menu_kedua:
 print mp.str_pad(strtoupper("menu -> ".$menu[$pil]),44, " ", STR_PAD_BOTH).d.n;
 print Line();
-$r = scandir("App/bot/".$menu[$pil]);$a = 0;
+$r = scandir("App/Bot/".$menu[$pil]);$a = 0;
 foreach($r as $act){
 	if($act == '.' || $act == '..') continue;
 	$menu2[$a] =  $act;
@@ -102,11 +102,11 @@ print Line();
 if($pil2 == '' || $pil2 > Count($menu2))exit(Error("Tolol"));
 if($pil2 == Count($menu2))goto menu_pertama;
 if(explode('-',$menu2[$pil2])[1])exit(Error("Tolol"));
-$is_file = is_file("App/bot/".$menu[$pil]."/".$menu2[$pil2]);
+$is_file = is_file("App/Bot/".$menu[$pil]."/".$menu2[$pil2]);
 if($is_file){
 	define("nama_file",clean($menu2[$pil2]));
 	Ban(1);
-	require "App/bot/".$menu[$pil]."/".$menu2[$pil2];
+	require "App/Bot/".$menu[$pil]."/".$menu2[$pil2];
 	exit;
 }
 
