@@ -17,9 +17,9 @@ function h(){
 }
 
 Ban(1);
+cookie:
 Cetak("Register",register_link);
 print line();
-cookie:
 simpan("Cookie");
 ua();
 /*
@@ -68,7 +68,7 @@ while(true){
 	$ss = explode('BCH',explode('You earned ',$r)[1])[0];
 	$bal = explode('</b>',explode('class="white-text bal">Баланс: <b>',$r)[1])[0];
 	//if($ss){
-		Cetak("Success",$price);
+		Cetak("Success",$ss);
 		$r = run(host."dashboard",h());
 		$bal=explode('</b>',explode('Balance<br><b>',$r)[1])[0];
 		Cetak("Balance",$bal);

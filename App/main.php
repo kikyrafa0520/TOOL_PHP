@@ -1,72 +1,43 @@
 <?php
 
-/**
- * TOOL FARM CRYPTO
- *
- * @server		: https://github.com/iewilmaestro/TOOL_PHP
- * @author		: iewil <purna.iera@gmail.com>
- *
- * @chanel
- *	- @youtube	: https://youtube.com/@iewil
- *	- @telegram	: https://t.me/MaksaJoin
- *
- *
- * @support
- *	- @PetapaGenit2
- *	- @Zhy_08
- *	- @itsaoda
- *	- @IPeop
- *	- @MetalFrogs
- *	- @all-member
- *
- * @apikey_bypass_captcha
- *	- multibot
- *	- xevil
- *
- * @apikey_bypass_shortlink
- *	- @bpsl06_bot
- *
- * please don't edit source script if u want this script work normaly
- *
- */
-if(!file_exists("Data")){system("mkdir Data");}
-if(file_exists("User_Agent")){$nama_file = "User_Agent";if(PHP_OS_FAMILY == "Windows"){system("move ".$nama_file." Data");}else{system("mv ".$nama_file." Data");}}
-
-require "Modul/Apikey.php";
-require "Modul/Captcha.php";
-require "Modul/Shortlink.php";
-require "Modul/Lisensi.php";
-require "Modul/Offerwall.php";
+if (!file_exists("Data")) {
+	system("mkdir Data");
+}
+// v-2.3
+if (file_exists("User_Agent")) {
+	$nama_file = "User_Agent";
+	if(PHP_OS_FAMILY == "Windows"){
+		system("move $nama_file Data");
+	} else {
+		system("mv $nama_file Data");
+	}
+}
 
 Ban();
-$r = json_decode(file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/setup.json"),1);
-$version = $r['version'];
-$versi = $check['version'];
-
-$a = 0;
-sleep(3);
-if($versi !== $version){
+$version = @iewil::_Checkversion();
+if($version) {
 	print Error("Latest Version: ".k.$version.n);
-	print line();
-	$x = file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/Modul/Update.txt");
+	print Line();
+	$x = file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/App/Update.txt");
 	print h."[+] ".p."= add".m.", ".h."[".k."*".h."] ".p."= edit".m.", ".h."[".m."-".h."] ".p."= remove\n\n";
-	print replace_txt($x).n;
-	print line();
+	print ReplaceTxt($x).n;
+	print Line();
 	Menu($a+=1,"Update Versi");
 	$tam[$a] = "update";
 }else{
 	print Sukses("Latest Version: ".k.$version);
-	print line();
+	print Line();
 }
-if(file_exists("Data/Apikey/Multibot_Apikey")){
+
+if(@iewil::_CheckDataApi("Multibot_Apikey")) {
 	Menu($a+=1,"Hapus APi Multibot");
 	$tam[$a] = "multi";
 }
-if(file_exists("Data/Apikey/Xevil_Apikey")){
+if(@iewil::_CheckDataApi("Xevil_Apikey")) {
 	Menu($a+=1,"Hapus APi Xevil");
 	$tam[$a] = "xevil";
 }
-if(file_exists("Data/Apikey/Shortlink_Apikey")){
+if(@iewil::_CheckDataApi("Shortlink_Apikey")) {
 	Menu($a+=1,"Hapus APi Shortlink");
 	$tam[$a] = "sl";
 }
@@ -81,29 +52,30 @@ if($tam){
 	if($tam[$pil] == "update"){
 		system("git reset --hard");
 		system("git pull");
-		print line();
-		exit(sukses("re run script if return succes"));
+		print Line();
+		exit(Sukses("re run script if return succes"));
 	}elseif($tam[$pil] == "multi"){
 		unlink("Data/Apikey/Multibot_Apikey");
-		print "Berhasil Menghapus Apikey Multibot";
+		print Sukses("Berhasil Menghapus Apikey Multibot");
 		sleep(3);
 	}elseif($tam[$pil] == "xevil"){
 		unlink("Data/Apikey/Xevil_Apikey");
-		print "Berhasil Menghapus Apikey Xevil";
+		print Sukses("Berhasil Menghapus Apikey Xevil");
 		sleep(3);
 	}elseif($tam[$pil] == "sl"){
 		unlink("Data/Apikey/Shortlink_Apikey");
-		print "Berhasil Menghapus Apikey Shortlink";
+		print Sukses("Berhasil Menghapus Apikey Shortlink");
 		sleep(3);
 	}else{
 	}
 	Ban();
 }
 
+/************( MENU BOT )************/
 menu_pertama:
 print mp.str_pad(strtoupper("menu"),44, " ", STR_PAD_BOTH).d.n;
-print line();
-$r = scandir("Src");$a = 0;
+print Line();
+$r = scandir("App/bot");$a = 0;
 foreach($r as $act){
 	if($act == '.' || $act == '..') continue;
 	$menu[$a] =  $act;
@@ -111,49 +83,49 @@ foreach($r as $act){
 	$a++;
 }
 $pil = readline(Isi("Nomor"));
-print line();
+print Line();
 if($pil == '' || $pil >= Count($menu))exit(Error("Tolol"));
 
 menu_kedua:
 print mp.str_pad(strtoupper("menu -> ".$menu[$pil]),44, " ", STR_PAD_BOTH).d.n;
-print line();
-$r = scandir("Src/".$menu[$pil]);$a = 0;
+print Line();
+$r = scandir("App/bot/".$menu[$pil]);$a = 0;
 foreach($r as $act){
 	if($act == '.' || $act == '..') continue;
 	$menu2[$a] =  $act;
-	Menu($a, clean($act));
+	Menu($a, Clean($act));
 	$a++;
 }
 Menu($a, m.'<< Back');
 $pil2 = readline(Isi("Nomor"));
-print line();
+print Line();
 if($pil2 == '' || $pil2 > Count($menu2))exit(Error("Tolol"));
 if($pil2 == Count($menu2))goto menu_pertama;
 if(explode('-',$menu2[$pil2])[1])exit(Error("Tolol"));
-$is_file = is_file("Src/".$menu[$pil]."/".$menu2[$pil2]);
+$is_file = is_file("App/bot/".$menu[$pil]."/".$menu2[$pil2]);
 if($is_file){
 	define("nama_file",clean($menu2[$pil2]));
 	Ban(1);
-	require "Src/".$menu[$pil]."/".$menu2[$pil2];
+	require "App/bot/".$menu[$pil]."/".$menu2[$pil2];
 	exit;
 }
 
 print mp.str_pad(strtoupper('menu -> '.$menu[$pil].' -> '.$menu2[$pil2]),44, " ", STR_PAD_BOTH).d.n;
-print line();
-$r = scandir("Src/".$menu[$pil]."/".$menu2[$pil2]);$a=0;
+print Line();
+$r = scandir("App/Bot/".$menu[$pil]."/".$menu2[$pil2]);$a=0;
 foreach($r as $act){
 	if($act == '.' || $act == '..') continue;
 	$menu3[$a] =  $act;
-	Menu($a, clean($act));
+	Menu($a, Clean($act));
 	$a++;
 }
 Menu($a, m.'<< Back');
 $pil3 = readline(Isi("Nomor"));
-print line();
+print Line();
 if($pil3 == '' || $pil3 > Count($menu3))exit(Error("Tolol"));
 if($pil3 == Count($menu3))goto menu_kedua;
 if(explode('-',$menu3[$pil3])[1])exit(Error("Tolol"));
 
 define("nama_file",clean($menu3[$pil3]));
 Ban(1);
-require "Src/".$menu[$pil]."/".$menu2[$pil2]."/".$menu3[$pil3];
+require "App/Bot/".$menu[$pil]."/".$menu2[$pil2]."/".$menu3[$pil3];

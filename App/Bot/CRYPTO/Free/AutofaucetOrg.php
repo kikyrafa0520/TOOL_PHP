@@ -31,6 +31,8 @@ function AutofctOrg_rata2($str){
 }
 Ban(1);
 cookie:
+Cetak("Register",register_link);
+print line();
 simpan("Cookie");
 ua();
 

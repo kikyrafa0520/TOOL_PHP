@@ -1,6 +1,6 @@
 <?php
 
-require "Modul/TemplateSite/MrqRama.php";
+require "App/Template/MrqRama.php";
 
 const
 register_link = "https://free-ltc-info.com/?r=4708",

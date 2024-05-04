@@ -1,84 +1,6 @@
 <?php
 
-/**
- * TOOL FARM CRYPTO
- *
- * @server		: https://github.com/iewilmaestro/TOOL_PHP
- * @author		: iewil <purna.iera@gmail.com>
- *
- * @chanel
- *	- @youtube	: https://youtube.com/@iewil
- *	- @telegram	: https://t.me/MaksaJoin
- *
- *
- * @support
- *	- @PetapaGenit2
- *	- @Zhy_08
- *	- @itsaoda
- *	- @IPeop
- *	- @MetalFrogs
- *	- @all-member
- *
- * @apikey_bypass_captcha
- *	- multibot
- *	- xevil
- *
- * @apikey_bypass_shortlink
- *	- @bpsl06_bot
- *
- * please don't edit source script if u want this script work normaly
- *
- */
-const
-n = "\n",
-name = "iewil",
-author = "iewilmaestro",
-author_email = "<purna.iera@gmail.com>";
-
-if( PHP_OS_FAMILY == "Linux" ){
-	define("d","\033[0m");
-	define("m","\033[1;31m");
-	define("h","\033[1;32m");
-	define("k","\033[1;33m");
-	define("b","\033[1;34m");
-	define("u","\033[1;35m");
-	define("c","\033[1;36m");
-	define("p","\033[1;37m");
-	define("mp","\033[101m\033[1;37m");
-	define("hp","\033[102m\033[1;30m");
-	define("kp","\033[103m\033[1;37m");
-	define("bp","\033[104m\033[1;37m");
-	define("up","\033[105m\033[1;37m");
-	define("cp","\033[106m\033[1;37m");
-	define("pm","\033[107m\033[1;31m");
-	define("ph","\033[107m\033[1;32m");
-	define("pk","\033[107m\033[1;33m");
-	define("pb","\033[107m\033[1;34m");
-	define("pu","\033[107m\033[1;35m");
-	define("pc","\033[107m\033[1;36m");
-} else {
-	define("d","\033[0m");
-	define("m","");
-	define("h","");
-	define("k","");
-	define("b","");
-	define("u","");
-	define("c","");
-	define("p","");
-	define("mp","");
-	define("hp","");
-	define("kp","");
-	define("bp","");
-	define("up","");
-	define("cp","");
-	define("pm","");
-	define("ph","");
-	define("pk","");
-	define("pb","");
-	define("pu","");
-	define("pc","");
-}
-function replace_txt($msg){
+function replacetxt($msg){
 	$awal = ["[","]","+","-",">","*"];
 	$akhir =[h."[",h."]".p,h."+",m."-",m.">".p,k."*"];
 	return str_replace($awal,$akhir,$msg);
@@ -112,25 +34,7 @@ function Title($activitas){
 	print Line();
 }
 /************Banner****************/
-function TimeZone(){
-	system("clear");
-	$check = json_decode(file_get_contents("setup.json"),1);
-	print b."───────────".m."[".p."scrypt by ".h."iewil".m."]─>".k." v ".$check['version'].n;
-	$api = json_decode(file_get_contents("http://ip-api.com/json"),1);
-	if($api){
-		$tz = $api["timezone"];
-		date_default_timezone_set($tz);
-		print k.date("d/M/Y").m."-".k.date("H:i:s").n;
-		print k.$api['city'].m.",".k.$api['regionName'].m.",".k.$api['country'].n;
-	}else{
-		date_default_timezone_set("UTC");
-		return "UTC";
-	}
-	print b."Channel".m.": ".p."t.me/MaksaJoin".m." >".n;
-	print b."Insta  ".m.": ".p."instagram.com/iewil_13".m." >".n;
-	print b."Youtube".m.": ".p."youtube.com/@iewil".m." >".n;
-	print line();
-}
+
 function authBan($title, $str){
 	$title_len_s = 8;
 	$strlen_s = 19;
@@ -141,7 +45,7 @@ function authBan($title, $str){
 function Ban($sc = 0){
 	system("clear");
 	$line = c;
-	$check = json_decode(file_get_contents("setup.json"),1);
+	$check = json_decode(file_get_contents("App/setup.json"),1);
 	print n.pm.str_pad(strtoupper("v ".$check['version']),44, " ", STR_PAD_BOTH).d.n;
 	print $line."──────────────┬".str_repeat("─",29).n;
 	print m."<?╔╦╗╔═╗╔═╗".p."╦  ".$line."│".authBan("Author", "@fat9ght");
@@ -407,4 +311,51 @@ function ApiShortlink(){
 		Cetak("Register","@bpsl06_bot");
 	}
 	return Simpan_Api("Shortlink_Apikey");
+}
+function imgfail(){
+print m."
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠤⢶⣶⡶⣒⣂⣴⣶⣶⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⠖⢉⡂⣀⣉⣶⣿⣏⣥⣤⣤⣄⣙⠿⣿⣿⣧⡠⢤⣴⣶⣶⣶⣶⣶⣶⣦⣤⣤⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠞⣫⣴⣾⢏⣴⣿⣿⣿⣿⣷⣌⢿⣿⣿⣿⣿⠢⣝⣿⣿⣦⡙⢿⣿⣿⣿⣿⣿⣿⡟⢁⣾⠃⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⠀⢀⣾⣋⣼⢿⣿⠏⣾⣿⣿⣿⣿⣿⣿⣿⣆⢻⣿⣿⣿⢷⣌⢻⣿⡿⣿⣦⠻⣿⣿⣿⠟⣋⣼⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣤⣴⣶⣾⣿⡟⣱⣿⣿⡿⢡⡿⠟⣸⣿⣿⡟⡿⣿⣿⡌⣿⢹⡆⠙⣷⣼⣦⣫⡀⠻⣿⡸⣿⣦⠈⠛⢡⣤⣾⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⡟⣴⣿⣟⡿⣱⡿⢡⡷⣿⢼⣿⣦⣦⣿⣿⣿⢸⣿⣷⢰⡜⢿⣿⠻⣷⡄⢹⣷⡹⣿⣷⡄⣶⣙⠻⢿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣍⠙⠿⠟⣸⣷⣿⣼⢣⣿⢣⣿⠃⣿⢼⣿⣿⣿⣿⣿⣿⡇⢿⣿⡆⣿⡌⠻⣷⡙⣿⠄⢿⣧⣿⣿⣷⡘⣋⣁⡬⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⠗⡀⢰⣿⣿⣿⠇⣾⠏⣾⢃⣶⢻⡏⣿⠸⣿⣿⣿⣿⢧⠸⡏⢇⢻⣿⣆⠙⢷⡈⢣⡈⢿⣿⣿⣿⢧⢈⣒⢃⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣴⣴⢇⣿⣿⣿⡿⢠⣿⢠⠏⢸⣿⠘⡇⢹⣦⢻⣿⣿⡿⢸⡀⠛⠸⢸⣿⣿⡄⠀⠱⣀⠃⠸⣿⣿⣿⡎⡚⠃⠸⡇⠀⠰
+⠈⠟⣼⣿⣿⣿⡇⣼⡇⡼⢠⣿⣿⡇⠸⠀⢿⣇⢻⣯⣵⣿⡇⡎⣿⢸⣶⣶⣦⣤⠠⣌⡂⠀⣿⣿⣿⣿⢡⠀⢡⣿⠀⠈
+⠀⢠⢇⣿⣿⣿⡇⣿⠃⠁⣛⣩⣥⣶⠈⣇⠈⣿⣆⢻⣿⣿⡇⣧⢘⢸⣿⣿⣿⣿⣷⡘⣿⡄⣿⣿⣿⣿⠘⡄⣾⣿⢠⠀
+⠀⡸⢸⣿⢻⣿⡇⢩⣤⢸⣿⣿⣿⣿⣷⡘⡆⠈⢿⣆⢻⣿⡇⢹⡇⢘⣿⣿⣿⣿⣿⣿⡌⠇⢿⣿⡇⣿⡇⢷⠉⠃⢀⡆
+⢀⠇⢸⣿⠈⣿⡇⢸⡏⣾⣿⣿⣿⣯⣭⣅⡘⣆⠈⢙⠦⠹⣷⢸⡛⠉⠁⠀⠀⠀⠀⠈⠙⠂⢸⣿⡇⣿⡇⠘⡆⢀⣾⡇
+⢸⠀⢸⣿⢀⢹⣧⠀⢣⠟⠉⣁⠀⠀⠀⠀⢁⣸⣿⣦⣑⢤⣈⠸⣿⣧⣀⣄⣠⡀⢸⣿⡆⢀⣸⣿⠀⣿⠁⣦⢱⠀⣿⣷
+⢸⢰⠈⣿⡜⠘⣿⡆⢀⠀⢸⣿⣄⠰⣀⣀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣉⣉⣁⣿⣿⣤⡆⣿⠃⣸⣿⢀⡞⡸⠀⢻⣿
+⡌⢸⡆⠘⣇⢳⠸⣿⡀⢿⣦⢻⣿⣬⣭⠥⢾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠰⢃⣴⣿⡿⢈⡼⢁⠀⠻⣿
+⡇⠀⣿⠀⡘⠈⡗⠙⢧⠘⢿⣿⣿⣿⣧⣴⣿⣿⣿⣿⣿⣿⣿⣿⣸⣿⣿⣿⣿⣿⣿⠟⠁⡴⢸⣿⡿⠁⠀⢠⣿⢰⡀⢸
+⣿⣧⢹⢸⡇⡄⠿⣦⣀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣵⣶⣾⠃⠟⣩⣶⡇⠀⢸⢹⢸⡇⣦
+⣿⣿⣆⠸⡀⡇⢠⠻⣿⣧⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢈⣶⣶⣾⣿⣿⣿⣿⠟⠁⠀⣼⣿⢻⠇⡀⢸⣿⢸⠀⣿
+⣿⣿⣿⢠⠀⠿⢸⣷⣌⠻⠀⠀⠈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀⢠⣿⠏⡾⠠⡇⢸⡏⢸⣇⢻
+⣿⣿⡟⣸⠀⢷⡈⣿⣿⣷⡇⠲⡄⠀⠀⠈⠙⠛⠿⠿⣿⣿⣿⣿⣿⠿⠛⠁⣀⣤⠀⠀⠂⣼⡟⣼⠃⠀⡇⢸⡇⢸⣿⢸
+⣿⣿⡇⡟⠀⢸⡇⠸⣿⡌⢷⠀⠉⢄⠀⠀⠀⠀⠀⢀⡀⠀⠉⠉⠀⢀⣠⣶⣿⡏⠀⠀⢰⡟⣼⠃⠀⠀⠃⣾⡇⣾⣿⡆
+⣿⣿⢹⡇⠀⢸⡇⠀⢻⣿⣌⠀⠀⠀⠁⠀⢀⣤⠖⠸⣿⣦⣄⣠⡶⢿⣿⣿⣿⠇⠀⢀⣿⡾⠁⠀⠀⠀⢸⣿⢁⣿⠀⣧
+⣿⡏⣼⠀⢀⣦⠣⠀⠀⠻⣿⣦⠀⠀⠘⢧⣶⡀⠀⠀⣿⣟⢙⣩⣶⣿⣿⡿⢟⣠⣴⡿⠋⣴⠖⣠⣀⢀⣿⠃⣼⠃⠀⠸
+⣿⢡⡇⢠⢸⣿⢇⡄⠀⠀⠙⠻⣷⡄⠀⣬⣛⣿⣦⣄⡛⠿⣿⡿⠟⣋⣥⡶⠿⢛⠀⣰⡿⢋⣄⠹⠃⠾⠁⢄⠁⠸⡄⡀
+".d;
+}
+function textfail(){
+	print mp.str_pad(strtoupper("SCRIPT ERROR!!"),44, " ", STR_PAD_BOTH).d.n;
+	print p."ID: syarat penggunaan script\n";
+	print "- install dengan cara yang sudah saya ajarkan di youtube\n";
+	print h."- https://youtu.be/BSWuetDKM0A?si=JVHxYswCVZL5o93X\n";
+	print p."- jangan edit nama folder script / isi script\n";
+	print "- jangan membuat duplicate folder\n";
+	print Line();
+	print p."EN: terms of use of the script\n";
+	print "- install using the method I taught at youtube\n";
+	print h."- https://youtu.be/BSWuetDKM0A?si=JVHxYswCVZL5o93X\n";
+	print p."- do not edit the script folder name / script contents\n";
+	print "- do not create duplicate folders\n";
+	print Line();
+	readline(m."Prees Enter to Exit");
+	exit;
 }

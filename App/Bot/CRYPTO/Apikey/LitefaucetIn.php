@@ -130,6 +130,8 @@ function GetFaucet($patch){
 		if($cek['fw']){
 			Firewall();
 		}
+		$sisa = explode('/',explode('<p class="lh-1 mb-1 font-weight-bold">',$r)[3])[0];
+		if(!$sisa)break;
 		$tmr = explode('-',explode('var wait = ',$r)[1])[0];
 		if($tmr){tmr($tmr);continue;}
 		
@@ -154,14 +156,17 @@ function GetFaucet($patch){
 			$atb = $api->AntiBot($r);
 			if(!$atb)continue;
 			$data = "antibotlinks=".$atb."&";
+			$data .= "csrf_token_name=".$csrf.$datacap;
+		}else{
+			$data = "csrf_token_name=".$csrf.$datacap;
 		}
-		$data .= "csrf_token_name=".$csrf.$datacap;
+		
 		$r = curl(host.$patch."/verify", h(), $data)[1];
 		$ss = explode("Has",explode("Swal.fire('Good job!', '",$r)[1])[0];
 		if($ss){
 			Cetak("Sukses",$ss);
 			Cetak("Balance",GetDashboard()["balance"]);
-			//Cetak("Sisa",$sisa-1);
+			Cetak("Sisa",$sisa-1);
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
 		}else{
@@ -253,6 +258,7 @@ function shortlink(){
 			}
 		}
 	}
+	break;
 }
 Ban(1);
 cookie:
