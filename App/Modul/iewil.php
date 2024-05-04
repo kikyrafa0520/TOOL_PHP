@@ -67,9 +67,9 @@ class iewil {
 		$version_server = $server['version'];
 		$version_local = $local['version'];
 		if($version_server != $version_local){
-			return $version_server;
+			return [1 => $version_server];
 		}else{
-			return 0;
+			return [0 => $version_server];
 		}
 	}
 	static function _checkDataApi( $file ) {

@@ -15,8 +15,8 @@ if (file_exists("User_Agent")) {
 
 Ban();
 $version = @iewil::_Checkversion();
-if($version) {
-	print Error("Latest Version: ".k.$version.n);
+if($version[1]) {
+	print Error("Latest Version: ".k.$version[1].n);
 	print Line();
 	$x = file_get_contents("https://raw.githubusercontent.com/iewilmaestro/TOOL_PHP/main/App/Update.txt");
 	print h."[+] ".p."= add".m.", ".h."[".k."*".h."] ".p."= edit".m.", ".h."[".m."-".h."] ".p."= remove\n\n";
@@ -25,7 +25,7 @@ if($version) {
 	Menu($a+=1,"Update Versi");
 	$tam[$a] = "update";
 }else{
-	print Sukses("Latest Version: ".k.$version);
+	print Sukses("Latest Version: ".k.$version[0]);
 	print Line();
 }
 
