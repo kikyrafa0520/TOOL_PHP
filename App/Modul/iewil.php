@@ -11,7 +11,6 @@ class iewil {
 	}
 	static function start() {
 		self::importColor();
-		@License::_start();
 		//require "App/main.php"; global error
 	}
 	static function importColor() {

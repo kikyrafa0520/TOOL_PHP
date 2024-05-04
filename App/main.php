@@ -12,7 +12,7 @@ if (file_exists("User_Agent")) {
 		system("mv $nama_file Data");
 	}
 }
-
+@License::_start();
 Ban();
 $version = @iewil::_Checkversion();
 if($version[1]) {

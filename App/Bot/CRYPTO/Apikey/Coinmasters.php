@@ -80,7 +80,6 @@ function GetFaucet($patch){
 	Title("faucet");
 	while(true){
 		$r = curl(host.$patch, h())[1];
-		print $r;exit;
 		$sl = explode('</button>',explode('<button class="btn btn-primary btn-lg " disabled><i class="far fa-check-circle"></i>',$r)[1])[0];//You need to do 1 shortlinks to unlock
 		if($sl){
 			print Error($sl.n);
