@@ -26,7 +26,7 @@ function faucet(){
 			print Error("Cloudflare Detect\n");
 			hapus("Cookie");
 			print line();
-			return 'cf';
+			return 1;
 		}
 		if(preg_match('/Daily limit reached/',$r)){
 			break;
@@ -84,7 +84,7 @@ function ptc(){
 			print Error("Cloudflare Detect\n");
 			hapus("Cookie");
 			print line();
-			return 'cf';
+			return 1;
 		}
 		if(preg_match('/Daily limit reached/',$r)){
 			break;
@@ -93,7 +93,7 @@ function ptc(){
 		if(!$id){
 			print Error("Ptc Habis\n");
 			print line();
-			return 0;
+			return;
 		}
 		$r = curl(host."ptc/view/".$id,h())[1];
 		$csrf = explode('"',explode('name="csrf_token_name" value="',$r)[1])[0];
@@ -164,17 +164,7 @@ Cetak("Balance",$r["bal"]);
 Cetak("Bal_Api",$api->getBalance());
 print line();
 while(true){
-	$x = ptc();
-	if($x == 'cf'){
-		sleep(3);
-		print line();
-		goto cookie;
-	}
-	$x = faucet();
-	if($x == 'cf'){
-		sleep(3);
-		print line();
-		goto cookie;
-	}
+	if(ptc())goto cookie;
+	if(faucet())goto cookie;
 	tmr(600);
 }

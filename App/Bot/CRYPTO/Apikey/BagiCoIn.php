@@ -40,6 +40,7 @@ Ban(1);
 $r = dash();
 if(!$r["user"]){
 	print Error("Session expired".n);
+	hapus("cookie.txt");
 	hapus("Cookie");
 	sleep(3);
 	print line();
@@ -55,6 +56,7 @@ Menu(2,"Update Cookie");
 $pil = readline(Isi("Number"));
 print line();
 if($pil == 2){
+	hapus("cookie.txt");
 	hapus("Cookie");
 	Simpan("Cookie");
 	goto cookie;

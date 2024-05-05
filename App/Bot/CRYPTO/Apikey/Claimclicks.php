@@ -72,8 +72,10 @@ while(true){
 			if($res[$coint] > 2)continue;
 		}
 		$r = curl(host.$coint.r,h(),'',1)[1];
+		$cek = GlobalCheck($r);
 		if($cek['cf']){
 			print Error("Cloudflare Detect\n");
+			print Error("claim manual 1x , jika berhasil maka ambil cookie di halaman https://claimclicks.com\n");
 			hapus("Cookie");
 			hapus("cookie.txt");
 			print line();
@@ -106,6 +108,15 @@ while(true){
 		$data = "g-recaptcha-response=".$cap."&h-captcha-response=".$cap."&".$user_id."=".$email."&antibotlinks=".$atb;
 		
 		$r = curl(host.$coint.r,h(host.$coint.r),$data,1)[1];
+		$cek = GlobalCheck($r);
+		if($cek['cf']){
+			print Error("Cloudflare Detect\n");
+			print Error("claim manual 1x , jika berhasil maka ambil cookie di halaman https://claimclicks.com\n");
+			hapus("Cookie");
+			hapus("cookie.txt");
+			print line();
+			goto cookie;
+		}
 		$ss = explode('<',explode('<div class="alert alert-success">',$r)[1])[0];
 		$wr = explode('</div>',explode('<div class="alert alert-danger">',$r)[1])[0];
 		if(preg_match('/invalid address/',$r)){
@@ -133,6 +144,11 @@ while(true){
 			$res = his([$coint=>1],$res);
 		}elseif($wr){
 			$wr = explode('</div>',explode('<div class="alert alert-danger">',$r)[1])[0];
+			if($wr == "Please complete Shortlink first."){
+				print c.strtoupper($coint).": ".Error("Please complete Shortlink first.\n");
+				$res = his([$coint=>3],$res);
+				continue;
+			}
 			print c.strtoupper($coint).": ".Error($wr.n);
 			print line();
 			$res = his([$coint=>1],$res);
