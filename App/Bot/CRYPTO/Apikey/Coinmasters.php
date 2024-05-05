@@ -100,7 +100,7 @@ function GetFaucet($patch){
 		//$sisa = explode('/',explode('<p class="lh-1 mb-1 font-weight-bold">',$r)[3])[0];
 		//if(!$sisa)break;
 		$tmr = explode('-',explode('var wait = ',$r)[1])[0];
-		if($tmr){tmr($tmr);continue;}
+		if($tmr > 0){tmr($tmr);continue;}
 		
 		$csrf = explode('"',explode('_token_name" id="token" value="',$r)[1])[0];
 		$turnstile = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
