@@ -1,5 +1,3 @@
 @Crypto
 
-[-] Apikey -> Freeltcfun
-[*] Apikey -> LitefaucetIn
-[+] Free -> Clickrightcash
+[-] Apikey -> Handbucks

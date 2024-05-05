@@ -26,7 +26,7 @@ function faucet(){
 			print Error("Cloudflare Detect\n");
 			hapus("Cookie");
 			print line();
-			return 'cf';
+			return 1;
 		}
 		if(preg_match('/Daily limit reached/',$r)){
 			break;
@@ -86,7 +86,7 @@ function ptc(){
 			print Error("Cloudflare Detect\n");
 			hapus("Cookie");
 			print line();
-			return 'cf';
+			return 1;
 		}
 		if(preg_match('/Daily limit reached/',$r)){
 			break;
@@ -167,17 +167,7 @@ Cetak("Balance",$r["bal"]);
 Cetak("Bal_Api",$api->getBalance());
 print line();
 while(true){
-	$x = ptc();
-	if($x == 'cf'){
-		sleep(3);
-		print line();
-		goto cookie;
-	}
-	$x = faucet();
-	if($x == 'cf'){
-		sleep(3);
-		print line();
-		goto cookie;
-	}
+	if(ptc())goto cookie;
+	if(faucet())goto cookie;
 	tmr(600);
 }
