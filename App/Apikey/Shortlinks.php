@@ -2,7 +2,7 @@
 
 Class Shortlinks {
 	function __construct($apikey){
-		$this->host = "https://api-bintang.my.id";
+		$this->host = "https://bpsl06.my.id/";
 		$this->apikey = $apikey;
 	}
 	function check($nama){
@@ -44,7 +44,7 @@ Class Shortlinks {
 	function Bypass($name, $shortlink){
 		$r = json_decode(
 			file_get_contents(
-				$this->host."/Api/api.php?apikey=".$this->apikey."&name=".$name."&url=".$shortlink
+				$this->host."/api.php?apikey=".$this->apikey."&name=".$name."&url=".$shortlink
 			),
 			true
 		);
