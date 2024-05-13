@@ -6,6 +6,7 @@ typeCaptcha = "RecaptchaV2",
 youtube = "https://youtube.com/@iewil";
 
 function h(){
+	$h[] = "accept-language: id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7";
 	$h[] = "Cookie: ".simpan("Cookie");
 	$h[] = "User-Agent: ".ua();
 	return $h;
@@ -37,7 +38,7 @@ function faucet($patch){
 		if (preg_match('/faucet?linkrequired=true/', $r)) {
 			print Error("Do shortlink to continue\n");
 			print line();
-			exit;
+			return;
 		}
 		$tmr = explode('-',explode('let wait = ',$r)[1])[0];
 		
@@ -81,6 +82,7 @@ function ptc(){
 		$id = explode("'",explode('ptc/view/',$r)[1])[0];
 		if(!$id)break;
 		$r = Curl(host.'ptc/view/'.$id,h())[1];
+		
 		$tmr = explode(';',explode('let timer = ',$r)[1])[0];
 		$token = explode('">',explode('<input type="hidden" name="token" value="',$r)[1])[0];
 		if($tmr){tmr($tmr);}
@@ -89,7 +91,9 @@ function ptc(){
 		$cap = $api->RecaptchaV2($sitekey, host.'ptc/view/'.$id);
 		if(!$cap)continue;
 		$data = "captcha=recaptchav2&g-recaptcha-response=".$cap."&ci_csrf_token=&token=".$token;
+		
 		$r = Curl(host.'ptc/verify/'.$id,h(),$data)[1];
+		
 		$ss = explode('has',explode("text: '",$r)[1])[0];
 		if($ss){
 			Cetak("Sukses",$ss);
@@ -139,6 +143,7 @@ function shortlink(){
 							hapus("Cookie");
 							return 1;
 						}
+						
 						$ss = explode("',",explode("text: '",$r)[1])[0];
 						if($ss){
 							Cetak("Sukses",$ss);

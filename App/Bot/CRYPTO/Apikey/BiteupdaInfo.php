@@ -2,7 +2,7 @@
 const
 host = "https://bitupdate.info/",
 register_link = "https://bitupdate.info/?r=8227",
-typeCaptcha = "RecaptchaV2 | AntiBot",
+typeCaptcha = "hcaptcha",
 youtube = "https://youtube.com/@iewil";
 
 function h(){
@@ -17,18 +17,10 @@ function  Get_Dashboard(){
 	$en = explode('</h4>',explode('<h4 class="mb-0">',$r)[2])[0];
 	return ["user"=>$user,"balance"=>$bal,"energy"=>$en];
 }
-function Get_Faucet($patch){
-	$url = host.$patch;
-	return Curl($url,h())[1];
-}
-function Post_Faucet($patch, $csrf,$atb,$cap){
-	$url = host.$patch."/verify";
-	$data = "antibotlinks=".$atb."&csrf_token_name=".$csrf."&captcha=recaptchav2&recaptchav3=&g-recaptcha-response=".$cap;
-	return Curl($url,h(),$data)[1];
-}
+
 function Claim($api, $patch){
 	while(true):
-	$r = Get_Faucet($patch);
+	$r = curl(host.$patch, h())[1];
 	if(preg_match('/Cloudflare/',$r) || preg_match('/Just a moment.../',$r)){
 		print Error("Cloudflare\n");
 		return "cf";
@@ -41,15 +33,40 @@ function Claim($api, $patch){
 	$tmr = explode('-',explode('var wait = ',$r)[1])[0];
 	if($tmr){tmr($tmr);continue;}
 			
-	$csrf = explode('"',explode('_token_name" id="token" value="',$r)[1])[0];
-	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
-	if(!$sitekey){print Error("Sitekey Error\n"); continue;}
-	$atb = $api->Antibot($r);
-	if(!$atb){print Error("@".provider_api." Error\n"); continue;}
-	$cap = $api->RecaptchaV2($sitekey, host.$patch);
-	if(!$cap)continue;
+	$data = @web::getInput($r);
 	
-	$r = Post_Faucet($patch, $csrf, $atb, $cap);
+	$turnstile = explode('"',explode('<div class="cf-turnstile" data-sitekey="',$r)[1])[0];
+	$recap = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+	$hcap =  explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
+	if($recap){
+		$cap = $api->RecaptchaV2($recap, host.$patch);
+		$data["recaptchav3"] = "";
+		$data["captcha"] = "recaptchaV2";
+		$data["g-recaptcha-response"] = $cap;
+	}elseif($turnstile){
+		$cap = $api->Turnstile($turnstile, host.$patch);
+		$data["recaptchav3"] = "";
+		$data["captcha"] = "turnstile";
+		$data["cf-turnstile-response"] = $cap;
+	}elseif($hcap){
+		$cap = $api->Hcaptcha($hcap, host.$patch);
+		$data["recaptchav3"] = "";
+		$data["captcha"] = "hcaptcha";
+		$data["g-recaptcha-response"] = $cap;
+		$data["h-captcha-response"] = $cap;
+	}else{
+		print Error("Sitekey Error\n"); continue;
+	}
+	if(!$cap)continue;
+	if(explode('\"',explode('rel=\"',$r)[1])[0]){
+		$atb = $api->AntiBot($r);
+		if(!$atb)continue;
+		$antibot = str_replace("+", " ", $atb);
+		$data["antibotlinks"] = $antibot;
+	}else{
+	}
+	
+	$r = curl(host.$patch."/verify", h(), http_build_query($data))[1];
 	$ss = explode("has",explode("Swal.fire('Good job!', '",$r)[1])[0];
 	if($ss){
 		Cetak("Sukses",$ss);

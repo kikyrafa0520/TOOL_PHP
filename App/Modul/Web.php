@@ -6,15 +6,15 @@ Class Web {
 		$recap = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
 		$hcap =  explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
 		if($recap){
-			$cap = $api->RecaptchaV2($recap, host.'ptc/view/'.$id);
+			$cap = $api->RecaptchaV2($recap, host.$patch);
 			$data["captcha"] = "recaptchaV2";
 			$data["g-recaptcha-response"] = $cap;
 		}elseif($turnstile){
-			$cap = $api->Turnstile($turnstile, host.'ptc/view/'.$id);
+			$cap = $api->Turnstile($turnstile, host.$patch);
 			$data["captcha"] = "turnstile";
 			$data["cf-turnstile-response"] = $cap;
 		}elseif($hcap){
-			$cap = $api->Hcaptcha($hcap, host.'ptc/view/'.$id);
+			$cap = $api->Hcaptcha($hcap, host.$patch);
 			$data["captcha"] = "hcaptcha";
 			$data["g-recaptcha-response"] = $cap;
 			$data["h-captcha-response"] = $cap;
@@ -30,6 +30,7 @@ Class Web {
 			if(!$atb)return "continue";
 			$antibot = str_replace("+", " ", $atb);
 			$data["antibotlinks"] = $antibot;
+			return $data;
 		}else{
 			return;
 		}
