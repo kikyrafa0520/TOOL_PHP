@@ -2,7 +2,7 @@
 const
 host = "https://hatecoin.me/",
 register_link = "https://hatecoin.me/?r=20999",
-typeCaptcha = "RecaptchaV2 | AntiBot",
+typeCaptcha = "hcaptcha",
 youtube = "https://youtube.com/@iewil";
 
 function h(){
@@ -23,7 +23,7 @@ function Get_Faucet($patch){
 }
 function Post_Faucet($patch, $csrf,$token ,$atb,$cap){
 	$url = host.$patch."/verify";
-	$data = "antibotlinks=".$atb."&csrf_token_name=".$csrf."&token=".$token."&captcha=recaptchav2&recaptchav3=&g-recaptcha-response=".$cap;
+	$data = "antibotlinks=".$atb."&csrf_token_name=".$csrf."&token=".$token."&captcha=hcaptcha&g-recaptcha-response=".$cap."&h-captcha-response=".$cap;
 	return Curl($url,h(),$data)[1];
 }
 function Claim($api, $patch){
@@ -48,11 +48,11 @@ function Claim($api, $patch){
 			
 	$csrf = explode('"',explode('_token_name" id="token" value="',$r)[1])[0];
 	$token = explode('"',explode('name="token" value="',$r)[1])[0];
-	$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+	$sitekey = explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
 	if(!$sitekey){print Error("Sitekey Error\n"); continue;}
 	$atb = $api->Antibot($r);
 	if(!$atb)continue;
-	$cap = $api->RecaptchaV2($sitekey, host.$patch);
+	$cap = $api->Hcaptcha($sitekey, host.$patch);
 	if(!$cap)continue;
 	$r = Post_Faucet($patch, $csrf, $token, $atb, $cap);
 	$ss = explode("has",explode("Swal.fire('Good job!', '",$r)[1])[0];
@@ -112,14 +112,14 @@ function ptc($api){
 		if($idptc == 0){
 			print Cetak("Visit",$ptc);
 		}
-		$sitekey = explode('"',explode('<div class="g-recaptcha" data-sitekey="',$r)[1])[0];
+		$sitekey = explode('"',explode('<div class="h-captcha" data-sitekey="',$r)[1])[0];
 		$token = explode('"',explode('name="token" value="',$r)[1])[0];
 		$csrf = explode('"',explode('<input type="hidden" name="csrf_token_name" value="',$r)[1])[0];
 		$tmr = explode(';',explode('var timer = ',$r)[1])[0];
 		if($tmr){tmr($tmr);}
-		$cap = $api->RecaptchaV2($sitekey, host.$patch);
+		$cap = $api->hcaptcha($sitekey, host.$patch);
 		if(!$cap)continue;
-		$data = 'captcha=recaptchav2&g-recaptcha-response='.$cap.'&csrf_token_name='.$csrf.'&token='.$token;
+		$data = 'captcha=hcaptcha&g-recaptcha-response='.$cap.'&h-captcha-response='.$cap.'&csrf_token_name='.$csrf.'&token='.$token;
 		$r = curl(host.'ptc/verify/'.$id,h(),$data)[1];
 		$ss = explode('has',explode("Swal.fire('Good job!', '",$r)[1])[0];
 		print "\r             \r";
