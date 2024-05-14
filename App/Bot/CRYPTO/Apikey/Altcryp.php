@@ -112,7 +112,7 @@ while(true){
 		$r = curl(host."faucet/currency/".$coin,h())[1];
 		if(preg_match('/Firewall/',$r)){firewall();continue;}
 		if(preg_match('/An uncaught Exception was encountered/',$r)){print Error("An uncaught Exception was encountered\n");sleep(2);print "\r                                 \r";tmr(60);continue;}
-		if(preg_match('/Just moment/',$r)){hapus("Cookie");print Error("Cloudflare\n");goto cookie;}
+		if(preg_match('/Just a moment.../',$r)){hapus("Cookie");print Error("Cloudflare\n");print line();goto cookie;}
 		if(preg_match('/Please confirm your email address to be able to claim or withdraw/',$r)){print Error("Please confirm your email address to be able to claim or withdraw\n");print line();exit;}
 		if($res){
 			if($res[$coin] > 2)continue;
