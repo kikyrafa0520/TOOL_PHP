@@ -40,7 +40,7 @@ function HourlyFaucet($api){
 		}
 		$cap = $api->Hcaptcha("f67eb825-e7db-46b8-a48c-819b59bad81c", host.'faucet.php');
 		if(!$cap)continue;
-		$data = 'action=claim_hourly_faucet&g-recaptcha-response='.$cap.'&h-captcha-response=null&captcha=&ft=&csrf_test_name='.$cookies['csrf_cookie_name'];
+		$data = 'action=claim_hourly_faucet&g-recaptcha-response=null&h-captcha-response='.$cap.'&captcha=&ft=&csrf_test_name='.$cookies['csrf_cookie_name'];
 		
 		$r = json_decode(curl(host.'process.php',h(),$data)[1],1);
 		if($r["ret"]){
