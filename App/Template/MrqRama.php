@@ -23,15 +23,19 @@ function h(){
 }
 function getDashboard(){
 	$r = curl(host."dashboard",h())[1];
-	$user = explode('</div>',explode('<div class="font-medium">',$r)[1])[0];
-	$bal = explode('</div>',explode('<div class="text-3xl font-medium leading-8 mt-6">',$r)[1])[0];
-	$en = explode('</div>',explode('<div class="text-3xl font-medium leading-8 mt-6">',$r)[3])[0];
-	return ["user"=>$user,"balance"=>$bal,"energy"=>$en];
+	$get = @Web::getData($r);
+	$data['cloudflare'] = ($get['cloundflare'])? 1: 0;
+	$data['user'] = explode('</div>',explode('<div class="font-medium">',$r)[1])[0];
+	$data['balance'] = explode('</div>',explode('<div class="text-3xl font-medium leading-8 mt-6">',$r)[1])[0];
+	$data['energy'] = explode('</div>',explode('<div class="text-3xl font-medium leading-8 mt-6">',$r)[3])[0];
+	return $data;
 }
 function getAutoClaim(){
 	Title("Auto Claim");
 	while(true){
 		$r = curl(host."auto",h())[1];
+		$get = @Web::getData($r);
+		if($get['cloundflare']) return 1;
 		$cost = explode('</div>',explode('<div class="text-3xl font-medium leading-8 mt-6">',$r)[2])[0];
 		if(getDashboard()["energy"] < $cost)break;
 		$token = explode('">',explode('<input type="hidden" name="token" value="',$r)[1])[0];
@@ -55,6 +59,8 @@ function getGame($game,$id){
 	Title("Games");
 	while(true){
 		$r = curl(host."games/play/".$game,h())[1];
+		$get = @Web::getData($r);
+		if($get['cloundflare']) return 1;
 		$score = explode(";",explode("var required_score = ",$r)[1])[0];
 		$csrf = explode("';",explode("var csrf_hash = '",$r)[1])[0];
 		$data = "score=".$score."&csrf=".$csrf;
@@ -80,6 +86,8 @@ function getArticle(){
 	Title("Read article");
 	while(true){
 		$r = curl(host."articles",h())[1];
+		$get = @Web::getData($r);
+		if($get['cloundflare']) return 1;
 		$id = explode("'",explode('article/view/',$r)[1])[0];;
 		if(!$id)break;
 		
@@ -114,6 +122,8 @@ function getArticle(){
 function Getachievements(){
 	Title("Achievements");
 	$r = curl(host."achievements",h())[1];
+	$get = @Web::getData($r);
+	if($get['cloundflare']) return 1;
 	$list = explode('<div class="text-1xl font-medium leading-8">Daily Achievement</div>',$r);
 	foreach($list as $a => $aciv){
 		if($a == 0)continue;
@@ -140,6 +150,8 @@ function getAds(){
 	global $api;
 	while(true){
 		$r = curl(host.'ads',h())[1];
+		$get = @Web::getData($r);
+		if($get['cloundflare']) return 1;
 		$id = explode("'",explode('ads/view/',$r)[1])[0];
 		if(!$id)break;
 		$r = curl(host.'ads/view/'.$id,h())[1];
@@ -184,6 +196,8 @@ function getFaucet(){
 	global $api;
 	while(true){
 		$r = curl(host.'claim',h())[1];
+		$get = @Web::getData($r);
+		if($get['cloundflare']) return 1;
 		$_sisa = explode('<',explode('<div class="text-3xl font-medium leading-8 mt-6">',$r)[4])[0];
 		$sisa = explode('/',$_sisa)[0];
 		if($sisa < 1)break;

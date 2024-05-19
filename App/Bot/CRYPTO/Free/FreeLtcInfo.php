@@ -22,8 +22,15 @@ print p."Jangan lupa \033[101m\033[1;37m Subscribe! \033[0m youtub saya :D";slee
 Ban(1);
 
 $r = getDashboard();
+if($r["cloudflare"]){
+	print Error("Cloudflare Detect!\n");
+	print line();
+	hapus("Cookie");
+	goto cookie;
+}
 if(!$r["user"]){
 	print Error("Cookie Expired!\n");
+	print line();
 	hapus("Cookie");
 	goto cookie;
 }
@@ -38,13 +45,13 @@ Menu(2, "Faucet + Ptc [Apikey]");
 $pil = readline(Isi("Number"));
 print line();
 if($pil == 1){
-	getGame("2048-lite","1");
-	getGame("pacman-lite","2");
-	getGame("hextris-lite","3");
-	getGame("taptaptap","4");
-	getArticle();
-	Getachievements();
-	getAutoClaim();
+	if(getGame("2048-lite","1")){hapus("Cookie");goto cookie;}
+	if(getGame("pacman-lite","2")){hapus("Cookie");goto cookie;}
+	if(getGame("hextris-lite","3")){hapus("Cookie");goto cookie;}
+	if(getGame("taptaptap","4")){hapus("Cookie");goto cookie;}
+	if(getArticle()){hapus("Cookie");goto cookie;}
+	if(Getachievements()){hapus("Cookie");goto cookie;}
+	if(getAutoClaim()){hapus("Cookie");goto cookie;}
 	goto menu;
 }elseif($pil == 2){
 	if(!$cek_api_input){
@@ -57,8 +64,8 @@ if($pil == 1){
 		$cek_api_input = 1;
 	}
 	print line();
-	getAds();
-	getFaucet();
+	if(getAds()){hapus("Cookie");goto cookie;}
+	if(getFaucet()){hapus("Cookie");goto cookie;}
 	goto menu;
 }else{
 	print Error("Bad Number\n");
