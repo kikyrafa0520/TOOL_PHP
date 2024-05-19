@@ -65,15 +65,17 @@ function Firewall(){
 function  GetDashboard(){
 	dashbord:
 	$r = Curl(host."dashboard",h())[1];
+	$tes = explode('829',$r);
 	if(preg_match('/Firewall/',$r)){
 		Firewall();goto dashbord;
 	}
 	$user = explode('</',explode('<p class="mb-0 ms-1 mdb-text">',$r)[1])[0];
-	$bal = explode('</',explode('<h5 class="mb-0 ms-1 lg-text">',$r)[1])[0];
-	$_bal = explode('</',explode('<span class="primary xs-text" style="font-size:13px;">~',$r)[1])[0];
-	$token = explode('</',explode('<h5 class="mb-0 ms-1 lg-text">',$r)[2])[0];
-	$_token = explode('</',explode('<span class="primary xs-text" style="font-size:13px;">~',$r)[2])[0];
-	return ["user"=>$user,"balance"=>$bal." [$_bal]","token"=>$token." [$_token]"];
+	$bal = explode('<',explode('<p class="mb-0 mdb-text" id="balance" style="margin-top:-4px;">', $r)[1])[0];
+	//$bal = explode('</',explode('<h5 class="mb-0 ms-1 lg-text">',$r)[1])[0];
+	//$_bal = explode('</',explode('<span class="primary xs-text" style="font-size:13px;">~',$r)[1])[0];
+	//$token = explode('</',explode('<h5 class="mb-0 ms-1 lg-text">',$r)[2])[0];
+	//$_token = explode('</',explode('<span class="primary xs-text" style="font-size:13px;">~',$r)[2])[0];
+	return ["user"=>$user,"balance"=>$bal];
 }
 function GetFaucet($patch){
 	global $api;
@@ -132,7 +134,7 @@ function GetFaucet($patch){
 			Cetak("Sukses",$ss);
 			$r = GetDashboard();
 			Cetak("Balance",$r["balance"]);
-			Cetak("Token",$r["token"]);
+			//Cetak("Token",$r["token"]);
 			//Cetak("Sisa",$sisa-1);
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
@@ -141,7 +143,7 @@ function GetFaucet($patch){
 			//print $r;exit;
 			$r = GetDashboard();
 			Cetak("Balance",$r["balance"]);
-			Cetak("Token",$r["token"]);
+			//Cetak("Token",$r["token"]);
 			Cetak("Bal_Api",$api->getBalance());
 			sleep(2);
 			print line();
@@ -154,12 +156,12 @@ function GetPtc(){
 	Title("ptc");
 	while(true){
 		$r = curl(host.'ptc',h())[1];
-		$id = explode("'",explode("/ptc/view/",$r)[1])[0];
+		$id = explode("'",explode("/ptccopy/view/",$r)[1])[0];
 		if(!$id){
 			break;
 		}
 		
-		$r = curl(host.'ptc/view/'.$id,h())[1];
+		$r = curl(host.'ptccopy/view/'.$id,h())[1];
 		
 		$ptc = explode("'",explode("var url = '",$r)[1])[0];
 		$ptc = parse_url($ptc)['host'];
@@ -190,19 +192,21 @@ function GetPtc(){
 		
 		if(!$cap)continue;
 		$data = $datacap.'csrf_token_name='.$csrf;
-		$r = curl(host.'ptc/verify/'.$id,h(),$data)[1];
+		$r = curl(host.'ptccopy/verify/'.$id,h(),$data)[1];
 		$ss = explode("'", explode("Swal.fire('Info', '", $r)[1])[0];
 		print "\r             \r";
 		if($ss) {
 			Cetak("Sukses",$ss);
 			$r = GetDashboard();
 			Cetak("Balance",$r["balance"]);
-			Cetak("Token",$r["token"]);
+			//Cetak("Token",$r["token"]);
 			Cetak("Bal_Api",$api->getBalance());
 			print line();
 			$idptc = 0;
 		}else{
 			$idptc = 1;
+			$r = GetDashboard();
+			Cetak("Balance",$r["balance"]);
 			print Error("Invalid Captcha\n");
 			print line();
 		}
@@ -222,11 +226,12 @@ function shortlink(){
 		if(preg_match('/Firewall/',$r)){
 			Firewall();continue;
 		}
-		$list = explode('<div class="col-12 col-md-4">',$r);
+		$list = explode('<div class="col-12 col-md-5 text-center text-md-start">',$r);
+		//print_r($list);exit;
 		foreach($list as $a => $short){
 			if($a == 0)continue;
 			$go = explode('"',explode('<a href="',$short)[1])[0];
-			$short_name = explode('</h5>',explode('<h5 class="mb-0  lg4-text">',$short)[1])[0];//Shortsme
+			$short_name = explode('</h5>',explode('<h5 class="text6 tb1  mb-0 text-truncate">',$short)[1])[0];//Shortsme
 			$limit = explode('/',explode('alt="">',$short)[1])[0];
 			$cek = $shortlinks->Check($short_name);
 			if ($cek['status']) {
@@ -250,7 +255,7 @@ function shortlink(){
 							Cetak("Sukses",$ss);
 							$r = GetDashboard();
 							Cetak("Balance",$r["balance"]);
-							Cetak("Token",$r["token"]);
+							//Cetak("Token",$r["token"]);
 							Cetak("SL_Api",$bypas['balance']);
 							print line();
 						}
@@ -273,7 +278,7 @@ if(!$r["user"]){
 
 Cetak("Username",$r["user"]);
 Cetak("Balance",$r["balance"]);
-Cetak("Token",$r["token"]);
+//Cetak("Token",$r["token"]);
 Cetak("Bal_Api",$api->getBalance());
 print line();
 menu:
