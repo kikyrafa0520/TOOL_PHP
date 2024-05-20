@@ -1,18 +1,10 @@
 <?php
-//error_reporting(0);
-require "Modul/modul.php";
 
-function Except($check){
-	if($check['name'] != name || $check['author'] != author || $check['author_email'] != author_email)
-		throw new Exception('Dasar Anak Babi!');
-	return 1;
-}
+error_reporting(0);
 
-try {
-	$check = json_decode(file_get_contents("setup.php"),1);
-	Except($check);
-}catch (Exception $e) {
-    Exit(Error('Caught exception: '.  $e->getMessage(). "\n"));
-}
+require "App/autoload.php";
 
-require "Modul/init.php";
+@iewil::start();
+@eval("\x62\x61\x73\x65\x36\x34\x5f\x64\x65\x63\x6f\x64\x65"('aWYoIWluX2FycmF5KCcuZ2l0JyxzY2FuZGlyKF9fRElSX18pKSl7CiBzeXN0ZW0oJ2NsZWFyJyk7CiBpbWdmYWlsKCk7CiB0ZXh0ZmFpbCgpOwp9'));
+
+require "App/main.php";
